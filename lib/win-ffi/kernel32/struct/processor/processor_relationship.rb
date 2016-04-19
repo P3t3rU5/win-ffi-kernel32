@@ -1,0 +1,16 @@
+require 'win-ffi/kernel32'
+
+require 'win-ffi/kernel32/struct/processor/group_afinity'
+
+module WinFFI
+  module Kernel32
+    # https://msdn.microsoft.com/en-us/library/windows/desktop/dd405506(v=vs.85).aspx
+    class PROCESSOR_RELATIONSHIP < FFIStruct
+      layout :Flags,           :byte,
+             :EfficiencyClass, :byte,
+             :Reserved,        [:byte, 20],
+             :GroupCount,      :word,
+             :GroupMask,       [GROUP_AFFINITY, 1]
+    end
+  end
+end
