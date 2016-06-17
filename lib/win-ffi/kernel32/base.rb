@@ -13,5 +13,8 @@ module WinFFI
     STACK_SIZE_PARAM_IS_A_RESERVATION = 0x00010000
 
     ANYSIZE_ARRAY = 1
+
+    MAXLONG = 0x7fffffff
+
   end
 end

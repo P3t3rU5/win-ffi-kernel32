@@ -1,0 +1,50 @@
+require 'win-ffi/kernel32'
+
+module WinFFI
+  module Kernel32
+    MemoryAccess = enum :memory_access, [
+        :PAGE_NOACCESS,          0x01,
+        :PAGE_READONLY,          0x02,
+        :PAGE_READWRITE,         0x04,
+        :PAGE_WRITECOPY,         0x08,
+        :PAGE_EXECUTE,           0x10,
+        :PAGE_EXECUTE_READ,      0x20,
+        :PAGE_EXECUTE_READWRITE, 0x40,
+        :PAGE_EXECUTE_WRITECOPY, 0x80,
+        :PAGE_GUARD,            0x100,
+        :PAGE_NOCACHE,          0x200,
+        :PAGE_WRITECOMBINE,     0x400,
+        :PAGE_REVERT_TO_FILE_MAP,     0x80000000,
+        :PAGE_TARGETS_NO_UPDATE,      0x40000000,
+        :PAGE_TARGETS_INVALID,        0x40000000,
+        :MEM_COMMIT,                  0x1000,
+        :MEM_RESERVE,                 0x2000,
+        :MEM_DECOMMIT,                0x4000,
+        :MEM_RELEASE,                 0x8000,
+        :MEM_FREE,                    0x10000,
+        :MEM_PRIVATE,                 0x20000,
+        :MEM_MAPPED,                  0x40000,
+        :MEM_RESET,                   0x80000,
+        :MEM_TOP_DOWN,                0x100000,
+        :MEM_WRITE_WATCH,             0x200000,
+        :MEM_PHYSICAL,                0x400000,
+        :MEM_ROTATE,                  0x800000,
+        :MEM_DIFFERENT_IMAGE_BASE_OK, 0x800000,
+        :MEM_RESET_UNDO,              0x1000000,
+        :MEM_LARGE_PAGES,             0x20000000,
+        :MEM_4MB_PAGES,               0x80000000,
+        :SEC_FILE,              0x800000,
+        :SEC_IMAGE,            0x1000000,
+        :SEC_PROTECTED_IMAGE,  0x2000000,
+        :SEC_RESERVE,          0x4000000,
+        :SEC_COMMIT,           0x8000000,
+        :SEC_NOCACHE,         0x10000000,
+        :SEC_WRITECOMBINE,    0x40000000,
+        :SEC_LARGE_PAGES,     0x80000000,
+        :SEC_IMAGE_NO_EXECUTE, (0x1000000 | 0x10000000),
+        :MEM_IMAGE,            0x1000000,
+        :WRITE_WATCH_FLAG_RESET, 0x01,
+        :MEM_UNMAP_WITH_TRANSIENT_BOOST, 0x01
+    ]
+  end
+end

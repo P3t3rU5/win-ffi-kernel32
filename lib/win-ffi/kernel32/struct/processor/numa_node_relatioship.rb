@@ -1,4 +1,4 @@
-require 'win-ffi/kernel32/struct/processor/group_afinity'
+require 'win-ffi/kernel32/struct/processor/group_affinity'
 
 module WinFFI
   module Kernel32

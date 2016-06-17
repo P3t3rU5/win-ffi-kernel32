@@ -1,7 +1,7 @@
-require 'win-ffi/kernel32/struct/processor/group_afinity'
+require 'win-ffi/kernel32/struct/processor/group_affinity'
 
 require 'win-ffi/kernel32/enum/processor/processor_cache_type'
-require 'win-ffi/kernel32/struct/processor/group_afinity'
+require 'win-ffi/kernel32/struct/processor/group_affinity'
 
 module WinFFI
   module Kernel32
