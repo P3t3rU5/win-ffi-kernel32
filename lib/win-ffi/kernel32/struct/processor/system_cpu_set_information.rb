@@ -42,9 +42,9 @@ require 'win-ffi/kernel32/enum/processor/cpu_set_information_type'
 module WinFFI
   module Kernel32
 
-    class SYSTEM_CPU_SET_INFORMATION < FFIStruct
-      layout :Size, :dword,
-             :Type, CpuSetInformationType
+    class SYSTEM_CPU_SET_INFORMATION < FFIAdditions::Struct
+      layout Size:                :dword,
+             Type: CpuSetInformationType
     end
   end
 end

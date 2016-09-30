@@ -16,5 +16,9 @@ module WinFFI
 
     MAXLONG = 0x7fffffff
 
+    MAX_COMPUTERNAME_LENGTH = 15
+
+    MAX_MODULE_NAME32      = 255
+
   end
 end

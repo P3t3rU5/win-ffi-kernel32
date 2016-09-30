@@ -1,6 +1,9 @@
 require 'win-ffi/kernel32'
 
+require 'win-ffi/kernel32/enum/time/time_zone_id'
+
 require 'win-ffi/kernel32/struct/time/file_time'
+require 'win-ffi/kernel32/struct/time/system_time'
 require 'win-ffi/kernel32/struct/time/dynamic_time_zone_information'
 require 'win-ffi/kernel32/struct/time/time_zone_information'
 
@@ -44,24 +47,6 @@ module WinFFI
     # https://msdn.microsoft.com/en-us/library/windows/desktop/ms724408(v=vs.85).aspx
     # DWORD WINAPI GetTickCount(void)
     attach_function 'GetTickCount', [], :ulong
-
-    #int GetTimeFormat(
-    #  _In_       LCID Locale,
-    #  _In_       DWORD dwFlags,
-    #  _In_opt_   const SYSTEMTIME *lpTime,
-    #  _In_opt_   LPCTSTR lpFormat,
-    #  _Out_opt_  LPTSTR lpTimeStr,
-    #  _In_       int cchTime )
-    encoded_function 'GetTimeFormat', [:ulong, :ulong, :pointer, :string, :pointer, :int], :int
-
-    # int GetTimeFormatEx(
-    #     _In_opt_   LPCWSTR lpLocaleName,
-    #     _In_       DWORD dwFlags,
-    #     _In_opt_   const SYSTEMTIME *lpTime,
-    #     _In_opt_   LPCWSTR lpFormat,
-    #     _Out_opt_  LPWSTR lpTimeStr,
-    #     _In_       int cchTime )
-    attach_function 'GetTimeFormatEx', [:string, :dword, :pointer, :string, :string, :int],  :int
 
     # https://msdn.microsoft.com/en-us/library/windows/desktop/ms724421(v=vs.85).aspx
     # DWORD WINAPI GetTimeZoneInformation( _Out_  LPTIME_ZONE_INFORMATION lpTimeZoneInformation )
@@ -180,11 +165,6 @@ module WinFFI
             #   _Out_     LPTIME_ZONE_INFORMATION ptzi )
             attach_function 'GetTimeZoneInformationForYear', [:ushort, DYNAMIC_TIME_ZONE_INFORMATION.ptr, TIME_ZONE_INFORMATION.ptr(:out)], :bool
 
-            # TODO
-            # https://msdn.microsoft.com/en-us/library/windows/desktop/dn903659(v=vs.85).aspx
-            # VOID QueryInterruptTime(_Out_ PULONGLONG lpInterruptTime)
-            # attach_function 'QueryInterruptTime', [:pointer], :void
-
             # https://msdn.microsoft.com/en-us/library/windows/desktop/dn903660(v=vs.85).aspx
             # VOID QueryInterruptTimePrecise(_Out_ PULONGLONG lpInterruptTimePrecise)
             # attach_function 'QueryInterruptTimePrecise', [:pointer], :void
@@ -216,6 +196,12 @@ module WinFFI
               # https://msdn.microsoft.com/en-us/library/windows/desktop/hh706895(v=vs.85).aspx
               # VOID WINAPI GetSystemTimePreciseAsFileTime( _Out_  LPFILETIME lpSystemTimeAsFileTime )
               attach_function 'GetSystemTimePreciseAsFileTime', [:pointer], :void
+
+              if WindowsVersion >= 10
+                # https://msdn.microsoft.com/en-us/library/windows/desktop/dn903659(v=vs.85).aspx
+                # VOID QueryInterruptTime(_Out_ PULONGLONG lpInterruptTime)
+                attach_function 'QueryInterruptTime', [:pointer], :void
+              end
             end
           end
         end

@@ -14,6 +14,7 @@ module WinFFI
         :EXECUTEINPERSISTENTTHREAD,   0x00000080,
         :TRANSFER_IMPERSONATION,      0x00000100
     ]
-  end
 
+    define_prefix(:WT, WorkerThread)
+  end
 end

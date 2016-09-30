@@ -657,6 +657,18 @@ module WinFFI
                               [:handle, SECURITY_ATTRIBUTES.ptr(:in), :size_t, ThreadProc, :pointer, ProcessCreationFlag,
                                :pointer, :pointer], :handle
 
+              # https://msdn.microsoft.com/en-us/library/windows/desktop/dd796392%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
+              # DWORD APIENTRY DisableThreadProfiling(_In_ HANDLE PerformanceDataHandle)
+              attach_function 'DisableThreadProfiling', [:handle], :dword
+
+              # https://msdn.microsoft.com/en-us/library/windows/desktop/dd796393%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
+              # DWORD APIENTRY EnableThreadProfiling(
+              #   _In_  HANDLE  ThreadHandle,
+              #   _In_  DWORD   Flags,
+              #   _In_  DWORD64 HardwareCounters,
+              #   _Out_ HANDLE  PerformanceDataHandle)
+              attach_function 'EnableThreadProfiling', [:handle, :dword, :dword64, :handle], :dword
+
               # https://msdn.microsoft.com/en-us/library/windows/desktop/dd405498(v=vs.85).aspx
               # BOOL GetThreadGroupAffinity(
               #   _In_  HANDLE          hThread,

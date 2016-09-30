@@ -1,6 +1,6 @@
-require 'win-ffi/kernel32'
 require 'win-ffi/kernel32/enum/error/format_message_flag'
 require 'win-ffi/kernel32/enum/set_error_mode_flags'
+require 'win-ffi/kernel32/struct/error/exception_record'
 
 module WinFFI
   module Kernel32
@@ -18,7 +18,7 @@ module WinFFI
       #   _In_      ULONG  FramesToCapture,
       #   _Out_     PVOID  *BackTrace,
       #   _Out_opt_ PULONG BackTraceHash)
-      attach_function 'CaptureStackBackTrace', [:ulong, :ulong, :pointer, :pointer], :ushort
+      attach_function 'RtlCaptureStackBackTrace', [:ulong, :ulong, :pointer, :pointer], :ushort
 
       # https://msdn.microsoft.com/en-us/library/windows/desktop/ms679336(v=vs.85).aspx
       # void WINAPI FatalAppExit(
@@ -49,7 +49,7 @@ module WinFFI
       #   _In_opt_ PVOID             TargetIp,
       #   _In_opt_ PEXCEPTION_RECORD ExceptionRecord,
       #   _In_     PVOID             ReturnValue)
-      attach_function 'RtlUnwind', [:pointer, :pointer, EXCEPTION_RECORD.ptr, :poitner], :void
+      attach_function 'RtlUnwind', [:pointer, :pointer, EXCEPTION_RECORD.ptr(:in), :pointer], :void
 
       if Architecture == 'x64-mingw32'
 

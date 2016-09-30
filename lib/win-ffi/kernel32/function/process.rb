@@ -263,6 +263,23 @@ module WinFFI
 
       if (WindowsVersion == :xp && WindowsVersion.sp >= 1) || WindowsVersion >= :vista
 
+        # https://msdn.microsoft.com/en-us/library/windows/desktop/ms682429(v=vs.85).aspx
+        # BOOL WINAPI CreateProcessAsUser(
+        #   _In_opt_    HANDLE                hToken,
+        #   _In_opt_    LPCTSTR               lpApplicationName,
+        #   _Inout_opt_ LPTSTR                lpCommandLine,
+        #   _In_opt_    LPSECURITY_ATTRIBUTES lpProcessAttributes,
+        #   _In_opt_    LPSECURITY_ATTRIBUTES lpThreadAttributes,
+        #   _In_        BOOL                  bInheritHandles,
+        #   _In_        DWORD                 dwCreationFlags,
+        #   _In_opt_    LPVOID                lpEnvironment,
+        #   _In_opt_    LPCTSTR               lpCurrentDirectory,
+        #   _In_        LPSTARTUPINFO         lpStartupInfo,
+        #   _Out_       LPPROCESS_INFORMATION lpProcessInformation)
+        encoded_function 'CreateProcessAsUser',
+                         [:handle, :string, :string, SECURITY_ATTRIBUTES.ptr, SECURITY_ATTRIBUTES.ptr, :bool, :dword,
+                          :pointer, :string, :pointer, Kernel32::PROCESS_INFORMATION.ptr(:out)], :bool
+
         # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683214(v=vs.85).aspx
         # BOOL WINAPI GetProcessHandleCount(
         #   _In_     HANDLE hProcess,

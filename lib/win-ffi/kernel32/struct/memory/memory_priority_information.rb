@@ -5,8 +5,8 @@ module WinFFI
 
     require 'win-ffi/kernel32/enum/memory/memory_priority'
     module Kernel32
-      class MEMORY_PRIORITY_INFORMATION < FFIStruct
-        layout :MemoryPriority, MemoryPriority
+      class MEMORY_PRIORITY_INFORMATION < FFIAdditions::Struct
+        layout MemoryPriority: MemoryPriority
       end
     end
   end

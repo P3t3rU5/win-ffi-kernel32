@@ -1,12 +1,16 @@
 require 'win-ffi/kernel32/base'
 
 module WinFFI
-  if WindowsVersion >= :xp
+  module Kernel32
 
-    require 'win-ffi/kernel32/enum/dll/get_module_handle_ex_flag'
-    require 'win-ffi/kernel32/enum/dll/load_library_ex_flag'
+    # https://msdn.microsoft.com/en-us/library/bb432244(v=vs.85).aspx
+    # FARPROC WINAPI DelayLoadFailureHook(_In_ LPCSTR pszDllName, _In_ LPCSTR pszProcName)
+    attach_function 'DelayLoadFailureHook', [:string, :string], :pointer
 
-    module Kernel32
+    if WindowsVersion >= :xp
+
+      require 'win-ffi/kernel32/enum/dll/get_module_handle_ex_flag'
+      require 'win-ffi/kernel32/enum/dll/load_library_ex_flag'
 
       # https://msdn.microsoft.com/en-us/library/windows/desktop/ms682579(v=vs.85).aspx
       # BOOL WINAPI DisableThreadLibraryCalls( _In_  HMODULE hModule )

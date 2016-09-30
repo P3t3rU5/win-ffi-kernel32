@@ -14,10 +14,15 @@ module WinFFI
     require 'win-ffi/kernel32/enum/memory/process_dep'
     require 'win-ffi/kernel32/enum/memory/file_cache'
     require 'win-ffi/kernel32/enum/memory/file_map'
+    require 'win-ffi/kernel32/enum/memory/offer_priority'
 
     require 'win-ffi/kernel32/struct/memory/memory_status'
     require 'win-ffi/kernel32/struct/memory/memory_status_ex'
     require 'win-ffi/kernel32/struct/memory/memory_basic_information'
+    require 'win-ffi/kernel32/struct/memory/win32_memory_range_entry'
+
+    require 'win-ffi/core/struct/security_attributes'
+
 
     module Kernel32
 
@@ -31,13 +36,6 @@ module WinFFI
       #   _Out_    PULONG_PTR UserPfnArray )
       attach_function 'AllocateUserPhysicalPages', [:handle, :ulong, :ulong], :bool
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa366535(v=vs.85).aspx
-      # void CopyMemory(
-      #   _In_  PVOID Destination,
-      #   _In_  const VOID *Source,
-      #   _In_  SIZE_T Length )
-      attach_function 'RtlCopyMemory', [:pointer, :pointer, :size_t], :void
-
       # https://msdn.microsoft.com/en-us/library/windows/desktop/aa366537(v=vs.85).aspx
       # HANDLE WINAPI CreateFileMapping(
       #   _In_      HANDLE hFile,
@@ -46,7 +44,7 @@ module WinFFI
       #   _In_      DWORD dwMaximumSizeHigh,
       #   _In_      DWORD dwMaximumSizeLow,
       #   _In_opt_  LPCTSTR lpName )
-      encoded_function 'CreateFileMapping', [:handle, :pointer, MemoryAccess, :dword, :dword, :string], :handle
+      encoded_function 'CreateFileMapping', [:handle, SECURITY_ATTRIBUTES.ptr(:in), MemoryAccess, :dword, :dword, :string], :handle
 
       # https://msdn.microsoft.com/en-us/library/windows/desktop/aa366541(v=vs.85).aspx
       # HANDLE WINAPI CreateMemoryResourceNotification( _In_  MEMORY_RESOURCE_NOTIFICATION_TYPE NotificationType )
@@ -199,9 +197,15 @@ module WinFFI
       #   _In_  SIZE_T dwBytes )
       attach_function 'GlobalAlloc', [GlobalMemoryFlag, :size_t], :hglobal
 
+      # SIZE_T GlobalCompact(_In_ DWORD dwMinFree)
+      attach_function 'GlobalCompact', [:dword], :size_t
+
       # https://msdn.microsoft.com/en-us/library/windows/desktop/aa366577(v=vs.85).aspx
       # UINT WINAPI GlobalFlags( _In_  HGLOBAL hMem )
       attach_function 'GlobalFlags', [:hglobal], :uint
+
+      # VOID GlobalFix(_In_ HGLOBAL hMem)
+      attach_function 'GlobalFix', [:hglobal], :void
 
       # https://msdn.microsoft.com/en-us/library/windows/desktop/aa366579(v=vs.85).aspx
       # HGLOBAL WINAPI GlobalFree( _In_  HGLOBAL hMem )
@@ -234,10 +238,18 @@ module WinFFI
       # SIZE_T WINAPI GlobalSize( _In_  HGLOBAL hMem )
       attach_function 'GlobalSize', [:hglobal], :size_t
 
+      # VOID GlobalUnfix(_In_ HGLOBAL hMem)
+      attach_function 'GlobalUnfix', [:hglobal], :void
+
       # https://msdn.microsoft.com/en-us/library/windows/desktop/aa366595(v=vs.85).aspx
       # BOOL WINAPI GlobalUnlock( _In_  HGLOBAL hMem )
       attach_function 'GlobalUnlock', [:hglobal], :bool
 
+      # BOOL GlobalUnWire(_In_ HGLOBAL hMem)
+      attach_function 'GlobalUnWire', [:hglobal], :bool
+
+      # LPVOID GlobalWire(_In_ HGLOBAL hMem)
+      attach_function 'GlobalWire', [:hglobal], :pointer
 
       # Local
       # https://msdn.microsoft.com/en-us/library/windows/desktop/aa366723(v=vs.85).aspx
@@ -435,7 +447,7 @@ module WinFFI
             #   _In_      ULONG64 MaximumSize,
             #   _In_opt_  PCWSTR Name )
             attach_function 'CreateFileMappingFromApp',
-                            [:handle, SECURITY_ATTRIBUES.ptr, MemoryAccess, :ulong_long, :string], :handle
+                            [:handle, SECURITY_ATTRIBUTES.ptr(:in), MemoryAccess, :ulong_long, :string], :handle
 
             # https://msdn.microsoft.com/en-us/library/windows/desktop/hh691012(v=vs.85).aspx
             # BOOL WINAPI GetMemoryErrorHandlingCapabilities( _Out_  PULONG Capabilities )

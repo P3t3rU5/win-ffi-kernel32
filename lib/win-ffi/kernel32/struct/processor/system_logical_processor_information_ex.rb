@@ -7,18 +7,18 @@ require 'win-ffi/kernel32/struct/processor/group_relationship'
 
 module WinFFI
   module Kernel32
-    class SLPIE_UNION < FFI::Union
-      layout :Processor, PROCESSOR_RELATIONSHIP,
-             :NumaNode,  NUMA_NODE_RELATIONSHIP,
-             :Cache,     CACHE_RELATIONSHIP,
-             :Group,     GROUP_RELATIONSHIP
+    class SLPIE_UNION < FFIAdditions::Union
+      layout Processor: PROCESSOR_RELATIONSHIP,
+             NumaNode:  NUMA_NODE_RELATIONSHIP,
+             Cache:         CACHE_RELATIONSHIP,
+             Group:         GROUP_RELATIONSHIP
     end
 
     # https://msdn.microsoft.com/en-us/library/windows/desktop/dd405522(v=vs.85).aspx
-    class SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX < FFIStruct
-      layout :Relationship, LogicalProcessorRelationship,
-             :Size,         :dword,
-             :u,            SLPIE_UNION
+    class SYSTEM_LOGICAL_PROCESSOR_INFORMATION_EX < FFIAdditions::Struct
+      layout Relationship: LogicalProcessorRelationship,
+             Size:                               :dword,
+             u:                             SLPIE_UNION
 
       def initialize
         super

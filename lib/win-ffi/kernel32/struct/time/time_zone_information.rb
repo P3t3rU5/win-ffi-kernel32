@@ -4,14 +4,18 @@ require 'win-ffi/kernel32/struct/time/system_time'
 
 module WinFFI
   module Kernel32
-    class TIME_ZONE_INFORMATION < FFIStruct
-      layout :Bias,         :long,
-             :StandardName, WideInlineString.new(32),
-             :StandardDate, SYSTEMTIME,
-             :StandardBias, :long,
-             :DaylightName, WideInlineString.new(32),
-             :DaylightDate, SYSTEMTIME,
-             :DaylightBias, :long
+    class TIME_ZONE_INFORMATION < FFIAdditions::Struct
+      layout Bias:                            :long,
+             StandardName: WideInlineString.new(32),
+             StandardDate:               SYSTEMTIME,
+             StandardBias:                    :long,
+             DaylightName: WideInlineString.new(32),
+             DaylightDate:               SYSTEMTIME,
+             DaylightBias:                    :long
+
+      def current
+        self unless Kernel32::TimeZoneId[Kernel32.GetTimeZoneInformation(self)] == :INVALID
+      end
     end
   end
 end

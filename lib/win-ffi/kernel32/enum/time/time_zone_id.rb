@@ -8,5 +8,7 @@ module WinFFI
         :DAYLIGHT, 2,
         :INVALID,  0xFFFFFFFF
     ]
+
+    define_prefix(:TIME_ZONE_ID, TimeZoneId)
   end
 end

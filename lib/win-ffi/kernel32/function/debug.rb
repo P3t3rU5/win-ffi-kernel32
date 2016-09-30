@@ -3,6 +3,11 @@ require 'win-ffi/kernel32'
 require 'win-ffi/kernel32/enum/debug/status'
 require 'win-ffi/kernel32/struct/debug/context'
 
+require 'win-ffi/kernel32/struct/debug/ldt_entry'
+require 'win-ffi/kernel32/struct/debug/wow64_ldt_entry'
+require 'win-ffi/kernel32/struct/debug/debug_event'
+require 'win-ffi/kernel32/struct/debug/wow64_context'
+
 module WinFFI
   module Kernel32
 
@@ -52,13 +57,12 @@ module WinFFI
       #   _Inout_ LPCONTEXT lpContext)
       attach_function 'GetThreadContext', [:handle, CONTEXT], :bool
 
-      # TODO LDT_ENTRY Struct https://msdn.microsoft.com/en-us/library/windows/desktop/ms680348(v=vs.85).aspx
       # https://msdn.microsoft.com/en-us/library/windows/desktop/ms679363(v=vs.85).aspx
       # BOOL WINAPI GetThreadSelectorEntry(
       #   _In_  HANDLE      hThread,
       #   _In_  DWORD       dwSelector,
       #   _Out_ LPLDT_ENTRY lpSelectorEntry)
-      attach_function 'GetThreadSelectorEntry', [:handle, :dword, :pointer], :bool
+      attach_function 'GetThreadSelectorEntry', [:handle, :dword, LDT_ENTRY.ptr(:out)], :bool
 
       # https://msdn.microsoft.com/en-us/library/windows/desktop/ms680345(v=vs.85).aspx
       # BOOL WINAPI IsDebuggerPresent(void);
@@ -83,12 +87,11 @@ module WinFFI
       #   _In_ const CONTEXT *lpContext)
       attach_function 'SetThreadContext', [:handle, CONTEXT.ptr(:in)], :bool
 
-      # TODO DEBUG_EVENT https://msdn.microsoft.com/en-us/library/windows/desktop/ms679308(v=vs.85).aspx
       # https://msdn.microsoft.com/en-us/library/windows/desktop/ms681423(v=vs.85).aspx
       # BOOL WINAPI WaitForDebugEvent(
       #   _Out_ LPDEBUG_EVENT lpDebugEvent,
       #   _In_  DWORD         dwMilliseconds)
-      attach_function 'WaitForDebugEvent', [:pointer, :dword], :bool
+      attach_function 'WaitForDebugEvent', [DEBUG_EVENT.ptr(:out), :dword], :bool
 
       # https://msdn.microsoft.com/en-us/library/windows/desktop/ms681674(v=vs.85).aspx
       # BOOL WINAPI WriteProcessMemory(
@@ -109,37 +112,45 @@ module WinFFI
 
         if WindowsVersion >= :vista
 
-          # TODO WOW64_CONTEXT https://msdn.microsoft.com/en-us/library/windows/desktop/ms681670(v=vs.85).aspx
           # https://msdn.microsoft.com/en-us/library/windows/desktop/ms681665(v=vs.85).aspx
           # BOOL WINAPI Wow64GetThreadContext(
           #   _In_    HANDLE         hThread,
           #   _Inout_ PWOW64_CONTEXT lpContext)
-          attach_function 'Wow64GetThreadContext', [:handle, :pointer], :bool
+          attach_function 'Wow64GetThreadContext', [:handle, WOW64_CONTEXT.ptr], :bool
 
           # https://msdn.microsoft.com/en-us/library/windows/desktop/ms681668(v=vs.85).aspx
           # BOOL WINAPI Wow64SetThreadContext(
           #   _In_       HANDLE        hThread,
           #   _In_ const WOW64_CONTEXT *lpContext)
-          attach_function 'Wow64SetThreadContext', [:handle, :pointer], :bool
+          attach_function 'Wow64SetThreadContext', [:handle, WOW64_CONTEXT.ptr(:in)], :bool
 
           if WindowsVersion >= 7
 
-            # TODO WOW64_LDT_ENTRY https://msdn.microsoft.com/en-us/library/windows/desktop/dd709485(v=vs.85).aspx
             # https://msdn.microsoft.com/en-us/library/windows/desktop/dd709484(v=vs.85).aspx
             # BOOL Wow64GetThreadSelectorEntry(
             #   _In_  HANDLE           hThread,
             #   _In_  DWORD            dwSelector,
             #   _Out_ PWOW64_LDT_ENTRY lpSelectorEntry)
-            attach_function 'Wow64GetThreadSelectorEntry', [:handle, :dword, :pointer], :bool
+            attach_function 'Wow64GetThreadSelectorEntry', [:handle, :dword, WOW64_LDT_ENTRY.ptr(:out)], :bool
 
-            if WindowsVersion >= 10
+            if WindowsVersion >= 8 || WindowsVersion == 7 && WindowsVersion.sp == 1
 
-              # https://msdn.microsoft.com/en-us/library/windows/desktop/mt171594(v=vs.85).aspx
-              # BOOL WINAPI WaitForDebugEventEx(
-              #   _Out_ LPDEBUG_EVENT lpDebugEvent,
-              #   _In_  DWORD         dwMilliseconds)
-              attach_function 'WaitForDebugEventEx', [:pointer, :dword], :bool
+              # https://msdn.microsoft.com/en-us/library/windows/desktop/hh134234%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
+              # BOOL WINAPI CopyContext(
+              #   _Inout_ PCONTEXT Destination,
+              #   _In_    DWORD    ContextFlags,
+              #   _In_    PCONTEXT Source)
+              attach_function 'CopyContext', [CONTEXT.ptr, :dword, CONTEXT.ptr(:in)], :bool
 
+              if WindowsVersion >= 10
+
+                # https://msdn.microsoft.com/en-us/library/windows/desktop/mt171594(v=vs.85).aspx
+                # BOOL WINAPI WaitForDebugEventEx(
+                #   _Out_ LPDEBUG_EVENT lpDebugEvent,
+                #   _In_  DWORD         dwMilliseconds)
+                attach_function 'WaitForDebugEventEx', [:pointer, :dword], :bool
+
+              end
             end
           end
         end
