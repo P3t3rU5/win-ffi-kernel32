@@ -12,9 +12,9 @@ module WinFFI
         :RTLREADING,       0x00000020,
     ]
 
-    if WindowsVersion >= 7
+    if WINDOWS_VERSION >= 7
       buffer += [:AUTOLAYOUT, 0x00000040]
-      buffer += [:MONTHDAY,   0x00000080] if WindowsVersion >= 10
+      buffer += [:MONTHDAY,   0x00000080] if WINDOWS_VERSION >= 10
 
     end
 

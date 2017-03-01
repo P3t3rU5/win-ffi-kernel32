@@ -308,7 +308,7 @@ module WinFFI
     #   _Out_ LPDWORD lpNumberOfCharsWritten)
     encoded_function 'WriteConsoleOutputCharacter', [:handle, :string, :dword, COORD.ptr(:in), :pointer], :bool
 
-    if WindowsVersion >= :xp
+    if WINDOWS_VERSION >= :xp
       # https://msdn.microsoft.com/en-us/library/windows/desktop/ms681952(v=vs.85).aspx
       # BOOL WINAPI AttachConsole(_In_ DWORD dwProcessId)
       attach_function 'AttachConsole', [:dword], :bool
@@ -347,7 +347,7 @@ module WinFFI
       #   _Out_opt_ PCOORD lpNewScreenBufferDimensions)
       attach_function 'SetConsoleDisplayMode', [:handle, ConsoleDisplayMode, COORD.ptr(:out)], :bool
 
-      if WindowsVersion >= :vista
+      if WINDOWS_VERSION >= :vista
         # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683168(v=vs.85).aspx
         # DWORD WINAPI GetConsoleOriginalTitle(_Out_ LPTSTR lpConsoleTitle, _In_  DWORD  nSize)
         encoded_function 'GetConsoleOriginalTitle', [:string, :dword], :dword

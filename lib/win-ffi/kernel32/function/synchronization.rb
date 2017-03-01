@@ -24,7 +24,7 @@ require 'win-ffi/kernel32/enum/synchronization/condition_variable'
 
 module WinFFI
   module Kernel32
-    if WindowsVersion >= :xp
+    if WINDOWS_VERSION >= :xp
       # https://msdn.microsoft.com/en-us/library/windows/desktop/ms687066(v=vs.85).aspx
       # VOID CALLBACK WaitOrTimerCallback(_In_ PVOID   lpParameter, _In_ BOOLEAN TimerOrWaitFired)
       WaitOrTimerCallback = callback 'WaitOrTimerCallback', [:pointer, :bool], :void
@@ -312,7 +312,7 @@ module WinFFI
       #   _In_ BOOL   bAlertable)
       attach_function 'WaitForSingleObjectEx', [:handle, :dword, :bool], :dword
 
-      if WindowsVersion >= :vista
+      if WINDOWS_VERSION >= :vista
         # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683490(v=vs.85).aspx
         # BOOL CALLBACK InitOnceCallback(
         #   _Inout_     PINIT_ONCE InitOnce,
@@ -463,7 +463,7 @@ module WinFFI
         # VOID WINAPI WakeConditionVariable(_Inout_ PCONDITION_VARIABLE ConditionVariable)
         attach_function 'WakeConditionVariable', [CONDITION_VARIABLE.ptr], :void
 
-        if WindowsVersion >= 7
+        if WINDOWS_VERSION >= 7
           # https://msdn.microsoft.com/en-us/library/windows/desktop/ee175818(v=vs.85).aspx
           # BOOL WINAPI AddIntegrityLabelToBoundaryDescriptor(
           #   _Inout_ HANDLE *BoundaryDescriptor,
@@ -491,7 +491,7 @@ module WinFFI
           # BOOLEAN WINAPI TryAcquireSRWLockShared(_Inout_ PSRWLOCK SRWLock)
           attach_function 'TryAcquireSRWLockShared', [SRWLOCK.ptr], :bool
 
-          if WindowsVersion >= 8
+          if WINDOWS_VERSION >= 8
             # https://msdn.microsoft.com/en-us/library/windows/desktop/hh706887(v=vs.85).aspx
             # BOOL  WINAPI DeleteSynchronizationBarrier(_Inout_ LPSYNCHRONIZATION_BARRIER lpBarrier)
             attach_function 'DeleteSynchronizationBarrier', [:pointer], :bool

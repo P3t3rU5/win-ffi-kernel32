@@ -2,7 +2,7 @@ require 'win-ffi/kernel32'
 
 module WinFFI
   module Kernel32
-    if WindowsVersion >= 8.1
+    if WINDOWS_VERSION >= 8.1
 
       typedef :hpss, :handle
 

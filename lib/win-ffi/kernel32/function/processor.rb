@@ -8,7 +8,7 @@ require 'win-ffi/kernel32/struct/processor/processor_number'
 
 module WinFFI
   module Kernel32
-    if WindowsVersion >= :vista
+    if WINDOWS_VERSION >= :vista
       # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683181(v=vs.85).aspx
       # DWORD WINAPI GetCurrentProcessorNumber(void)
       attach_function 'GetCurrentProcessorNumber', [], :dword
@@ -33,7 +33,7 @@ module WinFFI
       #   _Out_   PULONG64 ProcessorIdleCycleTime)
       attach_function 'QueryIdleProcessorCycleTime', [:pointer, :pointer], :bool
 
-      if WindowsVersion >= 7
+      if WINDOWS_VERSION >= 7
         # https://msdn.microsoft.com/en-us/library/windows/desktop/dd405485(v=vs.85).aspx
         # DWORD GetActiveProcessorCount(_In_ WORD GroupNumber)
         attach_function 'GetActiveProcessorCount', [:word], :dword
@@ -76,7 +76,7 @@ module WinFFI
         #   _Out_   PULONG64 ProcessorIdleCycleTime)
         attach_function 'QueryIdleProcessorCycleTimeEx', [:ushort, :pointer, :pointer], :bool
 
-        if WindowsVersion >= 10
+        if WINDOWS_VERSION >= 10
           # https://msdn.microsoft.com/en-us/library/windows/desktop/mt186425(v=vs.85).aspx
           # BOOL WINAPI GetSystemCpuSetInformation(
           #   _Out_opt_  PSYSTEM_CPU_SET_INFORMATION  Information,

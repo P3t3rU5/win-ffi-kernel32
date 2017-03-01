@@ -5,7 +5,7 @@ require 'win-ffi/kernel32/struct/authorization/acl'
 
 module WinFFI
   module Kernel32
-    if WindowsVersion >= :xp
+    if WINDOWS_VERSION >= :xp
       # https://msdn.microsoft.com/en-us/library/windows/desktop/aa379295(v=vs.85).aspx
       # BOOL WINAPI OpenProcessToken(
       #   _In_  HANDLE  ProcessHandle,
@@ -21,7 +21,7 @@ module WinFFI
       #   _Out_ PHANDLE TokenHandle)
       attach_function 'OpenThreadToken', [:handle, :dword, :bool, :pointer], :bool
 
-      if WindowsVersion >= 8
+      if WINDOWS_VERSION >= 8
         # https://msdn.microsoft.com/en-us/library/windows/desktop/hh448447(v=vs.85).aspx
         # BOOL WINAPI AddResourceAttributeAce(
         #   _Inout_ PACL                                   pAcl,

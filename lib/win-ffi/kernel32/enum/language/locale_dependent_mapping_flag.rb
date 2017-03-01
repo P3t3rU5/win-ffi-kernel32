@@ -17,9 +17,9 @@ module WinFFI
         :TRADITIONAL_CHINESE, 0x04000000,
     ]
 
-    if WindowsVersion >= 7
+    if WINDOWS_VERSION >= 7
       buffer += [:TITLECASE, 0x00000300]
-      if WindowsVersion >= 8
+      if WINDOWS_VERSION >= 8
         buffer += [
             :SORTHANDLE, 0x20000000,
             :HASH,       0x00040000,

@@ -1,7 +1,7 @@
 require 'win-ffi/kernel32'
 
 module WinFFI
-  if WindowsVersion >= :xp
+  if WINDOWS_VERSION >= :xp
     module Kernel32
       class COMMTIMEOUTS < FFIAdditions::Struct
         layout ReadIntervalTimeout:         :dword,

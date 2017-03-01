@@ -4,7 +4,7 @@ require 'win-ffi/kernel32/enum/avx/context'
 
 module WinFFI
   module Kernel32
-    if WindowsVersion == 7 && WindowsVersion.sp == 1 ||  WindowsVersion >= 8
+    if WINDOWS_VERSION == 7 && WINDOWS_VERSION.sp == 1 ||  WINDOWS_VERSION >= 8
       # https://msdn.microsoft.com/en-us/library/windows/desktop/hh134235(v=vs.85).aspx
       # DWORD64 WINAPI GetEnabledXStateFeatures(void)
       attach_function 'GetEnabledXStateFeatures', [], :dword64

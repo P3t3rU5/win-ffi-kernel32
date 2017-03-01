@@ -1,7 +1,7 @@
 require 'win-ffi/kernel32'
 
 module WinFFI
-  if WindowsVersion >= :xp
+  if WINDOWS_VERSION >= :xp
     module Kernel32
       FileNotificationChangeFlag = enum :file_notify_change_flag, [
           :FILE_NAME,   0x00000001,

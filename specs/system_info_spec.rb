@@ -151,7 +151,7 @@ describe 'SystemInfo' do
   # SetComputerNameEx2
 
   # describe 'Kernel32#VerifyVersionInfo' do
-  #   # Kernel32.VerifyVersionInfo(WindowsVersion, :MINORVERSION, )
+  #   # Kernel32.VerifyVersionInfo(WINDOWS_VERSION, :MINORVERSION, )
   #   it '' do
   #     expect(Kernel32.IsWindowsXPOrGreater).to be true
   #   end
@@ -196,10 +196,10 @@ describe 'SystemInfo' do
   describe 'GetProductInfo' do
     it '' do
       FFI::MemoryPointer.new(WinFFI.find_type(:dword)) do |product_type|
-        expect(Kernel32.GetProductInfo(WindowsVersion.dwMajorVersion,
-                                       WindowsVersion.dwMinorVersion,
-                                       WindowsVersion.wServicePackMajor,
-                                       WindowsVersion.wServicePackMinor, product_type)).to be true
+        expect(Kernel32.GetProductInfo(WINDOWS_VERSION.dwMajorVersion,
+                                       WINDOWS_VERSION.dwMinorVersion,
+                                       WINDOWS_VERSION.wServicePackMajor,
+                                       WINDOWS_VERSION.wServicePackMinor, product_type)).to be true
         LOGGER.debug(Kernel32::ProductType[product_type.read_ulong])
       end
     end

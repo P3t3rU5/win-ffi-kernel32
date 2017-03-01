@@ -6,7 +6,7 @@ require 'win-ffi/kernel32/enum/language/verify_scripts_flag'
 require 'win-ffi/kernel32/enum/language/get_string_script_flag'
 
 module WinFFI
-  if WindowsVersion >= :xp
+  if WINDOWS_VERSION >= :xp
     module Idndl
       extend LibBase
 

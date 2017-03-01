@@ -1,7 +1,7 @@
 require 'win-ffi/kernel32'
 
 module WinFFI
-  if WindowsVersion >= :xp
+  if WINDOWS_VERSION >= :xp
 
     require 'win-ffi/core/struct/security_attributes'
     require 'win-ffi/kernel32/enum/directory/file_notify_change_flag'
@@ -63,7 +63,7 @@ module WinFFI
       # BOOL WINAPI SetCurrentDirectory(_In_ LPCTSTR lpPathName)
       encoded_function 'SetCurrentDirectory', [:string], :bool
 
-      if WindowsVersion >= :vista
+      if WINDOWS_VERSION >= :vista
         # https://msdn.microsoft.com/en-us/library/windows/desktop/aa363857(v=vs.85).aspx
         # BOOL WINAPI CreateDirectoryTransacted(
         #   _In_opt_ LPCTSTR               lpTemplateDirectory,

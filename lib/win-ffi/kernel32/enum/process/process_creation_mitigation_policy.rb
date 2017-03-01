@@ -1,7 +1,7 @@
 require 'win-ffi/kernel32'
 
 module WinFFI
-  if WindowsVersion >= 7
+  if WINDOWS_VERSION >= 7
     module Kernel32
       # Define legacy creation mitigation policy options, which are straight bitmasks.  Bits 0-5 are legacy bits.
       buffer = [
@@ -9,7 +9,7 @@ module WinFFI
           :DEP_ATL_THUNK_ENABLE, 0x02,
           :SEHOP_ENABLE,         0x04,
       ]
-      if WindowsVersion >= 8
+      if WINDOWS_VERSION >= 8
         buffer += [
             # Define mandatory ASLR options.  Mandatory ASLR forcibly rebases images that are not dynamic base compatible by
             # acting as though there were an image base collision at load time.
@@ -74,7 +74,7 @@ module WinFFI
             :EXTENSION_POINT_DISABLE_ALWAYS_OFF, (0x00000002 << 32),
             :EXTENSION_POINT_DISABLE_RESERVED,   (0x00000003 << 32),
         ]
-        if WindowsVersion >= 8.1
+        if WINDOWS_VERSION >= 8.1
           buffer += [
               # Define dynamic code options.
               :PROHIBIT_DYNAMIC_CODE_MASK,       (0x00000003 << 36),
@@ -90,7 +90,7 @@ module WinFFI
               :BLOCK_NON_MICROSOFT_BINARIES_ALWAYS_OFF, (0x00000002 << 44),
               :BLOCK_NON_MICROSOFT_BINARIES_RESERVED,   (0x00000003 << 44),
           ]
-          if WindowsVersion >= 10
+          if WINDOWS_VERSION >= 10
             buffer += [
 
                 # Define Font Disable Policy.  When enabled, this option will block loading Non System Fonts.

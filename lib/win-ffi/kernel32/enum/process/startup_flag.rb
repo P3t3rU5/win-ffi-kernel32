@@ -19,7 +19,7 @@ module WinFFI
         :PREVENTPINNING,   0x00002000,
     ]
 
-    if WindowsVersion >= :vista
+    if WINDOWS_VERSION >= :vista
       buffer += [:UNTRUSTEDSOURCE, 0x00008000]
     end
 

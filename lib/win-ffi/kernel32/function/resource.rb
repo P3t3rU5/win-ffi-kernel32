@@ -96,7 +96,7 @@ module WinFFI
     #  _In_      DWORD cbData )
     encoded_function 'UpdateResource', [:handle, :pointer, :pointer, :word, :pointer, :dword], :bool
 
-    if WindowsVersion >= :vista
+    if WINDOWS_VERSION >= :vista
 
       #BOOL WINAPI EnumResourceLanguagesEx(
       #  _In_  HMODULE hModule,

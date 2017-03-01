@@ -12,7 +12,7 @@ require 'win-ffi/kernel32/enum/communication/purge_flag'
 
 module WinFFI
   module Kernel32
-    if WindowsVersion >= :xp
+    if WINDOWS_VERSION >= :xp
       # https://msdn.microsoft.com/en-us/library/windows/desktop/aa363143(v=vs.85).aspx
       # BOOL WINAPI BuildCommDCB(_In_  LPCTSTR lpDef, _Out_ LPDCB   lpDCB)
       encoded_function 'BuildCommDCB', [:string, DCB.ptr(:out)], :bool

@@ -58,7 +58,7 @@ module WinFFI
         :ITWODIGITYEARMAX,      0x00000030
     ]
 
-    if WindowsVersion >= :vista
+    if WINDOWS_VERSION >= :vista
       buffer += [
           :SSHORTESTDAYNAME1,   0x00000031,
           :SSHORTESTDAYNAME2,   0x00000032,
@@ -69,7 +69,7 @@ module WinFFI
           :SSHORTESTDAYNAME7,   0x00000037,
       ]
 
-      if WindowsVersion >= 7
+      if WINDOWS_VERSION >= 7
         buffer += [
             :RETURN_GENITIVE_NAMES, 0x10000000,
 

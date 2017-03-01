@@ -1,7 +1,7 @@
 require 'win-ffi/kernel32'
 
 module WinFFI
-  if WindowsVersion >= :xp
+  if WINDOWS_VERSION >= :xp
     module Kernel32
       # https://msdn.microsoft.com/en-us/library/windows/desktop/ms686331(v=vs.85).aspx
       class STARTUPINFO < FFIAdditions::Struct

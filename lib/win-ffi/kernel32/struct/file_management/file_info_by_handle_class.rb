@@ -21,7 +21,7 @@ module WinFFI
         :FullDirectoryRestartInfo,
     ]
 
-    if WindowsVersion >= 8
+    if WINDOWS_VERSION >= 8
       buffer += [
           :StorageInfo,
           :AlignmentInfo,

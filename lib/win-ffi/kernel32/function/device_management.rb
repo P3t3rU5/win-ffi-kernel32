@@ -1,7 +1,7 @@
 require 'win-ffi/kernel32/struct/synchronization/overlapped'
 
 module WinFFI
-  if WindowsVersion >= :xp
+  if WINDOWS_VERSION >= :xp
     module Kernel32
       # BOOL WINAPI DeviceIoControl(
       #   _In_        HANDLE       hDevice,

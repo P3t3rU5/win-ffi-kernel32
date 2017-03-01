@@ -1,7 +1,7 @@
 require 'win-ffi/kernel32'
 
 module WinFFI
-  if (WindowsVersion == 7 && WindowsVersion.sp >= 1) || WindowsVersion >= 8
+  if (WINDOWS_VERSION == 7 && WINDOWS_VERSION.sp >= 1) || WINDOWS_VERSION >= 8
     module Kernel32
 
       class USTI_STRUCT < FFIAdditions::Struct

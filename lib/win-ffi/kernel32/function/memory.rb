@@ -3,7 +3,7 @@ require 'win-ffi/kernel32'
 # TODO STANDARD_RIGHTS_REQUIRED 0x000F0000
 
 module WinFFI
-  if WindowsVersion >= :xp
+  if WINDOWS_VERSION >= :xp
 
     require 'win-ffi/kernel32/enum/memory/global_memory_flag'
     require 'win-ffi/kernel32/enum/memory/local_flag'
@@ -393,7 +393,7 @@ module WinFFI
 
       end
 
-      if (WindowsVersion.sp == 3 && WindowsVersion == :xp) || (WindowsVersion.sp == 1 && WindowsVersion == :vista) || WindowsVersion >= 7
+      if (WINDOWS_VERSION.sp == 3 && WINDOWS_VERSION == :xp) || (WINDOWS_VERSION.sp == 1 && WINDOWS_VERSION == :vista) || WINDOWS_VERSION >= 7
 
         # https://msdn.microsoft.com/en-us/library/windows/desktop/bb736297(v=vs.85).aspx
         # BOOL WINAPI GetProcessDEPPolicy(
@@ -410,7 +410,7 @@ module WinFFI
         # BOOL WINAPI SetProcessDEPPolicy( _In_  DWORD dwFlags )
         attach_function 'SetProcessDEPPolicy', [ProcessDEP], :bool
 
-        if (WindowsVersion.sp == 1 && WindowsVersion == :vista) || WindowsVersion >= 7
+        if (WINDOWS_VERSION.sp == 1 && WINDOWS_VERSION == :vista) || WINDOWS_VERSION >= 7
 
           # https://msdn.microsoft.com/en-us/library/windows/desktop/bb870882(v=vs.85).aspx
           # BOOLEAN CALLBACK SecureMemoryCacheCallback(
@@ -430,7 +430,7 @@ module WinFFI
           # BOOL WINAPI RemoveSecureMemoryCacheCallback( _In_  PSECURE_MEMORY_CACHE_CALLBACK pfnCallBack )
           attach_function 'RemoveSecureMemoryCacheCallback', [SecureMemoryCacheCallback], :bool
 
-          if WindowsVersion >= 8
+          if WINDOWS_VERSION >= 8
 
             # define MEHC_PATROL_SCRUBBER_PRESENT  0x1
             MEHC_PATROL_SCRUBBER_PRESENT = 0x1
@@ -483,7 +483,7 @@ module WinFFI
             # BOOL WINAPI UnregisterBadMemoryNotification( _In_  PVOID RegistrationHandle )
             attach_function 'UnregisterBadMemoryNotification', [:pointer], :bool
 
-            if WindowsVersion >= 8.1
+            if WINDOWS_VERSION >= 8.1
 
               # https://msdn.microsoft.com/en-us/library/windows/desktop/dn781432(v=vs.85).aspx
               # DWORD WINAPI DiscardVirtualMemory(
@@ -504,7 +504,7 @@ module WinFFI
               #   _In_ SIZE_T Size)
               attach_function 'ReclaimVirtualMemory', [:pointer, :size_t], :dword
 
-              if WindowsVersion >= 10
+              if WINDOWS_VERSION >= 10
 
                 # PVOID WINAPI CreateEnclave(
                 #   _In_      HANDLE  hProcess,

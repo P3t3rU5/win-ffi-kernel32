@@ -118,7 +118,7 @@ module WinFFI
     #   _Inout_ LPDWORD nSize)
     attach_function 'DnsHostnameToComputerNameExW', [:string, :string, :pointer], :bool
 
-    if WindowsVersion >= :xp
+    if WINDOWS_VERSION >= :xp
 
       # https://msdn.microsoft.com/en-us/library/windows/desktop/ms724405(v=vs.85).aspx
       # UINT WINAPI GetSystemWow64Directory(
@@ -130,7 +130,7 @@ module WinFFI
       # void WINAPI GetNativeSystemInfo( _Out_  LPSYSTEM_INFO lpSystemInfo )
       attach_function 'GetNativeSystemInfo', [SYSTEM_INFO.ptr(:out)], :void
 
-      if WindowsVersion.sp >= 1 || WindowsVersion >= :vista
+      if WINDOWS_VERSION.sp >= 1 || WINDOWS_VERSION >= :vista
         # https://msdn.microsoft.com/en-us/library/windows/desktop/ms724325(v=vs.85).aspx
         # DWORD WINAPI GetFirmwareEnvironmentVariable(
         #   _In_   LPCTSTR lpName,
@@ -170,7 +170,7 @@ module WinFFI
       #   _In_   DWORD BufferSize )
       attach_function 'GetSystemFirmwareTable', [:dword, :dword, :pointer, :dword], :uint
 
-      if WindowsVersion >= :vista
+      if WINDOWS_VERSION >= :vista
 
         # https://msdn.microsoft.com/en-us/library/windows/desktop/ms724358%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
         # BOOL WINAPI GetProductInfo(
@@ -181,7 +181,7 @@ module WinFFI
         #   _Out_  PDWORD pdwReturnedProductType )
         attach_function 'GetProductInfo', [:dword, :dword, :dword, :dword, :pointer], :bool
 
-        if WindowsVersion >= 8
+        if WINDOWS_VERSION >= 8
 
           # https://msdn.microsoft.com/en-us/library/windows/desktop/jj204593%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
           # BOOL WINBASEAPI GetFirmwareEnvironmentVariableEx(
@@ -210,11 +210,11 @@ module WinFFI
           encoded_function 'SetFirmwareEnvironmentVariableEx', [:string, :string, :pointer, :dword, VariableAttribute],
                            :bool
 
-          if WindowsVersion >= 8.1
+          if WINDOWS_VERSION >= 8.1
             # https://msdn.microsoft.com/en-us/library/windows/desktop/dn482415(v=vs.85).aspx
             # BOOL WINAPI  CeipIsOptedIn(void)
 
-            if WindowsVersion >= 10
+            if WINDOWS_VERSION >= 10
               # https://msdn.microsoft.com/en-us/library/windows/desktop/dn904185(v=vs.85).aspx
               # WINAPI GetIntegratedDisplaySize(_Out_ double *sizeInInches)
               # attach_function 'GetIntegratedDisplaySize', [:double], :hresult

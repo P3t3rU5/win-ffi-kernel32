@@ -2,7 +2,7 @@ require 'win-ffi/kernel32/enum/tool_help/tool_help_crate_snapshot_flag'
 require 'win-ffi/kernel32/struct/tool_help/heap_entry_32'
 
 module WinFFI
-  if WindowsVersion >= :xp
+  if WINDOWS_VERSION >= :xp
     module Kernel32
       # https://msdn.microsoft.com/en-us/library/windows/desktop/ms682489(v=vs.85).aspx
       # HANDLE WINAPI CreateToolhelp32Snapshot(_In_ DWORD dwFlags, _In_ DWORD th32ProcessID)

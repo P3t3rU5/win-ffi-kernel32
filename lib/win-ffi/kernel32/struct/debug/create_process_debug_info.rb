@@ -1,7 +1,7 @@
 require 'win-ffi/kernel32'
 
 module WinFFI
-  if WindowsVersion >= :xp
+  if WINDOWS_VERSION >= :xp
     module Kernel32
       # https://msdn.microsoft.com/en-us/library/windows/desktop/ms679286?f=255&MSPPError=-2147217396
       class CREATE_PROCESS_DEBUG_INFO < FFIAdditions::Struct

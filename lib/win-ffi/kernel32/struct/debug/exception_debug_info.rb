@@ -1,7 +1,7 @@
 require 'win-ffi/kernel32/struct/exception_handling/exception_record'
 
 module WinFFI
-  if WindowsVersion >= :xp
+  if WINDOWS_VERSION >= :xp
     module Kernel32
       class EXCEPTION_DEBUG_INFO < FFIAdditions::Struct
         layout ExceptionRecord: EXCEPTION_RECORD,

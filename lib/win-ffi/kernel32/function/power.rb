@@ -4,7 +4,7 @@ require 'win-ffi/kernel32/struct/power/system_power_status'
 
 module WinFFI
   module Kernel32
-    if WindowsVersion >= :xp
+    if WINDOWS_VERSION >= :xp
       # https://msdn.microsoft.com/en-us/library/windows/desktop/aa372690(v=vs.85).aspx
       # BOOL WINAPI GetDevicePowerState(_In_  HANDLE hDevice, _Out_ BOOL   *pfOn)
       attach_function 'GetDevicePowerState', [:handle, :bool], :bool
@@ -17,7 +17,7 @@ module WinFFI
       # BOOL WINAPI IsSystemResumeAutomatic(void)
       attach_function 'IsSystemResumeAutomatic', [], :bool
 
-      if WindowsVersion >= 7
+      if WINDOWS_VERSION >= 7
         # https://msdn.microsoft.com/en-us/library/windows/desktop/dd405532(v=vs.85).aspx
         # BOOL PowerClearRequest(_In_ HANDLE PowerRequest, _In_ POWER_REQUEST_TYPE RequestType)
         attach_function 'PowerClearRequest', [:handle, PowerRequestType], :bool

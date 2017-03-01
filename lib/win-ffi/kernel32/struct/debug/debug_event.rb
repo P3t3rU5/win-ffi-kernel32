@@ -1,7 +1,7 @@
 require 'win-ffi/kernel32'
 
 module WinFFI
-  if WindowsVersion >= :xp
+  if WINDOWS_VERSION >= :xp
     require 'win-ffi/kernel32/enum/debug/debug_event_code'
 
     require 'win-ffi/kernel32/struct/debug/exception_debug_info'

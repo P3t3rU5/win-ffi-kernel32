@@ -9,7 +9,7 @@ module WinFFI
         :MOUSE_WHEELED, 0x0004,
     ]
 
-    buffer += [:MOUSE_HWHEELED, 0x0008] if WindowsVersion >= :vista
+    buffer += [:MOUSE_HWHEELED, 0x0008] if WINDOWS_VERSION >= :vista
 
     EventFlag = enum :event_flag, buffer
   end

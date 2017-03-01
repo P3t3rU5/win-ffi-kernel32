@@ -344,7 +344,7 @@ module WinFFI
     # BOOL SetThreadLocale(_In_ LCID Locale)
     attach_function 'SetThreadLocale', [:lcid], :bool
 
-    if WindowsVersion >= :xp
+    if WINDOWS_VERSION >= :xp
       # https://msdn.microsoft.com/en-us/library/windows/desktop/dd317817(v=vs.85).aspx
       # BOOL CALLBACK EnumGeoInfoProc(_In_ GEOID GeoId)
       EnumGeoInfoProc = callback 'EnumGeoInfoProc', [:geoid], :bool
@@ -373,7 +373,7 @@ module WinFFI
       # BOOL SetUserGeoID(_In_ GEOID GeoId)
       attach_function 'SetUserGeoID', [:geoid], :bool
 
-      if WindowsVersion >= :vista
+      if WINDOWS_VERSION >= :vista
         # https://msdn.microsoft.com/en-us/library/windows/desktop/dd317808(v=vs.85).aspx
         # BOOL CALLBACK EnumCalendarInfoProcExEx(
         #   _In_ LPWSTR lpCalendarInfoString,
@@ -733,7 +733,7 @@ module WinFFI
         #   _In_ int     cchTestScripts)
         attach_function 'VerifyScripts', [VerifyScriptsFlag, :string, :int, :string, :int], :bool
 
-        if WindowsVersion >= 7
+        if WINDOWS_VERSION >= 7
           # https://msdn.microsoft.com/en-us/library/windows/desktop/dd318061(v=vs.85).aspx
           # int FindStringOrdinal(
           #   _In_ DWORD   dwFindStringOrdinalFlags,
@@ -762,7 +762,7 @@ module WinFFI
           #   _Out_opt_ PULONG pcchBufferOut)
           # attach_function 'LoadStringByReference', [:dword, :string, :string, :string, :ulong, :string, :pointer], :bool
 
-          if WindowsVersion >= 8
+          if WINDOWS_VERSION >= 8
             # DWORD IsValidNLSVersion(
             #   _In_     NLS_FUNCTION       function,
             #   _In_opt_ LPCWSTR            lpLocaleName,

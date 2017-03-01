@@ -20,7 +20,7 @@ module WinFFI
         :SET_LIMITED_INFORMATION,    (0x2000)
     ]
 
-    buffer += if WindowsVersion >= :vista
+    buffer += if WINDOWS_VERSION >= :vista
       [:ALL_ACCESS, 0x001FFFFF]
     else
       [:ALL_ACCESS, 0x001F0FFF]

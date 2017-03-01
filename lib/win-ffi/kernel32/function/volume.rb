@@ -99,7 +99,7 @@ module WinFFI
     #  _In_  LPCTSTR lpszVolumeName )
     encoded_function 'SetVolumeMountPoint', [:string, :string], :bool
 
-    if WindowsVersion >= :vista
+    if WINDOWS_VERSION >= :vista
       #BOOL WINAPI GetVolumeInformationByHandleW(
       #  _In_       HANDLE hFile,
       #  _Out_opt_  LPWSTR lpVolumeNameBuffer,

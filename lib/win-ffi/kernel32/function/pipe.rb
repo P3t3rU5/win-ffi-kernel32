@@ -100,7 +100,7 @@ module WinFFI
     # BOOL WINAPI WaitNamedPipe(_In_ LPCTSTR lpNamedPipeName, _In_ DWORD   nTimeOut)
     encoded_function 'WaitNamedPipe', [:string, :dword], :bool
 
-    if WindowsVersion >= :vista
+    if WINDOWS_VERSION >= :vista
       # https://msdn.microsoft.com/en-us/library/windows/desktop/aa365437(v=vs.85).aspx
       # BOOL WINAPI GetNamedPipeClientComputerName(
       #   _In_  HANDLE Pipe,

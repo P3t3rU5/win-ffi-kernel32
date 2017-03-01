@@ -3,7 +3,7 @@ require 'win-ffi/kernel32'
 require 'win-ffi/kernel32/macro/thread'
 
 module WinFFI
-  if WindowsVersion >= :vista
+  if WINDOWS_VERSION >= :vista
     module Kernel32
       # Extended process and thread attribute support
       buffer = [
@@ -19,7 +19,7 @@ module WinFFI
           :HANDLE_LIST,      ProcThreadAttributeValue(2,  false, true, false),
           :PROTECTION_LEVEL, ProcThreadAttributeValue(11, false, true, false)
       ]
-      if WindowsVersion >= 7
+      if WINDOWS_VERSION >= 7
         buffer += [
             :GroupAffinity,    3,
             :PreferredNode,    4,
@@ -33,13 +33,13 @@ module WinFFI
             :UMS_THREAD,        ProcThreadAttributeValue(6, true, true, false),
             :MITIGATION_POLICY, ProcThreadAttributeValue(7, false, true, false)
         ]
-        if WindowsVersion >= 8
+        if WINDOWS_VERSION >= 8
           buffer += [
               :SecurityCapabilities, 9,
 
               :SECURITY_CAPABILITIES,  ProcThreadAttributeValue(9, false, true, false)
           ]
-          if WindowsVersion >= 10
+          if WINDOWS_VERSION >= 10
             buffer += [
                 :JobList, 13
 

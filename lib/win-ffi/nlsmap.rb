@@ -2,7 +2,7 @@ require 'win-ffi/core'
 require 'win-ffi/core/lib_base'
 
 module WinFFI
-  if WindowsVersion >= :xp
+  if WINDOWS_VERSION >= :xp
     module Nlsmap
       extend LibBase
 

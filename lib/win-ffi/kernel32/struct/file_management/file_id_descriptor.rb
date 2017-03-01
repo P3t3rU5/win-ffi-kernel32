@@ -15,7 +15,7 @@ module WinFFI
           ObjectId:        GUID,
       ]
 
-      buffer += [ExtendedFileId: FILE_ID_128] if WindowsVersion >= 8
+      buffer += [ExtendedFileId: FILE_ID_128] if WINDOWS_VERSION >= 8
 
       layout buffer
     end

@@ -49,7 +49,7 @@ module WinFFI
 
     end
 
-    if WindowsVersion >= :xp
+    if WINDOWS_VERSION >= :xp
 
       # https://msdn.microsoft.com/en-us/library/windows/desktop/ms681949(v=vs.85).aspx
       # BOOL WINAPI AssignProcessToJobObject(
@@ -261,7 +261,7 @@ module WinFFI
       #   _In_ UINT   uCmdShow)
       attach_function 'WinExec', [:string, :uint], :uint
 
-      if (WindowsVersion == :xp && WindowsVersion.sp >= 1) || WindowsVersion >= :vista
+      if (WINDOWS_VERSION == :xp && WINDOWS_VERSION.sp >= 1) || WINDOWS_VERSION >= :vista
 
         # https://msdn.microsoft.com/en-us/library/windows/desktop/ms682429(v=vs.85).aspx
         # BOOL WINAPI CreateProcessAsUser(
@@ -290,7 +290,7 @@ module WinFFI
         # DWORD WINAPI GetProcessId( _In_  HANDLE Process )
         attach_function 'GetProcessId', [:handle], :ulong
 
-        if (WindowsVersion == :xp && WindowsVersion.sp >= 2) || WindowsVersion >= :vista
+        if (WINDOWS_VERSION == :xp && WINDOWS_VERSION.sp >= 2) || WINDOWS_VERSION >= :vista
 
           # https://msdn.microsoft.com/en-us/library/windows/desktop/ms684139(v=vs.85).aspx
           # BOOL WINAPI IsWow64Process(
@@ -298,7 +298,7 @@ module WinFFI
           #   _Out_  PBOOL Wow64Process )
           attach_function 'IsWow64Process', [:ulong, :pointer], :bool
 
-          if WindowsVersion >= :vista
+          if WINDOWS_VERSION >= :vista
 
             PROCESS_NAME_NATIVE = 0x00000001
 
@@ -346,7 +346,7 @@ module WinFFI
             #   _In_ DWORD  Flags)
             attach_function 'SetProcessWorkingSetSizeEx', [:handle, :size_t, :size_t, QuotaLimits], :bool
 
-            if WindowsVersion >= 7 || (WindowsVersion == :vista && WindowsVersion.sp == 1)
+            if WINDOWS_VERSION >= 7 || (WINDOWS_VERSION == :vista && WINDOWS_VERSION.sp == 1)
 
               # https://msdn.microsoft.com/en-us/library/windows/desktop/bb309062(v=vs.85).aspx
               # BOOL WINAPI QueryProcessAffinityUpdateMode(
@@ -362,7 +362,7 @@ module WinFFI
               #   _In_ DWORD  dwFlags)
               attach_function 'SetProcessAffinityUpdateMode', [:handle, :dword], :bool
 
-              if WindowsVersion >= 7
+              if WINDOWS_VERSION >= 7
 
                 # BOOL SetThreadGroupAffinity(
                 #   _In_            HANDLE          hThread,
@@ -370,7 +370,7 @@ module WinFFI
                 #   _Out_opt_       PGROUP_AFFINITY PreviousGroupAffinity)
                 attach_function 'SetThreadGroupAffinity', [:handle, GROUP_AFFINITY.ptr(:in), GROUP_AFFINITY.ptr], :bool
 
-                if WindowsVersion >= 8
+                if WINDOWS_VERSION >= 8
 
                   # https://msdn.microsoft.com/en-us/library/windows/desktop/hh448381(v=vs.85).aspx
                   # BOOL WINAPI GetProcessInformation(
@@ -403,7 +403,7 @@ module WinFFI
                   #   _In_ SIZE_T                    dwLength)
                   attach_function 'SetProcessMitigationPolicy', [ProcessMitigationPolicy, :pointer, :size_t], :bool
 
-                  if WindowsVersion >= 8.1
+                  if WINDOWS_VERSION >= 8.1
 
                     # https://msdn.microsoft.com/en-us/library/windows/desktop/dn386160(v=vs.85).aspx
                     # BOOL WINAPI IsProcessCritical(
@@ -424,7 +424,7 @@ module WinFFI
                     #   _Out_ PULONG_PTR OldPolicyValue)
                     attach_function 'SetProtectedPolicy', [GUID.ptr(:in), :pointer, :pointer], :bool
 
-                    if WindowsVersion >= 10
+                    if WINDOWS_VERSION >= 10
 
                       # https://msdn.microsoft.com/en-us/library/windows/desktop/mt280121(v=vs.85).aspx
                       # VOID WINAPI FreeMemoryJobObject(_In_ VOID *Buffer)

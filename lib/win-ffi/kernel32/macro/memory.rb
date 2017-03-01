@@ -29,7 +29,7 @@ module WinFFI
       LocalReAlloc(h, 0, :MOVEABLE )
     end
 
-    if WindowsVersion >= 10
+    if WINDOWS_VERSION >= 10
       # FORCEINLINE
       # _Ret_maybenull_ _Post_writable_byte_size_(dwSize)
       # LPVOID

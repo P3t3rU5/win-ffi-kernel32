@@ -9,12 +9,12 @@ module WinFFI
         :ALLOW_DECRYPTED_DESTINATION, 0x00000008,
     ]
 
-    if WindowsVersion >= :vista
+    if WINDOWS_VERSION >= :vista
       buffer += [
           :COPY_SYMLINK, 0x00000800,
           :NO_BUFFERING, 0x00001000,
       ]
-      if WindowsVersion >= 8
+      if WINDOWS_VERSION >= 8
         buffer += [
             :REQUEST_SECURITY_PRIVILEGES, 0x00002000,
             :RESUME_FROM_PAUSE,           0x00004000,

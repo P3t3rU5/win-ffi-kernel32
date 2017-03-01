@@ -1,7 +1,7 @@
 require 'win-ffi/kernel32/struct/process/startup_info'
 
 module WinFFI
-  if WindowsVersion >= :vista
+  if WINDOWS_VERSION >= :vista
     module Kernel32
       class STARTUPINFOEX < FFIAdditions::Struct
         layout StartupInfo:  STARTUPINFO,

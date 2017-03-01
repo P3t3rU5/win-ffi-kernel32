@@ -1,7 +1,7 @@
 require 'win-ffi/kernel32'
 
 module WinFFI
-  if WindowsVersion >= 8
+  if WINDOWS_VERSION >= 8
     module Kernel32
       class WIN32_MEMORY_RANGE_ENTRY < FFIAdditions::Struct
         layout VirtualAddress: :pointer,

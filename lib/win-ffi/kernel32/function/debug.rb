@@ -11,7 +11,7 @@ require 'win-ffi/kernel32/struct/debug/wow64_context'
 module WinFFI
   module Kernel32
 
-    if WindowsVersion >= :xp
+    if WINDOWS_VERSION >= :xp
 
       # https://msdn.microsoft.com/en-us/library/windows/desktop/ms679285(v=vs.85).aspx
       # BOOL WINAPI ContinueDebugEvent(
@@ -102,7 +102,7 @@ module WinFFI
       #   _Out_ SIZE_T  *lpNumberOfBytesWritten)
       attach_function 'WriteProcessMemory', [:handle, :pointer, :pointer, :size_t, :size_t], :bool
 
-      if WindowsVersion >= :vista || WindowsVersion == :xp && WindowsVersion.sp == 1
+      if WINDOWS_VERSION >= :vista || WINDOWS_VERSION == :xp && WINDOWS_VERSION.sp == 1
 
         # https://msdn.microsoft.com/en-us/library/windows/desktop/ms679280(v=vs.85).aspx
         # BOOL WINAPI CheckRemoteDebuggerPresent(
@@ -110,7 +110,7 @@ module WinFFI
         #   _Inout_ PBOOL  pbDebuggerPresent)
         attach_function 'CheckRemoteDebuggerPresent', [:handle, :pointer], :bool
 
-        if WindowsVersion >= :vista
+        if WINDOWS_VERSION >= :vista
 
           # https://msdn.microsoft.com/en-us/library/windows/desktop/ms681665(v=vs.85).aspx
           # BOOL WINAPI Wow64GetThreadContext(
@@ -124,7 +124,7 @@ module WinFFI
           #   _In_ const WOW64_CONTEXT *lpContext)
           attach_function 'Wow64SetThreadContext', [:handle, WOW64_CONTEXT.ptr(:in)], :bool
 
-          if WindowsVersion >= 7
+          if WINDOWS_VERSION >= 7
 
             # https://msdn.microsoft.com/en-us/library/windows/desktop/dd709484(v=vs.85).aspx
             # BOOL Wow64GetThreadSelectorEntry(
@@ -133,7 +133,7 @@ module WinFFI
             #   _Out_ PWOW64_LDT_ENTRY lpSelectorEntry)
             attach_function 'Wow64GetThreadSelectorEntry', [:handle, :dword, WOW64_LDT_ENTRY.ptr(:out)], :bool
 
-            if WindowsVersion >= 8 || WindowsVersion == 7 && WindowsVersion.sp == 1
+            if WINDOWS_VERSION >= 8 || WINDOWS_VERSION == 7 && WINDOWS_VERSION.sp == 1
 
               # https://msdn.microsoft.com/en-us/library/windows/desktop/hh134234%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
               # BOOL WINAPI CopyContext(
@@ -142,7 +142,7 @@ module WinFFI
               #   _In_    PCONTEXT Source)
               attach_function 'CopyContext', [CONTEXT.ptr, :dword, CONTEXT.ptr(:in)], :bool
 
-              if WindowsVersion >= 10
+              if WINDOWS_VERSION >= 10
 
                 # https://msdn.microsoft.com/en-us/library/windows/desktop/mt171594(v=vs.85).aspx
                 # BOOL WINAPI WaitForDebugEventEx(

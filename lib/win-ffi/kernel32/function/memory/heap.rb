@@ -6,7 +6,7 @@ require 'win-ffi/kernel32/enum/memory/heap/heap_information_class'
 require 'win-ffi/kernel32/struct/memory/heap/heap_summary'
 
 module WinFFI
-  if WindowsVersion >= :xp
+  if WINDOWS_VERSION >= :xp
     module Kernel32
       # Heap
       # https://msdn.microsoft.com/en-us/library/windows/desktop/aa366569(v=vs.85).aspx

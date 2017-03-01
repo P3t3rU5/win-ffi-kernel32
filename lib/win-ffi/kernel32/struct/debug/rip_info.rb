@@ -1,7 +1,7 @@
 require 'win-ffi/kernel32'
 
 module WinFFI
-  if WindowsVersion >= :xp
+  if WINDOWS_VERSION >= :xp
     require 'win-ffi/core/enum/error/set_last_error_ex_code'
 
     module Kernel32

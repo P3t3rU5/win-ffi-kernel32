@@ -1,7 +1,7 @@
 require 'win-ffi/kernel32/struct/query/package_info_reference'
 
 module WinFFI
-  if WindowsVersion >= 8
+  if WINDOWS_VERSION >= 8
     module Kernel32
       # https://msdn.microsoft.com/en-us/library/windows/desktop/hh446594%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
       # LONG WINAPI ClosePackageInfo(_In_ PACKAGE_INFO_REFERENCE packageInfoReference)
@@ -132,7 +132,7 @@ module WinFFI
       #   _Out_opt_ PWSTR  packagePublisherId)
       attach_function 'PackageNameAndPublisherIdFromFamilyName', [:string, :pointer, :string, :pointer, :string], :long
 
-      if WindowsVersion >= 8.1
+      if WINDOWS_VERSION >= 8.1
         # https://msdn.microsoft.com/en-us/library/windows/desktop/dn270601%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396
         # LONG WINAPI FindPackagesByPackageFamily(
         #   _In_      PCWSTR packageFamilyName,

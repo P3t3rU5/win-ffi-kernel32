@@ -7,7 +7,7 @@ module WinFFI
     # FARPROC WINAPI DelayLoadFailureHook(_In_ LPCSTR pszDllName, _In_ LPCSTR pszProcName)
     attach_function 'DelayLoadFailureHook', [:string, :string], :pointer
 
-    if WindowsVersion >= :xp
+    if WINDOWS_VERSION >= :xp
 
       require 'win-ffi/kernel32/enum/dll/get_module_handle_ex_flag'
       require 'win-ffi/kernel32/enum/dll/load_library_ex_flag'
@@ -69,7 +69,7 @@ module WinFFI
       #   _In_  LPVOID lpParameterBlock )
       attach_function 'LoadModule', [:string, :pointer], :dword
 
-      if (WindowsVersion.sp >= 1 && WindowsVersion == :xp) || WindowsVersion >= :vista
+      if (WINDOWS_VERSION.sp >= 1 && WINDOWS_VERSION == :xp) || WINDOWS_VERSION >= :vista
 
         # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683186(v=vs.85).aspx
         # DWORD WINAPI GetDllDirectory(
@@ -81,7 +81,7 @@ module WinFFI
         # BOOL WINAPI SetDllDirectory( _In_opt_  LPCTSTR lpPathName )
         encoded_function 'SetDllDirectory', [:string], :bool
 
-        if WindowsVersion >= 8
+        if WINDOWS_VERSION >= 8
 
           # https://msdn.microsoft.com/en-us/library/windows/desktop/hh310513(v=vs.85).aspx
           # DLL_DIRECTORY_COOKIE  WINAPI AddDllDirectory( _In_  PCWSTR NewDirectory )

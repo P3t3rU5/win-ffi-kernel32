@@ -83,7 +83,7 @@ module WinFFI
     #   _Out_     LPSYSTEMTIME lpLocalTime )
     attach_function 'SystemTimeToTzSpecificLocalTime', [TIME_ZONE_INFORMATION.ptr, SYSTEMTIME.ptr(:in), SYSTEMTIME.ptr(:out)], :bool
 
-    if WindowsVersion >= :xp
+    if WINDOWS_VERSION >= :xp
 
       # https://msdn.microsoft.com/en-us/library/windows/desktop/ms724214(v=vs.85).aspx
       # LONG WINAPI CompareFileTime(
@@ -133,7 +133,7 @@ module WinFFI
       #   _In_opt_  const FILETIME *lpLastWriteTime )
       attach_function 'SetFileTime', [:handle, FILETIME.ptr, FILETIME.ptr, FILETIME.ptr], :bool
 
-      if (WindowsVersion == :xp && WindowsVersion.sp >= 1) || WindowsVersion >= :vista
+      if (WINDOWS_VERSION == :xp && WINDOWS_VERSION.sp >= 1) || WINDOWS_VERSION >= :vista
 
         # https://msdn.microsoft.com/en-us/library/windows/desktop/ms724400(v=vs.85).aspx
         # BOOL WINAPI GetSystemTimes(
@@ -142,7 +142,7 @@ module WinFFI
         #   _Out_opt_  LPFILETIME lpUserTime )
         attach_function 'GetSystemTimes', [FILETIME.ptr, FILETIME.ptr, FILETIME.ptr], :bool
 
-        if WindowsVersion >= :vista
+        if WINDOWS_VERSION >= :vista
 
           # https://msdn.microsoft.com/en-us/library/windows/desktop/ms724318(v=vs.85).aspx
           # DWORD WINAPI GetDynamicTimeZoneInformation( _Out_  PDYNAMIC_TIME_ZONE_INFORMATION pTimeZoneInformation )
@@ -156,7 +156,7 @@ module WinFFI
           # BOOL WINAPI SetDynamicTimeZoneInformation( _In_  const DYNAMIC_TIME_ZONE_INFORMATION *lpTimeZoneInformation )
           attach_function 'SetDynamicTimeZoneInformation', [DYNAMIC_TIME_ZONE_INFORMATION.ptr(:in)], :bool
 
-          if WindowsVersion >= 7
+          if WINDOWS_VERSION >= 7
 
             # https://msdn.microsoft.com/en-us/library/windows/desktop/bb540851(v=vs.85).aspx
             # BOOL WINAPI GetTimeZoneInformationForYear(
@@ -191,13 +191,13 @@ module WinFFI
             #   _Out_     LPSYSTEMTIME lpUniversalTime )
             attach_function 'TzSpecificLocalTimeToSystemTimeEx', [:pointer, :pointer, :pointer], :bool
 
-            if WindowsVersion >= 8
+            if WINDOWS_VERSION >= 8
 
               # https://msdn.microsoft.com/en-us/library/windows/desktop/hh706895(v=vs.85).aspx
               # VOID WINAPI GetSystemTimePreciseAsFileTime( _Out_  LPFILETIME lpSystemTimeAsFileTime )
               attach_function 'GetSystemTimePreciseAsFileTime', [:pointer], :void
 
-              if WindowsVersion >= 10
+              if WINDOWS_VERSION >= 10
                 # https://msdn.microsoft.com/en-us/library/windows/desktop/dn903659(v=vs.85).aspx
                 # VOID QueryInterruptTime(_Out_ PULONGLONG lpInterruptTime)
                 attach_function 'QueryInterruptTime', [:pointer], :void

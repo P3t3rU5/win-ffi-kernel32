@@ -9,7 +9,7 @@ require 'win-ffi/core/struct/security_attributes'
 
 module WinFFI
   module Kernel32
-    if WindowsVersion >= :xp && Architecture =  'x64-mingw32'
+    if WINDOWS_VERSION >= :xp && Architecture =  'x64-mingw32'
       # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683202(v=vs.85).aspx
       # BOOL WINAPI GetNumaAvailableMemoryNode(
       #   _In_  UCHAR      Node,
@@ -32,7 +32,7 @@ module WinFFI
       #   _Out_ PUCHAR NodeNumber)
       attach_function 'GetNumaProcessorNode', [:uchar, :uchar], :bool
 
-      if WindowsVersion >= :vista
+      if WINDOWS_VERSION >= :vista
 
         # https://msdn.microsoft.com/en-us/library/windows/desktop/aa366529(v=vs.85).aspx
         # BOOL WINAPI AllocateUserPhysicalPagesNuma(
@@ -82,7 +82,7 @@ module WinFFI
         #   _In_      DWORD nndPreferred )
         attach_function 'VirtualAllocExNuma', [:handle, :pointer, :size_t, :dword, :dword, :dword], :pointer
 
-        if WindowsVersion >= 7
+        if WINDOWS_VERSION >= 7
 
           # https://msdn.microsoft.com/en-us/library/windows/desktop/dd405491(v=vs.85).aspx
           # BOOL GetNumaAvailableMemoryNodeEx(

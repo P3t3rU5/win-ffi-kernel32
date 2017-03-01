@@ -7,7 +7,7 @@ require 'win-ffi/kernel32/struct/ums/ums_system_thread_information'
 
 module WinFFI
   module Kernel32
-    if WindowsVersion >= 7 && Architecture == 'x64-mingw32'
+    if WINDOWS_VERSION >= 7 && Architecture == 'x64-mingw32'
       # VOID UmsSchedulerProc(
       #   _In_ UMS_SCHEDULER_REASON Reason,
       #   _In_ ULONG_PTR            ActivationPayload,
@@ -81,7 +81,7 @@ module WinFFI
       # BOOL WINAPI UmsThreadYield(_In_ PVOID SchedulerParam)
       attach_function 'UmsThreadYield', [:pointer], :bool
 
-      if (WindowsVersion == 7 && WindowsVersion.sp >= 1) || WindowsVersion >= 8
+      if (WINDOWS_VERSION == 7 && WINDOWS_VERSION.sp >= 1) || WINDOWS_VERSION >= 8
         # https://msdn.microsoft.com/en-us/library/windows/desktop/ff189221(v=vs.85).aspx
         # BOOL WINAPI GetUmsSystemThreadInformation(
         #   _In_    HANDLE                         ThreadHandle,

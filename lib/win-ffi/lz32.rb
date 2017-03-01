@@ -5,7 +5,7 @@ require 'win-ffi/kernel32/enum/file_management/open_file_flag'
 require 'win-ffi/kernel32/struct/file_management/of_struct'
 
 module WinFFI
-  if WindowsVersion >= :xp
+  if WINDOWS_VERSION >= :xp
     module Lz32
       extend LibBase
 

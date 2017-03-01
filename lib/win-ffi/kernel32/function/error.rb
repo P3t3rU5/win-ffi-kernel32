@@ -4,7 +4,7 @@ require 'win-ffi/kernel32/struct/error/exception_record'
 
 module WinFFI
   module Kernel32
-    if WindowsVersion >= :xp
+    if WINDOWS_VERSION >= :xp
 
       # https://msdn.microsoft.com/en-us/library/windows/desktop/ms679277(v=vs.85).aspx
       # BOOL WINAPI Beep(
@@ -68,13 +68,13 @@ module WinFFI
 
       end
 
-      if WindowsVersion >= :vista
+      if WINDOWS_VERSION >= :vista
 
         # https://msdn.microsoft.com/en-us/library/windows/desktop/ms679355(v=vs.85).aspx
         # UINT WINAPI GetErrorMode(void)
         attach_function 'GetErrorMode', [], :uint
 
-        if WindowsVersion >= 7
+        if WINDOWS_VERSION >= 7
           # https://msdn.microsoft.com/en-us/library/windows/desktop/dd553629(v=vs.85).aspx
           # DWORD GetThreadErrorMode(void)
           attach_function 'GetThreadErrorMode', [], :dword

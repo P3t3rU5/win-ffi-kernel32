@@ -62,7 +62,7 @@ module WinFFI
         :STATUS_ASSERTION_FAILURE,          0xC0000420,
     ]
 
-    if WindowsVersion >= :xp
+    if WINDOWS_VERSION >= :xp
       buffer += [
           :STATUS_SXS_EARLY_DEACTIVATION,   0xC015000F,
           :STATUS_SXS_INVALID_DEACTIVATION, 0xC0150010,

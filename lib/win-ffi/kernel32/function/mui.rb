@@ -30,13 +30,13 @@ module WinFFI
     #   _In_ LANGID  LangID)
     # encoded_function 'LoadMUILibrary', [:string, MuiFlag, :langid], :hinstance
 
-    if WindowsVersion >= :xp
+    if WINDOWS_VERSION >= :xp
 
       # https://msdn.microsoft.com/en-us/library/windows/desktop/dd374053(v=vs.85).aspx
       # LANGID SetThreadUILanguage(_In_ LANGID LangId)
       attach_function 'SetThreadUILanguage', [:langid], :langid
 
-      if WindowsVersion >= :vista
+      if WINDOWS_VERSION >= :vista
         # https://msdn.microsoft.com/en-us/library/windows/desktop/dd318067(v=vs.85).aspx
         # BOOL FreeMUILibrary(_In_ HMODULE hResModule)
         # attach_function 'FreeMUILibrary', [:hmodule], :bool
@@ -104,7 +104,7 @@ module WinFFI
         #   _Out_opt_ PULONG   pulNumLanguages)
         attach_function 'SetThreadPreferredUILanguages', [MuiFlag, :pointer, :pointer], :bool
 
-        if WindowsVersion >= 7
+        if WINDOWS_VERSION >= 7
           # https://msdn.microsoft.com/en-us/library/windows/desktop/dd318115(v=vs.85).aspx
           # BOOL GetProcessPreferredUILanguages(
           #   _In_      DWORD   dwFlags,

@@ -4,7 +4,7 @@ require 'win-ffi/kernel32/struct/console/coord'
 require 'win-ffi/kernel32/struct/console/small_rect'
 
 module WinFFI
-  if WindowsVersion >= :xp
+  if WINDOWS_VERSION >= :xp
     module Kernel32
       # https://msdn.microsoft.com/en-us/library/windows/desktop/ms682098(v=vs.85).aspx
       class CONSOLE_SELECTION_INFO < FFIAdditions::Struct

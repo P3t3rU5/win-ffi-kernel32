@@ -91,7 +91,7 @@ module WinFFI
     #   _In_    PTP_POOL             Pool)
     # attach_function 'TpSetCallbackThreadpool', [:pointer, :pointer], :void
 
-    if WindowsVersion >= :xp
+    if WINDOWS_VERSION >= :xp
 
       # https://msdn.microsoft.com/en-us/library/windows/desktop/ms682660(v=vs.85).aspx
       # VOID CALLBACK FiberProc(_In_ PVOID lpParameter)
@@ -294,7 +294,7 @@ module WinFFI
         attach_function 'SetThreadStackGuarantee', [:pointer], :bool
       end
 
-      if WindowsVersion >= :server2003 || (WindowsVersion == :xp && WindowsVersion.sp >= 1)
+      if WINDOWS_VERSION >= :server2003 || (WINDOWS_VERSION == :xp && WINDOWS_VERSION.sp >= 1)
 
         # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683234(v=vs.85).aspx
         # BOOL WINAPI GetThreadIOPendingFlag(
@@ -302,13 +302,13 @@ module WinFFI
         #   _Inout_  PBOOL lpIOIsPending )
         attach_function 'GetThreadIOPendingFlag', [:ulong, :pointer], :bool
 
-        if WindowsVersion >= :server2003
+        if WINDOWS_VERSION >= :server2003
 
           # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683233(v=vs.85).aspx
           # DWORD WINAPI GetThreadId(_In_ HANDLE Thread)
           attach_function 'GetThreadId', [:handle], :dword
 
-          if WindowsVersion >= :vista
+          if WINDOWS_VERSION >= :vista
 
             # https://msdn.microsoft.com/en-us/library/windows/desktop/ms682018(v=vs.85).aspx
             # VOID CALLBACK CleanupGroupCancelCallback(
@@ -641,7 +641,7 @@ module WinFFI
             # DWORD WINAPI Wow64SuspendThread(_In_ HANDLE hThread)
             attach_function 'Wow64SuspendThread', [:handle], :dword
 
-            if WindowsVersion >= 7
+            if WINDOWS_VERSION >= 7
 
               # https://msdn.microsoft.com/en-us/library/windows/desktop/dd405484(v=vs.85).aspx
               # HANDLE CreateRemoteThreadEx(
@@ -719,7 +719,7 @@ module WinFFI
               #   _In_    TP_CALLBACK_PRIORITY Priority)
               # attach_function 'TpSetCallbackPriority', [:pointer, ThreadPoolCallbackPriority], :void
 
-              if WindowsVersion >= 8
+              if WINDOWS_VERSION >= 8
 
                 # https://msdn.microsoft.com/en-us/library/windows/desktop/hh706789(v=vs.85).aspx
                 # VOID WINAPI GetCurrentThreadStackLimits(
@@ -743,7 +743,7 @@ module WinFFI
                 #   _In_ DWORD                    ThreadInformationSize)
                 attach_function 'SetThreadInformation', [:handle, ThreadInformationClass, :pointer, :dword], :bool
 
-                if WindowsVersion >= 10
+                if WINDOWS_VERSION >= 10
 
                   # https://msdn.microsoft.com/en-us/library/windows/desktop/mt186426(v=vs.85).aspx
                   # BOOL WINAPI GetThreadSelectedCpuSets(

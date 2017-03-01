@@ -1,7 +1,7 @@
 require 'win-ffi/kernel32'
 
 module WinFFI
-  if WindowsVersion >= :vista
+  if WINDOWS_VERSION >= :vista
     # Normalization forms
     # https://msdn.microsoft.com/en-us/library/windows/desktop/dd319094(v=vs.85).aspx
     module Kernel32

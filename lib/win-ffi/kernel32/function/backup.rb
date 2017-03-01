@@ -6,7 +6,7 @@ require 'win-ffi/kernel32/enum/backup/tapemark_type'
 
 module WinFFI
   module Kernel32
-    if WindowsVersion >= :xp
+    if WINDOWS_VERSION >= :xp
       # https://msdn.microsoft.com/en-us/library/windows/desktop/aa362509(v=vs.85).aspx
       # BOOL BackupRead(
       #   _In_  HANDLE  hFile,

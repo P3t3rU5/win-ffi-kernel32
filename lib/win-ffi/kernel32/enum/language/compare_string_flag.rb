@@ -17,7 +17,7 @@ module WinFFI
         :SORT_STRINGSORT,            0x00001000,
     ]
 
-    buffer += [:SORT_DIGITSASNUMBERS,  0x00000008] if WindowsVersion >= 7
+    buffer += [:SORT_DIGITSASNUMBERS,  0x00000008] if WINDOWS_VERSION >= 7
 
     CompareStringFlag = enum :compare_string_flag, buffer
   end

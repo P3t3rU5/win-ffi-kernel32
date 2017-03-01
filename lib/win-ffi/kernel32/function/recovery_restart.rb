@@ -2,7 +2,7 @@ require 'win-ffi/kernel32'
 
 module WinFFI
   module Kernel32
-    if WindowsVersion >= :vista
+    if WINDOWS_VERSION >= :vista
       # https://msdn.microsoft.com/en-us/library/windows/desktop/aa373202(v=vs.85).aspx
       # DWORD WINAPI ApplicationRecoveryCallback(PVOID pvParameter)
       ApplicationRecoveryCallback = callback 'ApplicationRecoveryCallback', [:pointer], :dword

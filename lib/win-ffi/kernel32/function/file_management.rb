@@ -1,7 +1,7 @@
 require 'win-ffi/kernel32'
 
 module WinFFI
-  if WindowsVersion >= :xp
+  if WINDOWS_VERSION >= :xp
     require 'win-ffi/core/struct/large_integer'
     require 'win-ffi/core/struct/security_attributes'
 
@@ -412,7 +412,7 @@ module WinFFI
       attach_function 'WriteFileGather',
                       [:handle, FILE_SEGMENT_ELEMENT.ptr(:in), :dword, :pointer, OVERLAPPED.ptr], :bool
 
-      if WindowsVersion >= :vista
+      if WINDOWS_VERSION >= :vista
         # https://msdn.microsoft.com/en-us/library/windows/desktop/aa363792(v=vs.85).aspx
         # BOOL WINAPI CancelIoEx(_In_ HANDLE hFile, _In_opt_ LPOVERLAPPED lpOverlapped)
         attach_function 'CancelIoEx', [:handle, OVERLAPPED.ptr(:in)], :bool
@@ -692,12 +692,12 @@ module WinFFI
         attach_function 'Wow64RevertWow64FsRedirection', [:pointer], :bool
 
 
-        if WindowsVersion >= 7
+        if WINDOWS_VERSION >= 7
           # https://msdn.microsoft.com/en-us/library/windows/desktop/dd266735(v=vs.85).aspx
           # BOOL WINAPI SetSearchPathMode(_In_ DWORD Flags)
           attach_function 'SetSearchPathMode', [BaseSearchPath], :bool
 
-          if WindowsVersion >= 8
+          if WINDOWS_VERSION >= 8
             # https://msdn.microsoft.com/en-us/library/windows/desktop/hh449404(v=vs.85).aspx
             # HRESULT WINAPI CopyFile2(
             #   _In_     PCWSTR                        pwszExistingFileName,

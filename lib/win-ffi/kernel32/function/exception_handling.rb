@@ -2,7 +2,7 @@ require 'win-ffi/kernel32'
 
 module WinFFI
   module Kernel32
-    if WindowsVersion >= :xp
+    if WINDOWS_VERSION >= :xp
       # https://msdn.microsoft.com/en-us/library/windows/desktop/ms681419(v=vs.85).aspx
       # LONG CALLBACK VectoredHandler(_In_ PEXCEPTION_POINTERS ExceptionInfo)
       VectoredHandler = callback 'VectoredHandler', [], :long
@@ -13,7 +13,7 @@ module WinFFI
       #   _In_ PVECTORED_EXCEPTION_HANDLER VectoredHandler)
       attach_function 'AddVectoredExceptionHandler', [:ulong, VectoredHandler], :pointer
 
-      if WindowsVersion >= :vista
+      if WINDOWS_VERSION >= :vista
         # https://msdn.microsoft.com/en-us/library/windows/desktop/ms679273(v=vs.85).aspx
         # PVOID WINAPI AddVectoredContinueHandler(
         #   _In_ ULONG                       FirstHandler,

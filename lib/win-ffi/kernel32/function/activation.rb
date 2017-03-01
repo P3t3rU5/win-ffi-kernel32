@@ -8,7 +8,7 @@ require 'win-ffi/kernel32/struct/activation/actctx_section_keyed_data'
 
 module WinFFI
   module Kernel32
-    if WindowsVersion >= :xp
+    if WINDOWS_VERSION >= :xp
       # https://msdn.microsoft.com/en-us/library/windows/desktop/aa374151(v=vs.85).aspx
       # BOOL ActivateActCtx(_In_   HANDLE hActCtx, _Out_  ULONG_PTR *lpCookie)
       attach_function 'ActivateActCtx', [:hwnd, :pointer], :bool
@@ -72,7 +72,7 @@ module WinFFI
       # BOOL ZombifyActCtx(_In_ HANDLE hActCtx)
       attach_function 'ZombifyActCtx', [:handle], :bool
 
-      if WindowsVersion >= :vista
+      if WINDOWS_VERSION >= :vista
         # https://msdn.microsoft.com/en-us/library/windows/desktop/aa375700(v=vs.85).aspx
         # BOOL QueryActCtxSettingsW(
         #   _In_opt_  DWORD  dwFlags,

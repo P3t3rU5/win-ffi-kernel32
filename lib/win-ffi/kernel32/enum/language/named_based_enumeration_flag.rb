@@ -1,7 +1,7 @@
 require 'win-ffi/kernel32'
 
 module WinFFI
-  if WindowsVersion >= :vista
+  if WINDOWS_VERSION >= :vista
     # Named based enumeration flags
     module Kernel32
       buffer = [
@@ -12,7 +12,7 @@ module WinFFI
           :REPLACEMENT,     0x00000008,
       ]
 
-      if WindowsVersion >= 7
+      if WINDOWS_VERSION >= 7
         buffer += [
             :NEUTRALDATA,  0x00000010,
             :SPECIFICDATA, 0x00000020,

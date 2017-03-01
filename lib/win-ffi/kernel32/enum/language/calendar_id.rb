@@ -21,7 +21,7 @@ module WinFFI
 
     ]
 
-    buffer += [:UMALQURA, 23] if WindowsVersion >= :vista
+    buffer += [:UMALQURA, 23] if WINDOWS_VERSION >= :vista
 
     # Calendar Enumeration Value.
     ENUM_ALL_CALENDARS = 0xffffffff
