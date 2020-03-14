@@ -1,7 +1,3 @@
-require 'win-ffi/kernel32'
-
-# require 'section_all_access'
-
 module WinFFI
   module Kernel32
     FileMap = enum :file_map, [

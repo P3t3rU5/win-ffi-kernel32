@@ -1,5 +1,3 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   module Kernel32
 
@@ -41,11 +39,11 @@ module WinFFI
       #   _In_     DWORD flProtect
       # )
       # {
-      #     return VirtualAllocFromApp (lpAddress, dwSize, flAllocationType, flProtect);
+      #     return VirtualAllocFromApp (lpAddress, dwSize, flAllocationType, flProtect)
       # }
 
       # def self.VirtualAlloc(lpAddress, dwSize, flAllocationType, flProtect)
-      #   VirtualAllocFromApp (lpAddress, dwSize, flAllocationType, flProtect);
+      #   VirtualAllocFromApp (lpAddress, dwSize, flAllocationType, flProtect)
       # end
 
       # FORCEINLINE
@@ -59,7 +57,7 @@ module WinFFI
       #   _Out_ PDWORD lpflOldProtect
       # )
       # {
-      #     return VirtualProtectFromApp (lpAddress, dwSize, flNewProtect, lpflOldProtect);
+      #     return VirtualProtectFromApp (lpAddress, dwSize, flNewProtect, lpflOldProtect)
       # }
       # def self.VirtualProtect(lpAddress, dwSize, flNewProtect, lpflOldProtect)
       #   VirtualProtectFromApp(lpAddress, dwSize, flNewProtect, lpflOldProtect)
@@ -75,7 +73,7 @@ module WinFFI
       #   _In_ LPCWSTR lpName
       # )
       # {
-      #     return OpenFileMappingFromApp (dwDesiredAccess, bInheritHandle, lpName);
+      #     return OpenFileMappingFromApp (dwDesiredAccess, bInheritHandle, lpName)
       # }
       # def self.OpenFileMappingW(dwDesiredAccess, bInheritHandle, lpName)
       #   OpenFileMappingFromApp(dwDesiredAccess, bInheritHandle, lpName)
@@ -93,7 +91,7 @@ module WinFFI
 #
 # #if defined(_M_AMD64)
 #
-#       __stosb((PBYTE )((DWORD64)vptr), 0, cnt);
+#       __stosb((PBYTE )((DWORD64)vptr), 0, cnt)
 #
 # #else
 #
@@ -101,7 +99,7 @@ module WinFFI
 #
 # #if !defined(_M_CEE) && (defined(_M_ARM) || defined(_M_ARM64))
 #
-# __iso_volatile_store8(vptr, 0);
+# __iso_volatile_store8(vptr, 0)
 #
 # #else
 #
@@ -135,7 +133,7 @@ module WinFFI
       #                                      lpFileMappingAttributes,
       #                                      flProtect,
       #                                      (((ULONG64) dwMaximumSizeHigh) << 32) | dwMaximumSizeLow,
-      #                                      lpName);
+      #                                      lpName)
       # }
       #
       # FORCEINLINE
@@ -153,7 +151,7 @@ module WinFFI
       #     return MapViewOfFileFromApp (hFileMappingObject,
       #                                  dwDesiredAccess,
       #                                  (((ULONG64) dwFileOffsetHigh) << 32) | dwFileOffsetLow,
-      #                                  dwNumberOfBytesToMap);
+      #                                  dwNumberOfBytesToMap)
       # }
 
     end

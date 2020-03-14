@@ -1,52 +1,75 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   module Kernel32
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms649056(v=vs.85).aspx
-    # ATOM WINAPI AddAtom(_In_ LPCTSTR lpString)
+    # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-addatoma
+    # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-addatomw
+    # @param [String] lpString
+    # @return [ATOM]
+    def self.AddAtom(lpString) end
     encoded_function 'AddAtom', [:string], :atom
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms649057(v=vs.85).aspx
-    # ATOM WINAPI DeleteAtom(_In_ ATOM nAtom)
+    # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-deleteatom
+    # @param [ATOM] nAtom
+    # @return [ATOM]
+    def self.DeleteAtom(nAtom) end
     attach_function 'DeleteAtom', [:atom], :atom
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms649058(v=vs.85).aspx
-    # ATOM WINAPI FindAtom(_In_ LPCTSTR lpString)
+    # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-findatoma
+    # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-findatomw
+    # @param [String] lpString
+    # @return [ATOM]
+    def self.FindAtom(lpString) end
     encoded_function 'FindAtom', [:string], :atom
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms649059(v=vs.85).aspx
-    # UINT WINAPI GetAtomName(
-    #   _In_  ATOM   nAtom,
-    #   _Out_ LPTSTR lpBuffer,
-    #   _In_  int    nSize)
+    # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-getatomnamea
+    # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-getatomnamew
+    # @param [ATOM] nAtom
+    # @param [String] lpBuffer
+    # @param [Integer] nSize
+    # @return [Integer]
+    def self.GetAtomName(nAtom, lpBuffer, nSize) end
     encoded_function 'GetAtomName', [:atom, :string, :int], :uint
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms649060(v=vs.85).aspx
-    # ATOM WINAPI GlobalAddAtom(_In_ LPCTSTR lpString)
+    # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-globaladdatoma
+    # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-globaladdatomw
+    # @param [String] lpString
+    # @return [ATOM]
+    def self.GlobalAddAtom(lpString) end
     encoded_function 'GlobalAddAtom', [:string], :atom
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/dn764994(v=vs.85).aspx
-    # ATOM WINAPI GlobalAddAtomEx(_In_opt_ LPCTSTR lpString, _In_     DWORD   Flags)
+    # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-globaladdatomexa
+    # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-globaladdatomexw
+    # @param [String] lpString
+    # @param [Integer] flags
+    # @return [ATOM]
+    def self.GlobalAddAtomEx(lpString, flags) end
     encoded_function 'GlobalAddAtomEx', [:string, :dword], :atom
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms649061(v=vs.85).aspx
-    # ATOM WINAPI GlobalDeleteAtom(_In_ ATOM nAtom)
+    # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-globaldeleteatom
+    # @param [ATOM] nAtom
+    # @return [ATOM]
+    def self.GlobalDeleteAtom(nAtom) end
     attach_function 'GlobalDeleteAtom', [:atom], :atom
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms649062(v=vs.85).aspx
-    # ATOM WINAPI GlobalFindAtom(_In_ LPCTSTR lpString)
+    # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-globalfindatoma
+    # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-globalfindatomw
+    # @param [String] lpString
+    # @return [ATOM]
+    def self.GlobalFindAtom(lpString) end
     encoded_function 'GlobalFindAtom', [:string], :atom
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms649063(v=vs.85).aspx
-    # UINT WINAPI GlobalGetAtomName(
-    #   _In_  ATOM   nAtom,
-    #   _Out_ LPTSTR lpBuffer,
-    #   _In_  int    nSize)
+    # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-globalgetatomnamea
+    # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-globalgetatomnamew
+    # @param [ATOM] nAtom
+    # @param [String] lpBuffer
+    # @param [Integer] nSize
+    # @return [Integer]
+    def self.GlobalGetAtomName(nAtom, lpBuffer, nSize) end
     encoded_function 'GlobalGetAtomName', [:atom, :string, :int], :uint
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms649064(v=vs.85).aspx
-    # BOOL WINAPI InitAtomTable(_In_ DWORD nSize)
+    # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-initatomtable
+    # @param [Integer] nSize
+    # @return [true, false]
+    def self.InitAtomTable(nSize) end
     attach_function 'InitAtomTable', [:dword], :bool
-
   end
 end

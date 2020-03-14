@@ -1,8 +1,6 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
-  module Kernel32
-    if WINDOWS_VERSION >= 7
+  if WINDOWS_VERSION >= 7
+    module Kernel32
       COPYFILE2_MESSAGE_TYPE = enum :copyfile2_message_type, [
           :NONE, 0,
           :CHUNK_STARTED,

@@ -1,22 +1,29 @@
-require 'win-ffi/kernel32'
+require_relative '../../enum/time/month'
+require_relative '../../enum/time/day_of_week'
 
-require 'win-ffi/kernel32/enum/time/month'
-require 'win-ffi/kernel32/enum/time/day_of_week'
-
-require 'win-ffi/kernel32/struct/time/file_time'
+require_relative 'file_time'
 
 module WinFFI
   module Kernel32
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms724950(v=vs.85).aspx
+    # https://docs.microsoft.com/en-us/windows/win32/api/minwinbase/ns-minwinbase-systemtime
     class SYSTEMTIME < FFIAdditions::Struct
-      layout wYear:          :word,
-             wMonth:         :word,
-             wDayOfWeek:     :word,
-             wDay:           :word,
-             wHour:          :word,
-             wMinute:        :word,
-             wSecond:        :word,
-             wMilliseconds:  :word
+      attr_accessor :wYear,
+                    :wMonth,
+                    :wDayOfWeek,
+                    :wDay,
+                    :wHour,
+                    :wMinute,
+                    :wSecond,
+                    :wMilliseconds
+
+      layout wYear:         :word,
+             wMonth:        :word,
+             wDayOfWeek:    :word,
+             wDay:          :word,
+             wHour:         :word,
+             wMinute:       :word,
+             wSecond:       :word,
+             wMilliseconds: :word
 
       def current_local_time
         Kernel32.GetLocalTime(self)
@@ -29,7 +36,7 @@ module WinFFI
       end
 
       def month
-        Month[self[:wMonth]]
+        Month[self.wMonth]
       end
 
       def day_of_the_week
@@ -37,7 +44,7 @@ module WinFFI
       end
 
       def to_s
-        '%s, %04d-%02d-%02d %02d:%02d:%02d:%04d' % [day_of_the_week, wYear, wMonth, wDay, wHour, wMinute, wSecond, wMilliseconds]
+        '%s, %04d-%02d-%02d %02d:%02d:%02d:%04d' % [wDayOfWeek, wYear, wMonth, wDay, wHour, wMinute, wSecond, wMilliseconds]
       end
 
       def to_file_time

@@ -1,11 +1,11 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   module Kernel32
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/dd405505(v=vs.85).aspx
     # Structure to represent a system wide processor number. It contains a
     # group number and relative processor number within the group.
+    # https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-processor_number
     class PROCESSOR_NUMBER < FFIAdditions::Struct
+      attr_accessor :Group, :Number, :Reserved
+
       layout Group:    :word,
              Number:   :byte,
              Reserved: :byte

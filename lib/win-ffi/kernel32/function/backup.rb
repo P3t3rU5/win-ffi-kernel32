@@ -1,107 +1,128 @@
-require 'win-ffi/kernel32/enum/backup/tape_erase_type'
-require 'win-ffi/kernel32/enum/backup/tape_position_flag'
-require 'win-ffi/kernel32/enum/backup/set_tape_parameter'
-require 'win-ffi/kernel32/enum/backup/set_tape_position'
-require 'win-ffi/kernel32/enum/backup/tapemark_type'
-
 module WinFFI
-  module Kernel32
-    if WINDOWS_VERSION >= :xp
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa362509(v=vs.85).aspx
-      # BOOL BackupRead(
-      #   _In_  HANDLE  hFile,
-      #   _Out_ LPBYTE  lpBuffer,
-      #   _In_  DWORD   nNumberOfBytesToRead,
-      #   _Out_ LPDWORD lpNumberOfBytesRead,
-      #   _In_  BOOL    bAbort,
-      #   _In_  BOOL    bProcessSecurity,
-      #   _Out_ LPVOID  *lpContext)
+  if WINDOWS_VERSION >= :xp
+    require_relative '../enum/backup/tape_erase_type'
+    require_relative '../enum/backup/tape_position_flag'
+    require_relative '../enum/backup/set_tape_parameter'
+    require_relative '../enum/backup/set_tape_position'
+    require_relative '../enum/backup/tapemark_type'
+
+    module Kernel32
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-backupread
+      # @param [Integer] hFile
+      # @param [FFI::Pointer] lpBuffer
+      # @param [Integer] nNumberOfBytesToRead
+      # @param [FFI::Pointer] lpNumberOfBytesRead
+      # @param [true, false] bAbort
+      # @param [true, false] bProcessSecurity
+      # @param [FFI::Pointer] lpContext
+      # @return [true, false]
+      def self.BackupRead(
+          hFile, lpBuffer, nNumberOfBytesToRead, lpNumberOfBytesRead, bAbort, bProcessSecurity, lpContext) end
       attach_function 'BackupRead', [:handle, :pointer, :dword, :pointer, :bool, :bool, :pointer], :bool
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa362510(v=vs.85).aspx
-      # BOOL BackupSeek(
-      #   _In_  HANDLE  hFile,
-      #   _In_  DWORD   dwLowBytesToSeek,
-      #   _In_  DWORD   dwHighBytesToSeek,
-      #   _Out_ LPDWORD lpdwLowByteSeeked,
-      #   _Out_ LPDWORD lpdwHighByteSeeked,
-      #   _In_  LPVOID  *lpContext)
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-BackupSeek
+      # @param [Integer] hFile
+      # @param [Integer] dwLowBytesToSeek
+      # @param [Integer] dwHighBytesToSeek
+      # @param [FFI::Pointer] lpdwLowByteSeeked
+      # @param [FFI::Pointer] lpdwHighByteSeeked
+      # @param [FFI::Pointer] lpContext
+      # @return [Pointer]
+      def self.BackupSeek(hFile, dwLowBytesToSeek, dwHighBytesToSeek, lpdwLowByteSeeked, lpdwHighByteSeeked, lpContext)
+      end
       attach_function 'BackupSeek', [:handle, :dword, :dword, :pointer, :pointer, :pointer], :bool
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa362511(v=vs.85).aspx
-      # BOOL BackupWrite(
-      #   _In_  HANDLE  hFile,
-      #   _In_  LPBYTE  lpBuffer,
-      #   _In_  DWORD   nNumberOfBytesToWrite,
-      #   _Out_ LPDWORD lpNumberOfBytesWritten,
-      #   _In_  BOOL    bAbort,
-      #   _In_  BOOL    bProcessSecurity,
-      #   _Out_ LPVOID  *lpContext)
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-BackupWrite
+      # @param [Integer] hFile
+      # @param [FFI::Pointer] lpBuffer
+      # @param [Integer] nNumberOfBytesToWrite
+      # @param [FFI::Pointer] lpNumberOfBytesWritten
+      # @param [true, false] bAbort
+      # @param [true, false] bProcessSecurity
+      # @param [FFI::Pointer] lpContext
+      # @return [true, false]
+      def self.BackupWrite(hFile, lpBuffer, nNumberOfBytesToWrite, lpNumberOfBytesWritten, bAbort, bProcessSecurity,
+          lpContext) end
       attach_function 'BackupWrite', [:handle, :pointer, :dword, :pointer, :bool, :bool, :pointer], :bool
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa362519(v=vs.85).aspx
-      # DWORD CreateTapePartition(
-      #   _In_ HANDLE hDevice,
-      #   _In_ DWORD  dwPartitionMethod,
-      #   _In_ DWORD  dwCount,
-      #   _In_ DWORD  dwSize)
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-CreateTapePartition
+      # @param [Integer] hDevice
+      # @param [Integer] dwPartitionMethod
+      # @param [Integer] dwCount
+      # @param [Integer] dwSize
+      # @return [Integer]
+      def self.CreateTapePartition(hDevice, dwPartitionMethod, dwCount, dwSize) end
       attach_function 'CreateTapePartition', [:handle, :dword, :dword, :dword], :dword
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa362523(v=vs.85).aspx
-      # DWORD EraseTape(_In_ HANDLE hDevice,_In_ DWORD  dwEraseType,_In_ BOOL   bImmediate)
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-EraseTape
+      # @param [Integer] hDevice
+      # @param [Integer] dwEraseType
+      # @param [true, false] bImmediate
+      # @return [Integer]
+      def self.EraseTape(hDevice, dwEraseType, bImmediate) end
       attach_function 'EraseTape', [:handle, TapeEraseType, :bool], :dword
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa362526(v=vs.85).aspx
-      # DWORD GetTapeParameters(
-      #   _In_  HANDLE  hDevice,
-      #   _In_  DWORD   dwOperation,
-      #   _Out_ LPDWORD lpdwSize,
-      #   _Out_ LPVOID  lpTapeInformation)
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-GetTapeParameters
+      # @param [Integer] hDevice
+      # @param [Integer] dwOperation
+      # @param [FFI::Pointer] lpdwSize
+      # @param [FFI::Pointer] lpTapeInformation
+      # @return [Integer]
+      def self.GetTapeParameters(hDevice, dwOperation, lpdwSize, lpTapeInformation) end
       attach_function 'GetTapeParameters', [:handle, :dword, :pointer, :pointer], :dword
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa362528(v=vs.85).aspx
-      # DWORD GetTapePosition(
-      #   _In_  HANDLE  hDevice,
-      #   _In_  DWORD   dwPositionType,
-      #   _Out_ LPDWORD lpdwPartition,
-      #   _Out_ LPDWORD lpdwOffsetLow,
-      #   _Out_ LPDWORD lpdwOffsetHigh)
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-GetTapePosition
+      # @param [Integer] hDevice
+      # @param [Integer] dwPositionType
+      # @param [FFI::Pointer] lpdwPartition
+      # @param [FFI::Pointer] lpdwOffsetLow
+      # @param [FFI::Pointer] lpdwOffsetHigh
+      # @return [Integer]
+      def self.GetTapePosition(hDevice, dwPositionType, lpdwPartition, lpdwOffsetLow, lpdwOffsetHigh) end
       attach_function 'GetTapePosition', [:handle, TapePositionFlag, :pointer, :pointer, :pointer], :dword
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa362530(v=vs.85).aspx
-      # DWORD GetTapeStatus(_In_ HANDLE hDevice)
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-GetTapeStatus
+      # @param [Integer] hDevice
+      # @return [Integer]
+      def self.GetTapeStatus(hDevice) end
       attach_function 'GetTapeStatus', [:handle], :dword
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa362532(v=vs.85).aspx
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-PrepareTape
       # DWORD PrepareTape(_In_ HANDLE hDevice, _In_ DWORD  dwOperation, _In_ BOOL   bImmediate)
+      # @param [Integer] hDevice
+      # @param [Integer] dwOperation
+      # @param [true, false] bImmediate
+      # @return [Integer]
+      def self.PrepareTape(hDevice, dwOperation, bImmediate) end
       attach_function 'PrepareTape', [:handle, :dword, :bool], :dword
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa362534(v=vs.85).aspx
-      # DWORD SetTapeParameters(
-      #   _In_ HANDLE hDevice,
-      #   _In_ DWORD  dwOperation,
-      #   _In_ LPVOID lpTapeInformation)
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-SetTapeParameters
+      # @param [Integer] hDevice
+      # @param [Integer] dwOperation
+      # @param [FFI::Pointer] lpTapeInformation
+      # @return [Integer]
+      def self.SetTapeParameters(hDevice, dwOperation, lpTapeInformation) end
       attach_function 'SetTapeParameters', [:handle, SetTapeParameter, :pointer], :dword
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa362536(v=vs.85).aspx
-      # DWORD SetTapePosition(
-      #   _In_ HANDLE hDevice,
-      #   _In_ DWORD  dwPositionMethod,
-      #   _In_ DWORD  dwPartition,
-      #   _In_ DWORD  dwOffsetLow,
-      #   _In_ DWORD  dwOffsetHigh,
-      #   _In_ BOOL   bImmediate)
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-SetTapePosition
+      # @param [Integer] hDevice
+      # @param [Integer] dwPositionMethod
+      # @param [Integer] dwPartition
+      # @param [Integer] dwOffsetLow
+      # @param [Integer] dwOffsetHigh
+      # @param [true, false] bImmediate
+      # @return [Integer]
+      def self.SetTapePosition(hDevice, dwPositionMethod, dwPartition, dwOffsetLow, dwOffsetHigh, bImmediate) end
       attach_function 'SetTapePosition', [:handle, SetTapePosition, :dword, :dword, :dword, :bool], :dword
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa362668(v=vs.85).aspx
-      # DWORD WriteTapemark(
-      #   _In_ HANDLE hDevice,
-      #   _In_ DWORD  dwTapemarkType,
-      #   _In_ DWORD  dwTapemarkCount,
-      #   _In_ BOOL   bImmediate)
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-WriteTapemark
+      # @param [Integer] hDevice
+      # @param [Integer] dwTapemarkType
+      # @param [Integer] dwTapemarkCount
+      # @param [true, false] bImmediate
+      # @return [Integer]
+      def self.WriteTapemark(hDevice, dwTapemarkType, dwTapemarkCount, bImmediate) end
       attach_function 'WriteTapemark', [:handle, TapemarkType, :dword, :bool], :dword
-
-
     end
   end
 end

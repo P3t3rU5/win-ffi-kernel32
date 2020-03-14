@@ -1,5 +1,3 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   if WINDOWS_VERSION >= :xp
     module Kernel32

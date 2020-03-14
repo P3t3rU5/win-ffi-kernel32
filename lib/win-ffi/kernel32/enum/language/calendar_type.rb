@@ -1,5 +1,3 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   module Kernel32
     buffer = [
@@ -54,6 +52,7 @@ module WinFFI
         :SABBREVMONTHNAME11,    0x0000002c,
         :SABBREVMONTHNAME12,    0x0000002d,
         :SABBREVMONTHNAME13,    0x0000002e,
+
         :SYEARMONTH,            0x0000002f,
         :ITWODIGITYEARMAX,      0x00000030
     ]
@@ -73,9 +72,14 @@ module WinFFI
         buffer += [
             :RETURN_GENITIVE_NAMES, 0x10000000,
 
-            :SMONTHDAY,             0x00000038,
-            :SABBREVERASTRING,      0x00000039,
+            :SMONTHDAY, 0x00000038,
+            :SABBREVERASTRING, 0x00000039,
         ]
+        if WINDOWS_VERSION >= 8
+          buffer += [:SRELATIVELONGDATE, 0x0000003a]
+          # NTDDI_VERSION >= NTDDI_WIN10_RS2
+          buffer += [:SENGLISHERANAME, 0x0000003b, :SENGLISHABBREVERANAME, 0x0000003c] if WINDOWS_VERSION >= 10
+        end
       end
     end
 

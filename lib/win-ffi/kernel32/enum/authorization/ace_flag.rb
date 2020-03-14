@@ -1,5 +1,3 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   module Kernel32
     # The following are the inherit flags that go into the AceFlags field of an Ace header.

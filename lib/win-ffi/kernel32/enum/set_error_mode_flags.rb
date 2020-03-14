@@ -1,8 +1,5 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
-  SetErrorModeFlags = enum :set_error_mode_flags,
-  [
+  SetErrorModeFlags = enum :set_error_mode_flags, [
     :FAILCRITICALERRORS,     0x0001,
     :NOALIGNMENTFAULTEXCEPT, 0x0004,
     :NOGPFAULTERRORBOX,      0x0002,

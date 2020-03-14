@@ -1,10 +1,10 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   if WINDOWS_VERSION >= :xp
     module Kernel32
-
+      # https://docs.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-comstat
       class COMSTAT < FFIAdditions::Struct
+        attr_accessor :flag, :cbInQue, :cbOutQue
+
         layout flag:     :dword,
                cbInQue:  :dword,
                cbOutQue: :dword

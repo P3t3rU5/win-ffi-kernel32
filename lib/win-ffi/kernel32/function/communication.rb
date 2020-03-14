@@ -1,136 +1,184 @@
-require 'win-ffi/kernel32/struct/communication/dcb'
-require 'win-ffi/kernel32/struct/communication/comstat'
-require 'win-ffi/kernel32/struct/communication/commtimeouts'
-require 'win-ffi/kernel32/struct/communication/commconfig'
-require 'win-ffi/kernel32/struct/communication/commprop'
-
-require 'win-ffi/kernel32/struct/synchronization/overlapped'
-
-require 'win-ffi/kernel32/enum/communication/event'
-require 'win-ffi/kernel32/enum/communication/purge_flag'
-
-
 module WinFFI
-  module Kernel32
-    if WINDOWS_VERSION >= :xp
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa363143(v=vs.85).aspx
-      # BOOL WINAPI BuildCommDCB(_In_  LPCTSTR lpDef, _Out_ LPDCB   lpDCB)
+  if WINDOWS_VERSION >= :xp
+    require_relative '../struct/communication/dcb'
+    require_relative '../struct/communication/comstat'
+    require_relative '../struct/communication/commtimeouts'
+    require_relative '../struct/communication/commconfig'
+    require_relative '../struct/communication/commprop'
+
+    require_relative '../struct/synchronization/overlapped'
+
+    require_relative '../enum/communication/event'
+    require_relative '../enum/communication/purge_flag'
+
+    module Kernel32
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-buildcommdcba
+      # @param [String] lpDef
+      # @param [FFI::Pointer] lpDCB
+      # @return [true, false]
+      def self.BuildCommDCB(lpDef, lpDCB) end
       encoded_function 'BuildCommDCB', [:string, DCB.ptr(:out)], :bool
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa363145(v=vs.85).aspx
-      # BOOL WINAPI BuildCommDCBAndTimeouts(
-      #   _In_  LPCTSTR        lpDef,
-      #   _Out_ LPDCB          lpDCB,
-      #   _Out_ LPCOMMTIMEOUTS lpCommTimeouts)
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-BuildCommDCBAndTimeouts
+      # @param [String] lpDef
+      # @param [FFI::Pointer] lpDCB
+      # @param [FFI::Pointer] lpCommTimeouts
+      # @return [true, false]
+      def self.BuildCommDCBAndTimeouts(lpDef, lpDCB, lpCommTimeouts) end
       encoded_function 'BuildCommDCBAndTimeouts', [:string, DCB.ptr(:out), COMMTIMEOUTS.ptr(:out)], :bool
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa363179(v=vs.85).aspx
-      # BOOL WINAPI ClearCommBreak(_In_ HANDLE hFile)
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-ClearCommBreak
+      # @param [Integer] hFile
+      # @return [true, false]
+      def self.ClearCommBreak(hFile) end
       attach_function 'ClearCommBreak', [:handle], :bool
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa363180(v=vs.85).aspx
-      # BOOL WINAPI ClearCommError(
-      #   _In_      HANDLE    hFile,
-      #   _Out_opt_ LPDWORD   lpErrors,
-      #   _Out_opt_ LPCOMSTAT lpStat)
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-ClearCommError
+      # @param [Integer] hFile
+      # @param [FFI::Pointer] lpErrors
+      # @param [FFI::Pointer] lpStat
+      # @return [true, false]
+      def self.ClearCommError(hFile, lpErrors, lpStat) end
       attach_function 'ClearCommError', [:handle, :pointer, COMSTAT.ptr(:out)], :bool
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa363187(v=vs.85).aspx
-      # BOOL WINAPI CommConfigDialog(
-      #   _In_    LPCTSTR      lpszName,
-      #   _In_    HWND         hWnd,
-      #   _Inout_ LPCOMMCONFIG lpCC)
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-CommConfigDialog
+      # @param [String] lpszName
+      # @param [Integer] hWnd
+      # @param [FFI::Pointer] lpCC
+      # @return [true, false]
+      def self.CommConfigDialog(lpszName, hWnd, lpCC) end
       encoded_function 'CommConfigDialog', [:string, :hwnd, COMMCONFIG.ptr], :bool
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa363254(v=vs.85).aspx
-      # BOOL WINAPI EscapeCommFunction(_In_ HANDLE hFile, _In_ DWORD  dwFunc)
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-EscapeCommFunction
+      # @param [Integer] hFile
+      # @param [Integer] dwFunc
+      # @return [true, false]
+      def self.EscapeCommFunction(hFile, dwFunc) end
       attach_function 'EscapeCommFunction', [:handle, :dword], :bool
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa363256(v=vs.85).aspx
-      # BOOL WINAPI GetCommConfig(
-      #   _In_    HANDLE       hCommDev,
-      #   _Out_   LPCOMMCONFIG lpCC,
-      #   _Inout_ LPDWORD      lpdwSize)
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-GetCommConfig
+      # @param [Integer] hCommDev
+      # @param [FFI::Pointer] lpCC
+      # @param [FFI::Pointer] lpdwSize
+      # @return [true, false]
+      def self.GetCommConfig(hCommDev, lpCC, lpdwSize) end
       attach_function 'GetCommConfig', [:handle, COMMCONFIG.ptr(:out), :pointer], :bool
 
-      # BOOL WINAPI GetCommMask(_In_  HANDLE  hFile, _Out_ LPDWORD lpEvtMask)
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-GetCommMask
+      # @param [Integer] hFile
+      # @param [FFI::Pointer] lpEvtMask
+      # @return [true, false]
+      def self.GetCommMask(hFile, lpEvtMask) end
       attach_function 'GetCommMask', [:handle, :pointer], :bool
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa363258(v=vs.85).aspx
-      # BOOL WINAPI GetCommModemStatus(_In_  HANDLE  hFile, _Out_ LPDWORD lpModemStat)
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-GetCommModemStatus
+      # @param [Integer] hFile
+      # @param [FFI::Pointer] lpModemStat
+      # @return [true, false]
+      def self.GetCommModemStatus(hFile, lpModemStat) end
       attach_function 'GetCommModemStatus', [:handle, :pointer], :bool
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa363259(v=vs.85).aspx
-      # BOOL WINAPI GetCommProperties(_In_  HANDLE     hFile, _Out_ LPCOMMPROP lpCommProp)
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-GetCommProperties
+      # @param [Integer] hFile
+      # @param [FFI::Pointer] lpCommProp
+      # @return [true, false]
+      def self.GetCommProperties(hFile, lpCommProp) end
       attach_function 'GetCommProperties', [:handle, COMMPROP.ptr(:out)], :bool
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa363260(v=vs.85).aspx
-      # BOOL WINAPI GetCommState(_In_ HANDLE hFile, _Inout_ LPDCB  lpDCB)
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-GetCommState
+      # @param [Integer] hFile
+      # @param [FFI::Pointer] lpDCB
+      # @return [true, false]
+      def self.GetCommState(hFile, lpDCB) end
       attach_function 'GetCommState', [:handle, DCB.ptr], :bool
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa363261(v=vs.85).aspx
-      # BOOL WINAPI GetCommTimeouts(_In_  HANDLE hFile, _Out_ LPCOMMTIMEOUTS lpCommTimeouts)
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-GetCommTimeouts
+      # @param [Integer] hFile
+      # @param [FFI::Pointer] lpCommTimeouts
+      # @return [true, false]
+      def self.GetCommTimeouts(hFile, lpCommTimeouts) end
       attach_function 'GetCommTimeouts', [:handle, COMMTIMEOUTS.ptr(:out)], :bool
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa363262(v=vs.85).aspx
-      # BOOL WINAPI GetDefaultCommConfig(
-      #   _In_    LPCTSTR      lpszName,
-      #   _Out_   LPCOMMCONFIG lpCC,
-      #   _Inout_ LPDWORD      lpdwSize)
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-GetDefaultCommConfig
+      # @param [String] lpszName
+      # @param [FFI::Pointer] lpCC
+      # @param [FFI::Pointer] lpdwSize
+      # @return [true, false]
+      def self.GetDefaultCommConfig(lpszName, lpCC, lpdwSize) end
       encoded_function 'GetDefaultCommConfig', [:string, COMMCONFIG.ptr(:out), :pointer], :bool
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa363428(v=vs.85).aspx
-      # BOOL WINAPI PurgeComm(_In_ HANDLE hFile, _In_ DWORD  dwFlags)
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-PurgeComm
+      # @param [Integer] hFile
+      # @param [Integer] dwFlags
+      # @return [true, false]
+      def self.PurgeComm(hFile, dwFlags) end
       attach_function 'PurgeComm', [:handle, PurgeFlag], :bool
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa363433(v=vs.85).aspx
-      # BOOL WINAPI SetCommBreak(_In_ HANDLE hFile)
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-SetCommBreak
+      # @param [Integer] hFile
+      # @return [true, false]
+      def self.SetCommBreak(hFile) end
       attach_function 'SetCommBreak', [:handle], :bool
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa363434(v=vs.85).aspx
-      # BOOL WINAPI SetCommConfig(
-      #   _In_ HANDLE       hCommDev,
-      #   _In_ LPCOMMCONFIG lpCC,
-      #   _In_ DWORD        dwSize)
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-SetCommConfig
+      # @param [Integer] hCommDev
+      # @param [FFI::Pointer] lpCC
+      # @param [Integer] dwSize
+      # @return [true, false]
+      def self.SetCommConfig(hCommDev, lpCC, dwSize) end
       attach_function 'SetCommConfig', [:handle, COMMCONFIG.ptr(:in), :dword], :bool
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa363435(v=vs.85).aspx
-      # BOOL WINAPI SetCommMask(_In_ HANDLE hFile, _In_ DWORD  dwEvtMask)
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-SetCommMask
+      # @param [Integer] hFile
+      # @param [Integer] dwEvtMask
+      # @return [true, false]
+      def self.SetCommMask(hFile, dwEvtMask) end
       attach_function 'SetCommMask', [:handle, Event], :bool
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa363436(v=vs.85).aspx
-      # BOOL WINAPI SetCommState(_In_ HANDLE hFile, _In_ LPDCB  lpDCB)
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-SetCommState
+      # @param [Integer] hFile
+      # @param [FFI::Pointer] lpDCB
+      # @return [true, false]
+      def self.SetCommState(hFile, lpDCB) end
       attach_function 'SetCommState', [:handle, DCB.ptr(:in)], :bool
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa363437(v=vs.85).aspx
-      # BOOL WINAPI SetCommTimeouts(_In_ HANDLE hFile, _In_ LPCOMMTIMEOUTS lpCommTimeouts)
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-SetCommTimeouts
+      # @param [Integer] hFile
+      # @param [FFI::Pointer] lpCommTimeouts
+      # @return [true, false]
+      def self.SetCommTimeouts(hFile, lpCommTimeouts) end
       attach_function 'SetCommTimeouts', [:handle, COMMTIMEOUTS.ptr(:in)], :bool
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa363438(v=vs.85).aspx
-      # BOOL WINAPI SetDefaultCommConfig(
-      #   _In_ LPCTSTR      lpszName,
-      #   _In_ LPCOMMCONFIG lpCC,
-      #   _In_ DWORD        dwSize)
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-SetDefaultCommConfig
+      # @param [String] lpszName
+      # @param [FFI::Pointer] lpCC
+      # @param [Integer] dwSize
+      # @return [true, false]
+      def self.SetDefaultCommConfig(lpszName, lpCC, dwSize) end
       encoded_function 'SetDefaultCommConfig', [:string, COMMCONFIG.ptr(:in), :dword], :bool
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa363439(v=vs.85).aspx
-      # BOOL WINAPI SetupComm(
-      #   _In_ HANDLE hFile,
-      #   _In_ DWORD  dwInQueue,
-      #   _In_ DWORD  dwOutQueue)
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-SetupComm
+      # @param [Integer] hFile
+      # @param [Integer] dwInQueue
+      # @param [Integer] dwOutQueue
+      # @return [true, false]
+      def self.SetupComm(hFile, dwInQueue, dwOutQueue) end
       attach_function 'SetupComm', [:handle, :dword, :dword], :bool
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa363473(v=vs.85).aspx
-      # BOOL WINAPI TransmitCommChar(_In_ HANDLE hFile, _In_ char   cChar)
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-TransmitCommChar
+      # @param [Integer] hFile
+      # @param [String] cChar
+      # @return [true, false]
+      def self.TransmitCommChar(hFile, cChar) end
       attach_function 'TransmitCommChar', [:handle, :char], :bool
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa363479(v=vs.85).aspx
-      # BOOL WINAPI WaitCommEvent(
-      #   _In_  HANDLE       hFile,
-      #   _Out_ LPDWORD      lpEvtMask,
-      #   _In_  LPOVERLAPPED lpOverlapped)
+      # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-WaitCommEvent
+      # @param [Integer] hFile
+      # @param [FFI::Pointer] lpEvtMask
+      # @param [FFI::Pointer] lpOverlapped
+      # @return [true, false]
+      def self.WaitCommEvent(hFile, lpEvtMask, lpOverlapped) end
       attach_function 'WaitCommEvent', [:handle, :pointer, OVERLAPPED.ptr(:in)], :bool
-
     end
   end
 end

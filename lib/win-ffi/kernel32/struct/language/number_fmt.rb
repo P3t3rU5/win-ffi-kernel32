@@ -1,15 +1,21 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   module Kernel32
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/dd319095(v=vs.85).aspx
+    # https://docs.microsoft.com/en-us/windows/win32/api/winnls/ns-winnls-numberfmta
+    # https://docs.microsoft.com/en-us/windows/win32/api/winnls/ns-winnls-numberfmtw
     class NUMBERFMT < FFIAdditions::Struct
-      layout NumDigits:       :uint,
-             LeadingZero:     :uint,
-             Grouping:        :uint,
+      attr_accessor :NumDigits,
+                    :LeadingZero,
+                    :Grouping,
+                    :lpDecimalSep,
+                    :lpThousandSep,
+                    :NegativeOrder
+
+      layout NumDigits:     :uint,
+             LeadingZero:   :uint,
+             Grouping:      :uint,
              lpDecimalSep:  :string,
              lpThousandSep: :string,
-             NegativeOrder:   :uint
+             NegativeOrder: :uint
     end
   end
 end

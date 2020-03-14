@@ -1,9 +1,8 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   module Kernel32
-    # https://msdn.microsoft.com/en-us/library/bb432179(v=vs.85).aspx
+    # https://docs.microsoft.com/en-us/windows/desktop/DevNotes/addlocalalternatecomputername
     # DWORD AddLocalAlternateComputerName(_In_ LPCTSTR lpDnsFQHostname, _In_ ULONG   ulFlags)
+    def self.AddLocalAlternateComputerName(lpDnsFQHostname, ulFlags); end
     encoded_function 'AddLocalAlternateComputerName', [:string, :ulong], :dword
   end
 end

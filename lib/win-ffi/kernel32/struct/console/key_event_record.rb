@@ -1,20 +1,27 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   module Kernel32
     class KEY_EVENT_RECORD_UNION < FFIAdditions::Union
+      attr_accessor :UnicodeChar, :AsciiChar
+
       layout UnicodeChar: :wchar,
-             AsciiChar:    :char
+             AsciiChar:   :char
     end
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms684166(v=vs.85).aspx
+    # https://docs.microsoft.com/en-us/windows/console/key-event-record-str
     class KEY_EVENT_RECORD < FFIAdditions::Struct
-      layout bKeyDown:               :bool,
-             wRepeatCount:           :word,
-             wVirtualKeyCode:        :word,
-             wVirtualScanCode:       :word,
-             uChar: KEY_EVENT_RECORD_UNION,
-             dwControlKeyState:     :dword
+      attr_accessor :bKeyDown,
+                    :wRepeatCount,
+                    :wVirtualKeyCode,
+                    :wVirtualScanCode,
+                    :uChar,
+                    :dwControlKeyState
+
+      layout bKeyDown:          :bool,
+             wRepeatCount:      :word,
+             wVirtualKeyCode:   :word,
+             wVirtualScanCode:  :word,
+             uChar:             KEY_EVENT_RECORD_UNION,
+             dwControlKeyState: :dword
     end
   end
 end

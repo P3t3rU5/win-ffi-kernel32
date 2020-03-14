@@ -1,17 +1,26 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   if WINDOWS_VERSION >= :xp
 
-    require 'win-ffi/kernel32/struct/time/file_time'
+    require_relative '../time/file_time'
 
     module Kernel32
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/aa364952(v=vs.85).aspx
+      # https://docs.microsoft.com/en-us/windows/win32/api/fileapi/ns-fileapi-by_handle_file_information
       class BY_HANDLE_FILE_INFORMATION < FFIAdditions::Struct
+        attr_accessor :dwFileAttributes,
+                      :ftCreationTime,
+                      :ftLastAccessTime,
+                      :ftLastWriteTime,
+                      :dwVolumeSerialNumber,
+                      :nFileSizeHigh,
+                      :nFileSizeLow,
+                      :nNumberOfLinks,
+                      :nFileIndexHigh,
+                      :nFileIndexLow
+
         layout dwFileAttributes:     :dword,
-               ftCreationTime:     FILETIME,
-               ftLastAccessTime:   FILETIME,
-               ftLastWriteTime:    FILETIME,
+               ftCreationTime:       FILETIME,
+               ftLastAccessTime:     FILETIME,
+               ftLastWriteTime:      FILETIME,
                dwVolumeSerialNumber: :dword,
                nFileSizeHigh:        :dword,
                nFileSizeLow:         :dword,

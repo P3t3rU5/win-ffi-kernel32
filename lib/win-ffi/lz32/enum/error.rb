@@ -1,4 +1,4 @@
-require 'win-ffi/lz32'
+require_relative '../../lz32'
 
 module WinFFI
   module Lz32

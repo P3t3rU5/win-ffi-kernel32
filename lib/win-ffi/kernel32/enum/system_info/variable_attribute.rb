@@ -1,5 +1,3 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   module Kernel32
     # https://msdn.microsoft.com/en-us/library/windows/desktop/jj204594%28v=vs.85%29.aspx?f=255&MSPPError=-2147217396

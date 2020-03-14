@@ -1,385 +1,495 @@
-require 'win-ffi/kernel32/enum/console/console_textmode_flag'
-require 'win-ffi/kernel32/enum/console/console_display_mode'
-require 'win-ffi/kernel32/enum/console/control_event'
-require 'win-ffi/kernel32/enum/file_management/file_share_flag'
-require 'win-ffi/kernel32/enum/generic_flag'
-require 'win-ffi/kernel32/enum/console/standard_handle'
-
-require 'win-ffi/kernel32/struct/console/coord'
-require 'win-ffi/kernel32/struct/console/console_screen_buffer_info'
-require 'win-ffi/kernel32/struct/console/console_cursor_info'
-require 'win-ffi/kernel32/struct/console/console_history_info'
-require 'win-ffi/kernel32/struct/console/console_selection_info'
-require 'win-ffi/kernel32/struct/console/console_font_info'
-require 'win-ffi/kernel32/struct/console/console_font_infoex'
-require 'win-ffi/kernel32/struct/console/console_screen_buffer_infoex'
-require 'win-ffi/kernel32/struct/console/input_record'
-require 'win-ffi/kernel32/struct/console/char_info'
-require 'win-ffi/kernel32/struct/console/small_rect'
 require 'win-ffi/core/struct/security_attributes'
+
+require_relative '../enum/console/textmode_flag'
+require_relative '../enum/console/display_mode'
+require_relative '../enum/console/control_event'
+require_relative '../enum/file_management/file_share_flag'
+require_relative '../enum/generic_flag'
+require_relative '../enum/console/standard_handle'
+
+require_relative '../struct/console/coord'
+require_relative '../struct/console/screen_buffer_info'
+require_relative '../struct/console/cursor_info'
+require_relative '../struct/console/history_info'
+require_relative '../struct/console/selection_info'
+require_relative '../struct/console/font_info'
+require_relative '../struct/console/font_infoex'
+require_relative '../struct/console/screen_buffer_infoex'
+require_relative '../struct/console/input_record'
+require_relative '../struct/console/char_info'
+require_relative '../struct/console/small_rect'
 
 module WinFFI
   module Kernel32
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683242(v=vs.85).aspx
-    # BOOL WINAPI HandlerRoutine(_In_ DWORD dwCtrlType)
+    # https://docs.microsoft.com/en-us/windows/console/handlerroutine
+    # BOOL HandlerRoutine(_In_ DWORD dwCtrlType)
     HandlerRoutine = callback 'HandlerRoutine', [ControlEvent], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms681935(v=vs.85).aspx
-    # BOOL WINAPI AddConsoleAlias(_In_ LPCTSTR Source, _In_ LPCTSTR Target, _In_ LPCTSTR ExeName)
-    encoded_function 'AddConsoleAlias', [:string, :string, :string], :bool
+    # https://docs.microsoft.com/en-us/windows/console/addconsolealias
+    # @param [String] source
+    # @param [String] target
+    # @param [String] exeName
+    # @return [true, false]
+    def self.AddConsoleAlias(source, target, exeName) end
+    encoded_function 'AddConsoleAlias', %i[string string string], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms681944(v=vs.85).aspx
-    # BOOL WINAPI AllocConsole(void)
+    # https://docs.microsoft.com/en-us/windows/console/AllocConsole
+    # @return [true, false]
+    def self.AllocConsole; end
     attach_function 'AllocConsole', [], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms682122(v=vs.85).aspx
-    # HANDLE WINAPI CreateConsoleScreenBuffer(
-    #   _In_             DWORD               dwDesiredAccess,
-    #   _In_             DWORD               dwShareMode,
-    #   _In_opt_   const SECURITY_ATTRIBUTES *lpSecurityAttributes,
-    #   _In_             DWORD               dwFlags,
-    #   _Reserved_       LPVOID              lpScreenBufferData)
+    # https://docs.microsoft.com/en-us/windows/console/CreateConsoleScreenBuffer
+    # @param [Integer] dwDesiredAccess
+    # @param [Integer] dwShareMode
+    # @param [FFI::Pointer] lpSecurityAttributes
+    # @param [Integer] dwFlags
+    # @param [FFI::Pointer] lpScreenBufferData
+    # @return [Integer]
+    def self.CreateConsoleScreenBuffer(dwDesiredAccess, dwShareMode, lpSecurityAttributes, dwFlags, lpScreenBufferData); end
     attach_function 'CreateConsoleScreenBuffer',
-                    [GenericFlag, FileShareFlag, SECURITY_ATTRIBUTES.ptr(:in), ConsoleTextmodeFlag, :pointer], :handle
+                    [GenericFlag, FileShareFlag, SECURITY_ATTRIBUTES.ptr(:in), ConsoleTextmodeFlag, :pointer],
+                    :handle
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms682662(v=vs.85).aspx
-    # BOOL WINAPI FillConsoleOutputAttribute(
-    #   _In_  HANDLE  hConsoleOutput,
-    #   _In_  WORD    wAttribute,
-    #   _In_  DWORD   nLength,
-    #   _In_  COORD   dwWriteCoord,
-    #   _Out_ LPDWORD lpNumberOfAttrsWritten)
+    # https://docs.microsoft.com/en-us/windows/console/FillConsoleOutputAttribute
+    # @param [Integer] hConsoleOutput
+    # @param [Integer] wAttribute
+    # @param [Integer] nLength
+    # @param [FFI::Pointer] dwWriteCoord
+    # @param [FFI::Pointer] lpNumberOfAttrsWritten
+    # @return [true, false]
+    def self.FillConsoleOutputAttribute(hConsoleOutput, wAttribute, nLength, dwWriteCoord, lpNumberOfAttrsWritten) end
     attach_function 'FillConsoleOutputAttribute', [:handle, :word, :dword, COORD.ptr(:in), :pointer], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms682663(v=vs.85).aspx
-    # BOOL WINAPI FillConsoleOutputCharacter(
-    #   _In_  HANDLE  hConsoleOutput,
-    #   _In_  TCHAR   cCharacter,
-    #   _In_  DWORD   nLength,
-    #   _In_  COORD   dwWriteCoord,
-    #   _Out_ LPDWORD lpNumberOfCharsWritten)
+    # https://docs.microsoft.com/en-us/windows/console/FillConsoleOutputCharacter
+    # @param [Integer] hConsoleOutput
+    # @param [String] cCharacter
+    # @param [Integer] nLength
+    # @param [FFI::Pointer] dwWriteCoord
+    # @param [FFI::Pointer] lpNumberOfCharsWritten
+    # @return [true, false]
+    def self.FillConsoleOutputCharacter(hConsoleOutput, cCharacter, nLength, dwWriteCoord, lpNumberOfCharsWritten) end
     encoded_function 'FillConsoleOutputCharacter', [:handle, :tchar, :dword, COORD.ptr(:in), :pointer], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683147(v=vs.85).aspx
-    # BOOL WINAPI FlushConsoleInputBuffer(_In_ HANDLE hConsoleInput)
+    # https://docs.microsoft.com/en-us/windows/console/FlushConsoleInputBuffer
+    # @param [Integer] hConsoleInput
+    # @return [true, false]
+    def self.FlushConsoleInputBuffer(hConsoleInput) end
     attach_function 'FlushConsoleInputBuffer', [:handle], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683150(v=vs.85).aspx
-    # BOOL WINAPI FreeConsole(void)
+    # https://docs.microsoft.com/en-us/windows/console/FreeConsole
+    # @return [true, false]
+    def self.FreeConsole; end
     attach_function 'FreeConsole', [], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683155(v=vs.85).aspx
-    # BOOL WINAPI GenerateConsoleCtrlEvent(_In_ DWORD dwCtrlEvent, _In_ DWORD dwProcessGroupId)
+    # https://docs.microsoft.com/en-us/windows/console/GenerateConsoleCtrlEvent
+    # @param [Integer] dwCtrlEvent
+    # @param [Integer] dwProcessGroupId
+    # @return [true, false]
+    def self.GenerateConsoleCtrlEvent(dwCtrlEvent, dwProcessGroupId) end
     attach_function 'GenerateConsoleCtrlEvent', [ControlEvent, :dword], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683157(v=vs.85).aspx
-    # DWORD WINAPI GetConsoleAlias(
-    #   _In_  LPTSTR lpSource,
-    #   _Out_ LPTSTR lpTargetBuffer,
-    #   _In_  DWORD  TargetBufferLength,
-    #   _In_  LPTSTR lpExeName)
-    encoded_function 'GetConsoleAlias', [:string, :string, :dword, :string], :dword
+    # https://docs.microsoft.com/en-us/windows/console/GetConsoleAlias
+    # @param [String] lpSource
+    # @param [String] lpTargetBuffer
+    # @param [Integer] targetBufferLength
+    # @param [String] lpExeName
+    # @return [Integer]
+    def self.GetConsoleAlias(lpSource, lpTargetBuffer, targetBufferLength, lpExeName) end
+    encoded_function 'GetConsoleAlias', %i[string string dword string], :dword
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683158(v=vs.85).aspx
-    # DWORD WINAPI GetConsoleAliases(
-    #   _Out_ LPTSTR lpAliasBuffer,
-    #   _In_  DWORD  AliasBufferLength,
-    #   _In_  LPTSTR lpExeName)
-    encoded_function 'GetConsoleAliases', [:string, :dword, :string], :dword
+    # https://docs.microsoft.com/en-us/windows/console/GetConsoleAliases
+    # @param [String] lpAliasBuffer
+    # @param [Integer] aliasBufferLength
+    # @param [String] lpExeName
+    # @return [Integer]
+    def self.GetConsoleAliases(lpAliasBuffer, aliasBufferLength, lpExeName) end
+    encoded_function 'GetConsoleAliases', %i[string dword string], :dword
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683159(v=vs.85).aspx
-    # DWORD WINAPI GetConsoleAliasesLength(_In_ LPTSTR lpExeName)
+    # https://docs.microsoft.com/en-us/windows/console/GetConsoleAliasesLength
+    # @param [String] lpExeName
+    # @return [Integer]
+    def self.GetConsoleAliasesLength(lpExeName) end
     encoded_function 'GetConsoleAliasesLength', [:string], :dword
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683160(v=vs.85).aspx
-    # DWORD WINAPI GetConsoleAliasExes(_Out_ LPTSTR lpExeNameBuffer, _In_  DWORD  ExeNameBufferLength)
-    encoded_function 'GetConsoleAliasExes', [:string, :dword], :dword
+    # https://docs.microsoft.com/en-us/windows/console/GetConsoleAliasExes
+    # @param [String] lpExeNameBuffer
+    # @param [Integer] exeNameBufferLength
+    # @return [Integer]
+    def self.GetConsoleAliasExes(lpExeNameBuffer, exeNameBufferLength) end
+    encoded_function 'GetConsoleAliasExes', %i[string dword], :dword
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683161(v=vs.85).aspx
-    # DWORD WINAPI GetConsoleAliasExesLength(void)
+    # https://docs.microsoft.com/en-us/windows/console/GetConsoleAliasExesLength
+    # @return [Integer]
+    def self.GetConsoleAliasExesLength; end
     encoded_function 'GetConsoleAliasExesLength', [], :dword
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683162(v=vs.85).aspx
-    # UINT WINAPI GetConsoleCP(void)
+    # https://docs.microsoft.com/en-us/windows/console/GetConsoleCP
+    # @return [Integer]
+    def self.GetConsoleCP; end
     attach_function 'GetConsoleCP', [], :uint
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683163(v=vs.85).aspx
-    # BOOL WINAPI GetConsoleCursorInfo(
-    #   _In_  HANDLE               hConsoleOutput,
-    #   _Out_ PCONSOLE_CURSOR_INFO lpConsoleCursorInfo)
+    # https://docs.microsoft.com/en-us/windows/console/GetConsoleCursorInfo
+    # @param [Integer] hConsoleOutput
+    # @param [FFI::Pointer] lpConsoleCursorInfo
+    # @return [true, false]
+    def self.GetConsoleCursorInfo(hConsoleOutput, lpConsoleCursorInfo) end
     attach_function 'GetConsoleCursorInfo', [:handle, CONSOLE_CURSOR_INFO.ptr(:out)], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683167(v=vs.85).aspx
-    # BOOL WINAPI GetConsoleMode(_In_  HANDLE  hConsoleHandle, _Out_ LPDWORD lpMode)
-    attach_function 'GetConsoleMode', [:handle, :pointer], :bool
+    # https://docs.microsoft.com/en-us/windows/console/GetConsoleMode
+    # @param [Integer] hConsoleHandle
+    # @param [FFI::Pointer] lpMode
+    # @return [true, false]
+    def self.GetConsoleMode(hConsoleHandle, lpMode) end
+    attach_function 'GetConsoleMode', %i[handle pointer], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683169(v=vs.85).aspx
-    # UINT WINAPI GetConsoleOutputCP(void)
+    # https://docs.microsoft.com/en-us/windows/console/GetConsoleOutputCP
+    # @return [Integer]
+    def self.GetConsoleOutputCP; end
     attach_function 'GetConsoleOutputCP', [], :uint
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683171(v=vs.85).aspx
-    # BOOL WINAPI GetConsoleScreenBufferInfo(
-    #   _In_  HANDLE                      hConsoleOutput,
-    #   _Out_ PCONSOLE_SCREEN_BUFFER_INFO lpConsoleScreenBufferInfo)
+    # https://docs.microsoft.com/en-us/windows/console/GetConsoleScreenBufferInfo
+    # @param [Integer] hConsoleOutput
+    # @param [FFI::Pointer] lpConsoleScreenBufferInfo
+    # @return [true, false]
+    def self.GetConsoleScreenBufferInfo(hConsoleOutput, lpConsoleScreenBufferInfo) end
     attach_function 'GetConsoleScreenBufferInfo', [:handle, CONSOLE_SCREEN_BUFFER_INFO.ptr(:out)], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683174(v=vs.85).aspx
-    # DWORD WINAPI GetConsoleTitle(_Out_ LPTSTR lpConsoleTitle, _In_  DWORD  nSize)
-    encoded_function 'GetConsoleTitle', [:string, :dword], :dword
+    # https://docs.microsoft.com/en-us/windows/console/GetConsoleTitle
+    # @param [String] lpConsoleTitle
+    # @param [Integer] nSize
+    # @return [Integer]
+    def self.GetConsoleTitle(lpConsoleTitle, nSize) end
+    encoded_function 'GetConsoleTitle', %i[string dword], :dword
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683175(v=vs.85).aspx
-    # HWND WINAPI GetConsoleWindow(void)
+    # https://docs.microsoft.com/en-us/windows/console/GetConsoleWindow
+    # @return [Integer]
+    def self.GetConsoleWindow; end
     attach_function 'GetConsoleWindow', [], :hwnd
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683193(v=vs.85).aspx
-    # COORD WINAPI GetLargestConsoleWindowSize(_In_ HANDLE hConsoleOutput)
+    # https://docs.microsoft.com/en-us/windows/console/GetLargestConsoleWindowSize
+    # @param [Integer] hConsoleOutput
+    # @return [WinFFI::COORD]
+    def self.GetLargestConsoleWindowSize(hConsoleOutput) end
     attach_function 'GetLargestConsoleWindowSize', [:handle], COORD
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683207(v=vs.85).aspx
-    # BOOL WINAPI GetNumberOfConsoleInputEvents(_In_  HANDLE  hConsoleInput, _Out_ LPDWORD lpcNumberOfEvents)
-    attach_function 'GetNumberOfConsoleInputEvents', [:handle, :pointer], :bool
+    # https://docs.microsoft.com/en-us/windows/console/GetNumberOfConsoleInputEvents
+    # @param [Integer] hConsoleInput
+    # @param [FFI::Pointer] lpcNumberOfEvents
+    # @return [true, false]
+    def self.GetNumberOfConsoleInputEvents(hConsoleInput, lpcNumberOfEvents) end
+    attach_function 'GetNumberOfConsoleInputEvents', %i[handle pointer], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683208(v=vs.85).aspx
-    # BOOL WINAPI GetNumberOfConsoleMouseButtons(_Out_ LPDWORD lpNumberOfMouseButtons)
+    # https://docs.microsoft.com/en-us/windows/console/GetNumberOfConsoleMouseButtons
+    # @param [FFI::Pointer] lpNumberOfMouseButtons
+    # @return [true, false]
+    def self.GetNumberOfConsoleMouseButtons(lpNumberOfMouseButtons) end
     attach_function 'GetNumberOfConsoleMouseButtons', [:pointer], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683231(v=vs.85).aspx
-    # HANDLE WINAPI GetStdHandle(_In_ DWORD nStdHandle)
+    # https://docs.microsoft.com/en-us/windows/console/GetStdHandle
+    # @param [Integer] nStdHandle
+    # @return [Integer]
+    def self.GetStdHandle(nStdHandle) end
     attach_function 'GetStdHandle', [StandardHandle], :handle
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms684344(v=vs.85).aspx
-    # BOOL WINAPI PeekConsoleInput(
-    #   _In_  HANDLE        hConsoleInput,
-    #   _Out_ PINPUT_RECORD lpBuffer,
-    #   _In_  DWORD         nLength,
-    #   _Out_ LPDWORD       lpNumberOfEventsRead)
+    # https://docs.microsoft.com/en-us/windows/console/PeekConsoleInput
+    # @param [Integer] hConsoleInput
+    # @param [FFI::Pointer] lpBuffer
+    # @param [Integer] nLength
+    # @param [FFI::Pointer] lpNumberOfEventsRead
+    # @return [true, false]
+    def self.PeekConsoleInput(hConsoleInput, lpBuffer, nLength, lpNumberOfEventsRead) end
     encoded_function 'PeekConsoleInput', [:handle, INPUT_RECORD.ptr(:out), :dword, :pointer], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms684958(v=vs.85).aspx
-    # BOOL WINAPI ReadConsole(
-    #   _In_     HANDLE  hConsoleInput,
-    #   _Out_    LPVOID  lpBuffer,
-    #   _In_     DWORD   nNumberOfCharsToRead,
-    #   _Out_    LPDWORD lpNumberOfCharsRead,
-    #   _In_opt_ LPVOID  pInputControl)
-    encoded_function 'ReadConsole', [:handle, :pointer, :dword, :pointer, :pointer], :bool
+    # https://docs.microsoft.com/en-us/windows/console/ReadConsole
+    # @param [Integer] hConsoleInput
+    # @param [FFI::Pointer] lpBuffer
+    # @param [Integer] nNumberOfCharsToRead
+    # @param [FFI::Pointer] lpNumberOfCharsRead
+    # @param [FFI::Pointer] pInputControl
+    # @return [true, false]
+    def self.ReadConsole(hConsoleInput, lpBuffer, nNumberOfCharsToRead, lpNumberOfCharsRead, pInputControl) end
+    encoded_function 'ReadConsole', %i[handle pointer dword pointer pointer], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms684961(v=vs.85).aspx
-    # BOOL WINAPI ReadConsoleInput(
-    #   _In_  HANDLE        hConsoleInput,
-    #   _Out_ PINPUT_RECORD lpBuffer,
-    #   _In_  DWORD         nLength,
-    #   _Out_ LPDWORD       lpNumberOfEventsRead)
+    # https://docs.microsoft.com/en-us/windows/console/ReadConsoleInput
+    # @param [Integer] hConsoleInput
+    # @param [FFI::Pointer] lpBuffer
+    # @param [Integer] nLength
+    # @param [FFI::Pointer] lpNumberOfEventsRead
+    # @return [true, false]
+    def self.ReadConsoleInput(hConsoleInput, lpBuffer, nLength, lpNumberOfEventsRead) end
     encoded_function 'ReadConsoleInput', [:handle, INPUT_RECORD.ptr(:out), :dword, :pointer], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms684965(v=vs.85).aspx
-    # BOOL WINAPI ReadConsoleOutput(
-    #   _In_    HANDLE      hConsoleOutput,
-    #   _Out_   PCHAR_INFO  lpBuffer,
-    #   _In_    COORD       dwBufferSize,
-    #   _In_    COORD       dwBufferCoord,
-    #   _Inout_ PSMALL_RECT lpReadRegion)
+    # https://docs.microsoft.com/en-us/windows/console/ReadConsoleOutput
+    # @param [Integer] hConsoleInput
+    # @param [FFI::Pointer] lpBuffer
+    # @param [FFI::Pointer] dwBufferSize
+    # @param [FFI::Pointer] dwBufferCoord
+    # @param [FFI::Pointer] lpReadRegion
+    # @return [true, false]
+    def self.ReadConsoleOutput(hConsoleInput, lpBuffer, dwBufferSize, dwBufferCoord, lpReadRegion) end
     encoded_function 'ReadConsoleOutput',
                      [:handle, CHAR_INFO.ptr(:out), COORD.ptr(:in), COORD.ptr(:in), SMALL_RECT.ptr], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms684968(v=vs.85).aspx
-    # BOOL WINAPI ReadConsoleOutputAttribute(
-    #   _In_  HANDLE  hConsoleOutput,
-    #   _Out_ LPWORD  lpAttribute,
-    #   _In_  DWORD   nLength,
-    #   _In_  COORD   dwReadCoord,
-    #   _Out_ LPDWORD lpNumberOfAttrsRead)
+    # https://docs.microsoft.com/en-us/windows/console/ReadConsoleOutputAttribute
+    # @param [Integer] hConsoleOutput
+    # @param [FFI::Pointer] lpAttribute
+    # @param [Integer] nLength
+    # @param [FFI::Pointer] dwReadCoord
+    # @param [FFI::Pointer] lpNumberOfAttrsRead
+    # @return [true, false]
+    def self.ReadConsoleOutputAttribute(hConsoleOutput, lpAttribute, nLength, dwReadCoord, lpNumberOfAttrsRead) end
     attach_function 'ReadConsoleOutputAttribute', [:handle, :pointer, :dword, COORD.ptr(:in), :pointer], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms684969(v=vs.85).aspx
-    # BOOL WINAPI ReadConsoleOutputCharacter(
-    #   _In_  HANDLE  hConsoleOutput,
-    #   _Out_ LPTSTR  lpCharacter,
-    #   _In_  DWORD   nLength,
-    #   _In_  COORD   dwReadCoord,
-    #   _Out_ LPDWORD lpNumberOfCharsRead)
+    # https://docs.microsoft.com/en-us/windows/console/ReadConsoleOutputCharacter
+    # @param [Integer] hConsoleOutput
+    # @param [String] lpCharacter
+    # @param [Integer] nLength
+    # @param [FFI::Pointer] dwReadCoord
+    # @param [FFI::Pointer] lpNumberOfCharsRead
+    # @return [true, false]
+    def self.ReadConsoleOutputCharacter(hConsoleOutput, lpCharacter, nLength, dwReadCoord, lpNumberOfCharsRead) end
     encoded_function 'ReadConsoleOutputCharacter', [:handle, :string, :dword, COORD.ptr(:in), :pointer], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms685107(v=vs.85).aspx
-    # BOOL WINAPI ScrollConsoleScreenBuffer(
-    #   _In_           HANDLE     hConsoleOutput,
-    #   _In_     const SMALL_RECT *lpScrollRectangle,
-    #   _In_opt_ const SMALL_RECT *lpClipRectangle,
-    #   _In_           COORD      dwDestinationOrigin,
-    #   _In_     const CHAR_INFO  *lpFill)
+    # https://docs.microsoft.com/en-us/windows/console/ScrollConsoleScreenBuffer
+    # @param [Integer] hConsoleOutput
+    # @param [FFI::Pointer] lpScrollRectangle
+    # @param [FFI::Pointer] lpClipRectangle
+    # @param [FFI::Pointer] dwDestinationOrigin
+    # @param [FFI::Pointer] lpFill
+    # @return [true, false]
+    def self.ScrollConsoleScreenBuffer(hConsoleOutput, lpScrollRectangle, lpClipRectangle, dwDestinationOrigin, lpFill); end
     encoded_function 'ScrollConsoleScreenBuffer',
                      [:handle, SMALL_RECT.ptr(:in), SMALL_RECT.ptr, COORD.ptr(:in), CHAR_INFO.ptr(:in)], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms686010(v=vs.85).aspx
-    # BOOL WINAPI SetConsoleActiveScreenBuffer(_In_ HANDLE hConsoleOutput)
+    # https://docs.microsoft.com/en-us/windows/console/SetConsoleActiveScreenBuffer
+    # @param [Integer] hConsoleOutput
+    # @return [true, false]
+    def self.SetConsoleActiveScreenBuffer(hConsoleOutput) end
     attach_function 'SetConsoleActiveScreenBuffer', [:handle], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms686013(v=vs.85).aspx
-    # BOOL WINAPI SetConsoleCP(_In_ UINT wCodePageID)
+    # https://docs.microsoft.com/en-us/windows/console/SetConsoleCP
+    # @param [Integer] wCodePageID
+    # @return [true, false]
+    def self.SetConsoleCP(wCodePageID) end
     attach_function 'SetConsoleCP', [:uint], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms686016(v=vs.85).aspx
-    # BOOL WINAPI SetConsoleCtrlHandler(_In_opt_ PHANDLER_ROUTINE HandlerRoutine, _In_ BOOL Add)
+    # https://docs.microsoft.com/en-us/windows/console/SetConsoleCtrlHandler
+    # @param [Integer] handlerRoutine
+    # @param [true, false] add
+    # @return [true, false]
+    def self.SetConsoleCtrlHandler(handlerRoutine, add) end
     attach_function 'SetConsoleCtrlHandler', [HandlerRoutine, :bool], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms686019(v=vs.85).aspx
-    # BOOL WINAPI SetConsoleCursorInfo(
-    #   _In_       HANDLE              hConsoleOutput,
-    #   _In_ const CONSOLE_CURSOR_INFO *lpConsoleCursorInfo)
+    # https://docs.microsoft.com/en-us/windows/console/SetConsoleCursorInfo
+    # @param [Integer] hConsoleOutput
+    # @param [FFI::Pointer] lpConsoleCursorInfo
+    # @return [true, false]
+    def self.SetConsoleCursorInfo(hConsoleOutput, lpConsoleCursorInfo) end
     attach_function 'SetConsoleCursorInfo', [:handle, CONSOLE_CURSOR_INFO.ptr(:in)], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms686025(v=vs.85).aspx
-    # BOOL WINAPI SetConsoleCursorPosition(_In_ HANDLE hConsoleOutput, _In_ COORD  dwCursorPosition)
+    # https://docs.microsoft.com/en-us/windows/console/SetConsoleCursorPosition
+    # @param [Integer] hConsoleOutput
+    # @param [FFI::Pointer] dwCursorPosition
+    # @return [true, false]
+    def self.SetConsoleCursorPosition(hConsoleOutput, dwCursorPosition) end
     attach_function 'SetConsoleCursorPosition', [:handle, COORD.ptr(:in)], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms686033(v=vs.85).aspx
-    # BOOL WINAPI SetConsoleMode(_In_ HANDLE hConsoleHandle, _In_ DWORD  dwMode)
-    attach_function 'SetConsoleMode', [:handle, :dword], :bool
+    # https://docs.microsoft.com/en-us/windows/console/SetConsoleMode
+    # @param [Integer] hConsoleHandle
+    # @param [Integer] dwMode
+    # @return [true, false]
+    def self.SetConsoleMode(hConsoleHandle, dwMode) end
+    attach_function 'SetConsoleMode', %i[handle dword], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms686036(v=vs.85).aspx
-    # BOOL WINAPI SetConsoleOutputCP(_In_ UINT wCodePageID)
+    # https://docs.microsoft.com/en-us/windows/console/SetConsoleOutputCP
+    # @param [Integer] wCodePageID
+    # @return [true, false]
+    def self.SetConsoleOutputCP(wCodePageID) end
     attach_function 'SetConsoleOutputCP', [:uint], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms686044(v=vs.85).aspx
-    # BOOL WINAPI SetConsoleScreenBufferSize(_In_ HANDLE hConsoleOutput, _In_ COORD  dwSize)
+    # https://docs.microsoft.com/en-us/windows/console/SetConsoleScreenBufferSize
+    # @param [Integer] hConsoleOutput
+    # @param [FFI::Pointer] dwSize
+    # @return [true, false]
+    def self.SetConsoleScreenBufferSize(hConsoleOutput, dwSize) end
     attach_function 'SetConsoleScreenBufferSize', [:handle, COORD.ptr(:in)], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms686047(v=vs.85).aspx
-    # BOOL WINAPI SetConsoleTextAttribute(_In_ HANDLE hConsoleOutput, _In_ WORD   wAttributes)
-    attach_function 'SetConsoleTextAttribute', [:handle, :word], :bool
+    # https://docs.microsoft.com/en-us/windows/console/SetConsoleTextAttribute
+    # @param [Integer] hConsoleOutput
+    # @param [Integer] wAttributes
+    # @return [true, false]
+    def self.SetConsoleTextAttribute(hConsoleOutput, wAttributes) end
+    attach_function 'SetConsoleTextAttribute', %i[handle word], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms686050(v=vs.85).aspx
-    # BOOL WINAPI SetConsoleTitle(_In_ LPCTSTR lpConsoleTitle)
+    # https://docs.microsoft.com/en-us/windows/console/SetConsoleTitle
+    # @param [String] lpConsoleTitle
+    # @return [true, false]
+    def self.SetConsoleTitle(lpConsoleTitle) end
     encoded_function 'SetConsoleTitle', [:string], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms686125(v=vs.85).aspx
-    # BOOL WINAPI SetConsoleWindowInfo(
-    #   _In_       HANDLE     hConsoleOutput,
-    #   _In_       BOOL       bAbsolute,
-    #   _In_ const SMALL_RECT *lpConsoleWindow)
+    # https://docs.microsoft.com/en-us/windows/console/SetConsoleWindowInfo
+    # @param [Integer] hConsoleOutput
+    # @param [true, false] bAbsolute
+    # @param [FFI::Pointer] lpConsoleWindow
+    # @return [true, false]
+    def self.SetConsoleWindowInfo(hConsoleOutput, bAbsolute, lpConsoleWindow) end
     attach_function 'SetConsoleWindowInfo', [:handle, :bool, SMALL_RECT.ptr(:in)], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms686244(v=vs.85).aspx
-    # BOOL WINAPI SetStdHandle(_In_ DWORD  nStdHandle, _In_ HANDLE hHandle)
-    attach_function 'SetStdHandle', [:dword, :handle], :bool
+    # https://docs.microsoft.com/en-us/windows/console/SetStdHandle
+    # @param [Integer] nStdHandle
+    # @param [Integer] hHandle
+    # @return [true, false]
+    def self.SetStdHandle(nStdHandle, hHandle) end
+    attach_function 'SetStdHandle', %i[dword handle], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms687401(v=vs.85).aspx
-    # BOOL WINAPI WriteConsole(
-    #   _In_             HANDLE  hConsoleOutput,
-    #   _In_       const VOID    *lpBuffer,
-    #   _In_             DWORD   nNumberOfCharsToWrite,
-    #   _Out_            LPDWORD lpNumberOfCharsWritten,
-    #   _Reserved_       LPVOID  lpReserved)
-    encoded_function 'WriteConsole', [:handle, :pointer, :dword, :pointer, :pointer], :bool
+    # https://docs.microsoft.com/en-us/windows/console/WriteConsole
+    # @param [Integer] hConsoleOutput
+    # @param [FFI::Pointer] lpBuffer
+    # @param [Integer] nNumberOfCharsToWrite
+    # @param [FFI::Pointer] lpNumberOfCharsWritten
+    # @param [FFI::Pointer] lpReserved
+    # @return [true, false]
+    def self.WriteConsole(hConsoleOutput, lpBuffer, nNumberOfCharsToWrite, lpNumberOfCharsWritten, lpReserved) end
+    encoded_function 'WriteConsole', %i[handle pointer dword pointer pointer], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms687403(v=vs.85).aspx
-    # BOOL WINAPI WriteConsoleInput(
-    #   _In_        HANDLE       hConsoleInput,
-    #   _In_  const INPUT_RECORD *lpBuffer,
-    #   _In_        DWORD        nLength,
-    #   _Out_       LPDWORD      lpNumberOfEventsWritten)
+    # https://docs.microsoft.com/en-us/windows/console/WriteConsoleInput
+    # @param [Integer] hConsoleInput
+    # @param [FFI::Pointer] lpBuffer
+    # @param [Integer] nLength
+    # @param [FFI::Pointer] lpNumberOfEventsWritten
+    # @return [true, false]
+    def self.WriteConsoleInput(hConsoleInput, lpBuffer, nLength, lpNumberOfEventsWritten) end
     encoded_function 'WriteConsoleInput', [:handle, INPUT_RECORD.ptr(:in), :dword, :pointer], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms687404(v=vs.85).aspx
-    # BOOL WINAPI WriteConsoleOutput(
-    #   _In_          HANDLE      hConsoleOutput,
-    #   _In_    const CHAR_INFO   *lpBuffer,
-    #   _In_          COORD       dwBufferSize,
-    #   _In_          COORD       dwBufferCoord,
-    #   _Inout_       PSMALL_RECT lpWriteRegion)
+    # https://docs.microsoft.com/en-us/windows/console/WriteConsoleOutput
+    # @param [Integer] hConsoleOutput
+    # @param [FFI::Pointer] lpBuffer
+    # @param [FFI::Pointer] dwBufferSize
+    # @param [FFI::Pointer] dwBufferCoord
+    # @param [FFI::Pointer] lpWriteRegion
+    # @return [true, false]
+    def self.WriteConsoleOutput(hConsoleOutput, lpBuffer, dwBufferSize, dwBufferCoord, lpWriteRegion) end
     encoded_function 'WriteConsoleOutput',
                      [:handle, CHAR_INFO.ptr(:in), COORD.ptr(:in), COORD.ptr(:in), SMALL_RECT.ptr], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms687407(v=vs.85).aspx
-    # BOOL WINAPI WriteConsoleOutputAttribute(
-    #   _In_        HANDLE  hConsoleOutput,
-    #   _In_  const WORD    *lpAttribute,
-    #   _In_        DWORD   nLength,
-    #   _In_        COORD   dwWriteCoord,
-    #   _Out_       LPDWORD lpNumberOfAttrsWritten)
+    # https://docs.microsoft.com/en-us/windows/console/WriteConsoleOutputAttribute
+    # @param [Integer] hConsoleOutput
+    # @param [FFI::Pointer] lpAttribute
+    # @param [Integer] nLength
+    # @param [FFI::Pointer] dwWriteCoord
+    # @param [FFI::Pointer] lpNumberOfAttrsWritten
+    # @return [true, false]
+    def self.WriteConsoleOutputAttribute(hConsoleOutput, lpAttribute, nLength, dwWriteCoord, lpNumberOfAttrsWritten); end
     attach_function 'WriteConsoleOutputAttribute', [:handle, :pointer, :dword, COORD.ptr(:in), :pointer], :bool
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms687410(v=vs.85).aspx
-    # BOOL WINAPI WriteConsoleOutputCharacter(
-    #   _In_  HANDLE  hConsoleOutput,
-    #   _In_  LPCTSTR lpCharacter,
-    #   _In_  DWORD   nLength,
-    #   _In_  COORD   dwWriteCoord,
-    #   _Out_ LPDWORD lpNumberOfCharsWritten)
+    # https://docs.microsoft.com/en-us/windows/console/WriteConsoleOutputCharacter
+    # @param [Integer] hConsoleOutput
+    # @param [String] lpCharacter
+    # @param [Integer] nLength
+    # @param [FFI::Pointer] dwWriteCoord
+    # @param [FFI::Pointer] lpNumberOfCharsWritten
+    # @return [true, false]
+    def self.WriteConsoleOutputCharacter(hConsoleOutput, lpCharacter, nLength, dwWriteCoord, lpNumberOfCharsWritten); end
     encoded_function 'WriteConsoleOutputCharacter', [:handle, :string, :dword, COORD.ptr(:in), :pointer], :bool
 
     if WINDOWS_VERSION >= :xp
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/ms681952(v=vs.85).aspx
-      # BOOL WINAPI AttachConsole(_In_ DWORD dwProcessId)
+      # https://docs.microsoft.com/en-us/windows/console/attachconsole
+      # @param [Integer] dwProcessId
+      # @return [true, false]
+      def self.AttachConsole(dwProcessId) end
       attach_function 'AttachConsole', [:dword], :bool
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683164(v=vs.85).aspx
-      # BOOL WINAPI GetConsoleDisplayMode(_Out_ LPDWORD lpModeFlags)
+      # https://docs.microsoft.com/en-us/windows/console/GetConsoleDisplayMode
+      # @param [FFI::Pointer] lpModeFlags
+      # @return [true, false]
+      def self.GetConsoleDisplayMode(lpModeFlags) end
       attach_function 'GetConsoleDisplayMode', [:pointer], :bool
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683165(v=vs.85).aspx
-      # COORD WINAPI GetConsoleFontSize(_In_ HANDLE hConsoleOutput, _In_ DWORD  nFont)
+      # https://docs.microsoft.com/en-us/windows/console/GetConsoleFontSize
+      # COORD GetConsoleFontSize(_In_ HANDLE hConsoleOutput, _In_ DWORD  nFont)
+      # @param [Integer] hConsoleOutput
+      # @param [Integer] nFont
+      # @return [COORD]
+      def self.GetConsoleFontSize(hConsoleOutput, nFont) end
       attach_function 'GetConsoleFontSize', [:handle, :dword], COORD
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683166(v=vs.85).aspx
-      # BOOL WINAPI GetConsoleHistoryInfo(_Out_ PCONSOLE_HISTORY_INFO lpConsoleHistoryInfo)
+      # https://docs.microsoft.com/en-us/windows/console/GetConsoleHistoryInfo
+      # @param [FFI::Pointer] lpConsoleHistoryInfo
+      # @return [true, false]
+      def self.GetConsoleHistoryInfo(lpConsoleHistoryInfo) end
       attach_function 'GetConsoleHistoryInfo', [CONSOLE_HISTORY_INFO.ptr(:out)], :bool
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683170(v=vs.85).aspx
-      # DWORD WINAPI GetConsoleProcessList(_Out_ LPDWORD lpdwProcessList, _In_  DWORD   dwProcessCount)
+      # https://docs.microsoft.com/en-us/windows/console/GetConsoleProcessList
+      # @param [FFI::Pointer] lpdwProcessList
+      # @param [Integer] dwProcessCount
+      # @return [Integer]
+      def self.GetConsoleProcessList(lpdwProcessList, dwProcessCount) end
       attach_function 'GetConsoleProcessList', [:pointer, :dword], :dword
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683173(v=vs.85).aspx
-      # BOOL WINAPI GetConsoleSelectionInfo(_Out_ PCONSOLE_SELECTION_INFO lpConsoleSelectionInfo)
+      # https://docs.microsoft.com/en-us/windows/console/GetConsoleSelectionInfo
+      # @param [FFI::Pointer] lpConsoleSelectionInfo
+      # @return [true, false]
+      def self.GetConsoleSelectionInfo(lpConsoleSelectionInfo) end
       attach_function 'GetConsoleSelectionInfo', [CONSOLE_SELECTION_INFO.ptr(:out)], :bool
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683176(v=vs.85).aspx
-      # BOOL WINAPI GetCurrentConsoleFont(
-      #   _In_  HANDLE             hConsoleOutput,
-      #   _In_  BOOL               bMaximumWindow,
-      #   _Out_ PCONSOLE_FONT_INFO lpConsoleCurrentFont)
+      # https://docs.microsoft.com/en-us/windows/console/GetCurrentConsoleFont
+      # @param [Integer] hConsoleOutput
+      # @param [true, false] bMaximumWindow
+      # @param [FFI::Pointer] lpConsoleCurrentFont
+      # @return [true, false]
+      def self.GetCurrentConsoleFont(hConsoleOutput, bMaximumWindow, lpConsoleCurrentFont) end
       attach_function 'GetCurrentConsoleFont', [:handle, :bool, CONSOLE_FONT_INFO.ptr(:out)], :bool
 
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/ms686028(v=vs.85).aspx
-      # BOOL WINAPI SetConsoleDisplayMode(
-      #   _In_      HANDLE hConsoleOutput,
-      #   _In_      DWORD  dwFlags,
-      #   _Out_opt_ PCOORD lpNewScreenBufferDimensions)
+      # https://docs.microsoft.com/en-us/windows/console/SetConsoleDisplayMode
+      # @param [Integer] hConsoleOutput
+      # @param [Integer] dwFlags
+      # @param [FFI::Pointer] lpNewScreenBufferDimensions
+      # @return [true, false]
+      def self.SetConsoleDisplayMode(hConsoleOutput, dwFlags, lpNewScreenBufferDimensions) end
       attach_function 'SetConsoleDisplayMode', [:handle, ConsoleDisplayMode, COORD.ptr(:out)], :bool
 
       if WINDOWS_VERSION >= :vista
-        # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683168(v=vs.85).aspx
-        # DWORD WINAPI GetConsoleOriginalTitle(_Out_ LPTSTR lpConsoleTitle, _In_  DWORD  nSize)
+        # https://docs.microsoft.com/en-us/windows/console/getconsoleoriginaltitle
+        # @param [String] lpConsoleTitle
+        # @param [Integer] nSize
+        # @return [Integer]
+        def self.GetConsoleOriginalTitle(lpConsoleTitle, nSize) end
         encoded_function 'GetConsoleOriginalTitle', [:string, :dword], :dword
 
-        # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683172(v=vs.85).aspx
-        # BOOL WINAPI GetConsoleScreenBufferInfoEx(
-        #   _In_  HANDLE                        hConsoleOutput,
-        #   _Out_ PCONSOLE_SCREEN_BUFFER_INFOEX lpConsoleScreenBufferInfoEx)
+        # https://docs.microsoft.com/en-us/windows/console/GetConsoleScreenBufferInfoEx
+        # @param [Integer] hConsoleOutput
+        # @param [FFI::Pointer] lpConsoleScreenBufferInfoEx
+        # @return [true, false]
+        def self.GetConsoleScreenBufferInfoEx(hConsoleOutput, lpConsoleScreenBufferInfoEx) end
         attach_function 'GetConsoleScreenBufferInfoEx', [:handle, CONSOLE_SCREEN_BUFFER_INFOEX.ptr(:out)], :bool
 
-        # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683177(v=vs.85).aspx
-        # BOOL WINAPI GetCurrentConsoleFontEx(
-        #   _In_  HANDLE               hConsoleOutput,
-        #   _In_  BOOL                 bMaximumWindow,
-        #   _Out_ PCONSOLE_FONT_INFOEX lpConsoleCurrentFontEx)
+        # https://docs.microsoft.com/en-us/windows/console/GetCurrentConsoleFontEx
+        # @param [Integer] hConsoleOutput
+        # @param [true, false] bMaximumWindow
+        # @param [FFI::Pointer] lpConsoleCurrentFontEx
+        # @return [true, false]
+        def self.GetCurrentConsoleFontEx(hConsoleOutput, bMaximumWindow, lpConsoleCurrentFontEx) end
         attach_function 'GetCurrentConsoleFontEx', [:handle, :bool, CONSOLE_FONT_INFOEX.ptr(:out)], :bool
 
-        # https://msdn.microsoft.com/en-us/library/windows/desktop/ms686031(v=vs.85).aspx
-        # BOOL WINAPI SetConsoleHistoryInfo(_In_ PCONSOLE_HISTORY_INFO lpConsoleHistoryInfo)
+        # https://docs.microsoft.com/en-us/windows/console/SetConsoleHistoryInfo
+        # @param [FFI::Pointer] lpConsoleHistoryInfo
+        # @return [true, false]
+        def self.SetConsoleHistoryInfo(lpConsoleHistoryInfo) end
         attach_function 'SetConsoleHistoryInfo', [CONSOLE_HISTORY_INFO.ptr(:in)], :bool
 
-        # https://msdn.microsoft.com/en-us/library/windows/desktop/ms686039(v=vs.85).aspx
-        # BOOL WINAPI SetConsoleScreenBufferInfoEx(
-        #   _In_ HANDLE                        hConsoleOutput,
-        #   _In_ PCONSOLE_SCREEN_BUFFER_INFOEX lpConsoleScreenBufferInfoEx)
+        # https://docs.microsoft.com/en-us/windows/console/SetConsoleScreenBufferInfoEx
+        # @param [Integer] hConsoleOutput
+        # @param [FFI::Pointer] lpConsoleScreenBufferInfoEx
+        # @return [true, false]
+        def self.SetConsoleScreenBufferInfoEx(hConsoleOutput, lpConsoleScreenBufferInfoEx) end
         attach_function 'SetConsoleScreenBufferInfoEx', [:handle, CONSOLE_SCREEN_BUFFER_INFOEX.ptr(:in)], :bool
 
-        # https://msdn.microsoft.com/en-us/library/windows/desktop/ms686200(v=vs.85).aspx
-        # BOOL WINAPI SetCurrentConsoleFontEx(
-        #   _In_ HANDLE               hConsoleOutput,
-        #   _In_ BOOL                 bMaximumWindow,
-        #   _In_ PCONSOLE_FONT_INFOEX lpConsoleCurrentFontEx)
+        # https://docs.microsoft.com/en-us/windows/console/SetCurrentConsoleFontEx
+        # @param [Integer] hConsoleOutput
+        # @param [true, false] bMaximumWindow
+        # @param [FFI::Pointer] lpConsoleCurrentFontEx
+        # @return [true, false]
+        def self.SetCurrentConsoleFontEx(hConsoleOutput, bMaximumWindow, lpConsoleCurrentFontEx) end
         attach_function 'SetCurrentConsoleFontEx', [:handle, :bool, CONSOLE_FONT_INFOEX.ptr(:in)], :bool
       end
     end

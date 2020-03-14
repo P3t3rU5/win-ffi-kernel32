@@ -1,13 +1,13 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   module Kernel32
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/dd405500(v=vs.85).aspx
     # Structure to represent a group-specific affinity, such as that of a
     # thread.  Specifies the group number and the affinity within that group.
+    # https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-group_affinity
     class GROUP_AFFINITY < FFIAdditions::Struct
-      layout Mask:          :long,  # KAFFINITY
-             Group:         :word,
+      attr_accessor :Mask, :Group, :Reserved
+
+      layout Mask:     :long,  # KAFFINITY
+             Group:    :word,
              Reserved: [:word, 3]
     end
   end

@@ -1,16 +1,18 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   module Kernel32
     class CHAR_INFO_UNION < FFIAdditions::Struct
+      attr_accessor :UnicodeChar, :AsciiChar
+
       layout UnicodeChar: :wchar,
-             AsciiChar:    :char
+             AsciiChar:   :char
     end
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms682013(v=vs.85).aspx
+    # https://docs.microsoft.com/en-us/windows/console/char-info-str
     class CHAR_INFO < FFIAdditions::Struct
-      layout Char: CHAR_INFO_UNION,
-             Attributes:     :word
+      attr_accessor :Char, :Attributes
+
+      layout Char:       CHAR_INFO_UNION,
+             Attributes: :word
     end
   end
 end

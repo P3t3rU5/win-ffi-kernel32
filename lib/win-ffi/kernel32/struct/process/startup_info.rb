@@ -1,14 +1,32 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   if WINDOWS_VERSION >= :xp
     module Kernel32
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/ms686331(v=vs.85).aspx
+      # https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/ns-processthreadsapi-startupinfoa
+      # https://docs.microsoft.com/en-us/windows/win32/api/processthreadsapi/ns-processthreadsapi-startupinfow
       class STARTUPINFO < FFIAdditions::Struct
+        attr_accessor :cb,
+                      :lpReserved,
+                      :lpDesktop,
+                      :lpTitle,
+                      :dwX,
+                      :dwY,
+                      :dwXSize,
+                      :dwYSize,
+                      :dwXCountChars,
+                      :dwYCountChars,
+                      :dwFillAttribute,
+                      :dwFlags,
+                      :wShowWindow,
+                      :cbReserved2,
+                      :lpReserved2,
+                      :hStdInput,
+                      :hStdOutput,
+                      :hStdError
+
         layout cb:              :dword,
-               lpReserved:     :string,
-               lpDesktop:      :string,
-               lpTitle:        :string,
+               lpReserved:      :string,
+               lpDesktop:       :string,
+               lpTitle:         :string,
                dwX:             :dword,
                dwY:             :dword,
                dwXSize:         :dword,
@@ -17,12 +35,12 @@ module WinFFI
                dwYCountChars:   :dword,
                dwFillAttribute: :dword,
                dwFlags:         :dword,
-               wShowWindow:      :word,
-               cbReserved2:      :word,
-               lpReserved2:   :pointer,
-               hStdInput:      :handle,
-               hStdOutput:     :handle,
-               hStdError:      :handle
+               wShowWindow:     :word,
+               cbReserved2:     :word,
+               lpReserved2:     :pointer,
+               hStdInput:       :handle,
+               hStdOutput:      :handle,
+               hStdError:       :handle
 
         def initialize
           super

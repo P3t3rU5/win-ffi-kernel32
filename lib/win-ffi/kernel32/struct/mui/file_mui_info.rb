@@ -1,21 +1,34 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   module Kernel32
+    # https://docs.microsoft.com/en-us/windows/win32/api/winnls/ns-winnls-filemuiinfo
     class FILEMUIINFO < FFIAdditions::Struct
-      layout dwSize:                :dword,
-             dwVersion:             :dword,
-             dwFileType:            :dword,
-             pChecksum:        [:byte, 16],
-             pServiceChecksum: [:byte, 16],
-             dwLanguageNameOffset:  :dword,
-             dwTypeIDMainSize:      :dword,
-             dwTypeIDMainOffset:    :dword,
-             dwTypeNameMainOffset:  :dword,
-             dwTypeIDMUISize:       :dword,
-             dwTypeIDMUIOffset:     :dword,
-             dwTypeNameMUIOffset:   :dword,
-             abBuffer:           [:byte, 8]
+      attr_accessor :dwSize,
+                    :dwVersion,
+                    :dwFileType,
+                    :pChecksum,
+                    :pServiceChecksum,
+                    :dwLanguageNameOffset,
+                    :dwTypeIDMainSize,
+                    :dwTypeIDMainOffset,
+                    :dwTypeNameMainOffset,
+                    :dwTypeIDMUISize,
+                    :dwTypeIDMUIOffset,
+                    :dwTypeNameMUIOffset,
+                    :abBuffer
+
+      layout dwSize:               :dword,
+             dwVersion:            :dword,
+             dwFileType:           :dword,
+             pChecksum:            [:byte, 16],
+             pServiceChecksum:     [:byte, 16],
+             dwLanguageNameOffset: :dword,
+             dwTypeIDMainSize:     :dword,
+             dwTypeIDMainOffset:   :dword,
+             dwTypeNameMainOffset: :dword,
+             dwTypeIDMUISize:      :dword,
+             dwTypeIDMUIOffset:    :dword,
+             dwTypeNameMUIOffset:  :dword,
+             abBuffer:             [:byte, 8]
 
       def initialize
         super

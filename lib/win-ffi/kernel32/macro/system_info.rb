@@ -1,5 +1,6 @@
-require 'win-ffi/kernel32/enum/system_info/version_flag'
 require 'win-ffi/kernel32/enum/system_info/win32_winnt'
+
+require_relative '../enum/system_info/version_flag'
 
 require 'win-ffi/kernel32/function/system_info'
 

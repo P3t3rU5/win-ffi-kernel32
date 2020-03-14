@@ -1,5 +1,3 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   module Kernel32
     JobObjectInfoClass = enum :job_object_info_class, [

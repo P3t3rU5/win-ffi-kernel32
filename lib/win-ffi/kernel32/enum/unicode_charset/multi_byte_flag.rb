@@ -1,5 +1,3 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   module Kernel32
     MultiByteFlag = enum :multi_byte_flag, [

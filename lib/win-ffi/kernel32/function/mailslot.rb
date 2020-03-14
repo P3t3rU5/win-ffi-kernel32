@@ -1,24 +1,24 @@
-require 'win-ffi/kernel32'
-
 require 'win-ffi/core/struct/security_attributes'
 
 module WinFFI
   module Kernel32
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/aa365147(v=vs.85).aspx
-    # HANDLE WINAPI CreateMailslot(
-    #   _In_     LPCTSTR               lpName,
-    #   _In_     DWORD                 nMaxMessageSize,
-    #   _In_     DWORD                 lReadTimeout,
-    #   _In_opt_ LPSECURITY_ATTRIBUTES lpSecurityAttributes)
+    # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-createmailslota
+    # @param [String] lpName
+    # @param [Integer] nMaxMessageSize
+    # @param [Integer] lReadTimeout
+    # @param [FFI::Pointer] lpSecurityAttributes
+    # @return [Integer]
+    def self.CreateMailslot(lpName, nMaxMessageSize, lReadTimeout, lpSecurityAttributes) end
     encoded_function 'CreateMailslot', [:string, :dword, :dword, SECURITY_ATTRIBUTES.ptr(:in)], :handle
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/aa365435(v=vs.85).aspx
-    # BOOL WINAPI GetMailslotInfo(
-    #   _In_      HANDLE  hMailslot,
-    #   _Out_opt_ LPDWORD lpMaxMessageSize,
-    #   _Out_opt_ LPDWORD lpNextSize,
-    #   _Out_opt_ LPDWORD lpMessageCount,
-    #   _Out_opt_ LPDWORD lpReadTimeout)
+    # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-getmailslotinfo
+    # @param [Integer] hMailslot
+    # @param [FFI::Pointer] lpMaxMessageSize
+    # @param [FFI::Pointer] lpNextSize
+    # @param [FFI::Pointer] lpMessageCount
+    # @param [FFI::Pointer] lpReadTimeout
+    # @return [true, false]
+    def self.GetMailslotInfo(hMailslot, lpMaxMessageSize, lpNextSize, lpMessageCount, lpReadTimeout) end
     attach_function 'GetMailslotInfo', [:handle, :pointer, :pointer, :pointer, :pointer], :bool
   end
 end

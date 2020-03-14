@@ -1,9 +1,9 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   module Kernel32
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms683149(v=vs.85).aspx
+    # https://docs.microsoft.com/en-us/windows/console/focus-event-record-str
     class FOCUS_EVENT_RECORD < FFIAdditions::Struct
+      attr_accessor :bSetFocus
+
       layout bSetFocus: :bool
     end
   end

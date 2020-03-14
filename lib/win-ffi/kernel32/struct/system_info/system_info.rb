@@ -1,32 +1,45 @@
-require 'win-ffi/kernel32'
-
-require 'win-ffi/kernel32/enum/system_info/processor_type'
-require 'win-ffi/kernel32/enum/system_info/processor_architecture'
+require_relative '../../enum/system_info/processor_type'
+require_relative '../../enum/system_info/processor_architecture'
 
 module WinFFI
   module Kernel32
     class SYSTEM_INFO_UNION_STRUCT < FFIAdditions::Struct
+      attr_accessor :wProcessorArchitecture, :wReserved
+
       layout wProcessorArchitecture: ProcessorArchitecture,
-             wReserved:                              :word
+             wReserved:              :word
     end
 
     class SYSTEM_INFO_UNION < FFIAdditions::Union
-      layout dwOemId:             :dword,
-             s: SYSTEM_INFO_UNION_STRUCT
+      attr_accessor :dwOemId, :s
+
+      layout dwOemId: :dword,
+             s:       SYSTEM_INFO_UNION_STRUCT
     end
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms724958(v=vs.85).aspx
+    # https://docs.microsoft.com/en-us/windows/win32/api/sysinfoapi/ns-sysinfoapi-system_info
     class SYSTEM_INFO < FFIAdditions::Struct
-      layout u:                  SYSTEM_INFO_UNION,
-             dwPageSize:                    :dword,
+      attr_accessor :u,
+                    :dwPageSize,
+                    :lpMinimumApplicationAddress,
+                    :lpMaximumApplicationAddress,
+                    :dwActiveProcessorMask,
+                    :dwNumberOfProcessors,
+                    :dwProcessorType,
+                    :dwAllocationGranularity,
+                    :wProcessorLevel,
+                    :wProcessorRevision
+
+      layout u:                           SYSTEM_INFO_UNION,
+             dwPageSize:                  :dword,
              lpMinimumApplicationAddress: :pointer,
              lpMaximumApplicationAddress: :pointer,
-             dwActiveProcessorMask:         :dword,
-             dwNumberOfProcessors:          :dword,
-             dwProcessorType:        ProcessorType,
-             dwAllocationGranularity:       :dword,
-             wProcessorLevel:                :word,
-             wProcessorRevision:             :word
+             dwActiveProcessorMask:       :dword,
+             dwNumberOfProcessors:        :dword,
+             dwProcessorType:             ProcessorType,
+             dwAllocationGranularity:     :dword,
+             wProcessorLevel:             :word,
+             wProcessorRevision:          :word
     end
   end
 end

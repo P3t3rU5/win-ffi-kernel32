@@ -1,5 +1,3 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   module Kernel32
     # File creation flags must start at the high end since they are combined with the attributes

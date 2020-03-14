@@ -1,11 +1,26 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   module Kernel32
+    # https://docs.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-dcb
     class DCB < FFIAdditions::Struct
-      layout DCBlength: :dword,
-             BaudRate:  :dword,
-             flag:      :dword,
+      attr_accessor :DCBlength,
+                    :BaudRate,
+                    :flag,
+                    :wReserved,
+                    :XonLim,
+                    :XoffLim,
+                    :ByteSize,
+                    :Parity,
+                    :StopBits,
+                    :XonChar,
+                    :XoffChar,
+                    :ErrorChar,
+                    :EofChar,
+                    :EvtChar,
+                    :wReserved1
+
+      layout DCBlength:  :dword,
+             BaudRate:   :dword,
+             flag:       :dword,
              wReserved:  :word,
              XonLim:     :word,
              XoffLim:    :word,

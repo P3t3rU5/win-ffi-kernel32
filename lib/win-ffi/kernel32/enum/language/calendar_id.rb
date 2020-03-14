@@ -1,5 +1,3 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   module Kernel32
     # Calendar ID Values.
@@ -18,7 +16,6 @@ module WinFFI
         :GREGORIAN_XLIT_ENGLISH, 11,
         :GREGORIAN_XLIT_FRENCH,  12,
         :PERSIAN,                22,
-
     ]
 
     buffer += [:UMALQURA, 23] if WINDOWS_VERSION >= :vista

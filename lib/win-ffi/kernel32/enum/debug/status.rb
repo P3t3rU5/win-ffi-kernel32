@@ -1,5 +1,3 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   module Kernel32
     buffer = [
@@ -62,12 +60,10 @@ module WinFFI
         :STATUS_ASSERTION_FAILURE,          0xC0000420,
     ]
 
-    if WINDOWS_VERSION >= :xp
-      buffer += [
-          :STATUS_SXS_EARLY_DEACTIVATION,   0xC015000F,
-          :STATUS_SXS_INVALID_DEACTIVATION, 0xC0150010,
-      ]
-    end
+    buffer += [
+        :STATUS_SXS_EARLY_DEACTIVATION, 0xC015000F,
+        :STATUS_SXS_INVALID_DEACTIVATION, 0xC0150010,
+    ] if WINDOWS_VERSION >= :xp
 
     Status = enum :status, buffer
   end

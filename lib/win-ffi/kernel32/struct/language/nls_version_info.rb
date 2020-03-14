@@ -1,20 +1,16 @@
-require 'win-ffi/kernel32'
-
-require 'win-ffi/core/struct/guid'
-
 module WinFFI
   module Kernel32
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/dd319086(v=vs.85).aspx
     if WINDOWS_VERSION >= 8
-      class NLSVERSIONINFO < FFIAdditions::Struct
-        layout dwNLSVersionInfoSize: :dword,
-               dwNLSVersion:         :dword,
-               dwDefinedVersion:     :dword,
-               dwEffectiveId:        :dword,
-               guidCustomVersion:      GUID
-      end
+      require 'win-ffi/core/struct/guid'
+
+      LOGGER.warn("Starting with Windows 8, your app should use NLSVERSIONINFOEX instead of NLSVERSIONINFO")
     else
+      # https://docs.microsoft.com/en-us/windows/win32/api/winnls/ns-winnls-nlsversioninfo~r1
       class NLSVERSIONINFO < FFIAdditions::Struct
+        attr_accessor :dwNLSVersionInfoSize,
+                      :dwNLSVersion,
+                      :dwDefinedVersion
+
         layout dwNLSVersionInfoSize: :dword,
                dwNLSVersion:         :dword,
                dwDefinedVersion:     :dword

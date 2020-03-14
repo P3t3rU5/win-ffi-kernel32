@@ -1,5 +1,3 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   module Kernel32
     ActivationContext = enum :activation_context,
@@ -11,7 +9,6 @@ module WinFFI
         :SET_PROCESS_DEFAULT,          0x010,
         :APPLICATION_NAME_VALID,       0x020,
         :HMODULE_VALID,                0x080
-
     ]
   end
 end

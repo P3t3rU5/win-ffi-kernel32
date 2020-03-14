@@ -1,5 +1,3 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   module Kernel32
     ToolHelpCrateSnapshotFlag = enum :tool_help_crate_snapshot_flag, [

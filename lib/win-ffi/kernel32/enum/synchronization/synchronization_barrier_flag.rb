@@ -1,5 +1,3 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   module Kernel32
     SynchronizationBarrierFlag = enum :synchronization_barrier_flag, [

@@ -1,14 +1,15 @@
-require 'win-ffi/kernel32'
 
 module WinFFI
   if WINDOWS_VERSION >= :xp
     require 'win-ffi/core/enum/error/set_last_error_ex_code'
 
     module Kernel32
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/ms680587(v=vs.85).aspx
+      # https://docs.microsoft.com/en-us/windows/win32/api/minwinbase/ns-minwinbase-rip_info
       class RIP_INFO < FFIAdditions::Struct
-        layout dwError:           :dword,
-               dwType:SetLastErrorExCode
+        attr_accessor :dwError, :dwType
+
+        layout dwError: :dword,
+               dwType:  SetLastErrorExCode
       end
     end
   end

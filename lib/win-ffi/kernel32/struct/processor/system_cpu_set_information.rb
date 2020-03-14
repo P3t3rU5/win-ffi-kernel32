@@ -1,6 +1,4 @@
-require 'win-ffi/kernel32'
-
-require 'win-ffi/kernel32/enum/processor/cpu_set_information_type'
+require_relative '../../enum/processor/cpu_set_information_type'
 
 # TODO
 
@@ -42,8 +40,10 @@ require 'win-ffi/kernel32/enum/processor/cpu_set_information_type'
 module WinFFI
   module Kernel32
 
+    # https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-system_cpu_set_information
     class SYSTEM_CPU_SET_INFORMATION < FFIAdditions::Struct
-      layout Size:                :dword,
+      attr_accessor :Soze, :Type
+      layout Size: :dword,
              Type: CpuSetInformationType
     end
   end

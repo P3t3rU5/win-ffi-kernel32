@@ -1,10 +1,9 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
-  module Kernel32
-    if WINDOWS_VERSION >= :xp
-      # https://msdn.microsoft.com/en-us/library/bb432197(v=vs.85).aspx
-      # BOOL WINAPI BaseFlushAppcompatCache(void)
+  if WINDOWS_VERSION >= :xp
+    module Kernel32
+      # https://docs.microsoft.com/en-us/windows/desktop/DevNotes/baseflushappcompatcache
+      # @return [true, false]
+      def self.BaseFlushAppcompatCache; end
       attach_function 'BaseFlushAppcompatCache', [], :bool
     end
   end

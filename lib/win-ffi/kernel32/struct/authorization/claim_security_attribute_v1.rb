@@ -1,8 +1,8 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   module Kernel32
     class CLAIM_SECURITY_ATTRIBUTE_V1_UNION < FFIAdditions::Union
+      attr_accessor :pInt64, :pUint64, :ppString, :pFqbn, :pOctetString
+
       layout pInt64:       :pointer,
              pUint64:      :pointer,
              ppString:     :pointer,
@@ -11,14 +11,16 @@ module WinFFI
     end
 
     # An individual security attribute.
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/hh448489(v=vs.85).aspx
+    # https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-claim_security_attribute_v1
     class CLAIM_SECURITY_ATTRIBUTE_V1 < FFIAdditions::Struct
-      layout Name:                             :string,
-             ValueType:                          :word,
-             Reserved:                           :word,
-             Flags:                             :dword,
-             ValueCount:                        :dword,
-             Values: CLAIM_SECURITY_ATTRIBUTE_V1_UNION
+      attr_accessor :Name, :ValueType, :Reserved, :Flags, :ValueCount, :Values
+
+      layout Name:       :string,
+             ValueType:  :word,
+             Reserved:   :word,
+             Flags:      :dword,
+             ValueCount: :dword,
+             Values:     CLAIM_SECURITY_ATTRIBUTE_V1_UNION
 
 
     end

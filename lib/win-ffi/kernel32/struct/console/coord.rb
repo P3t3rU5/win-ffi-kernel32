@@ -1,9 +1,9 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   module Kernel32
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms682119(v=vs.85).aspx
+    # https://docs.microsoft.com/en-us/windows/console/coord-str
     class COORD < FFIAdditions::Struct
+      attr_accessor :X, :Y
+
       layout X: :short,
              Y: :short
     end

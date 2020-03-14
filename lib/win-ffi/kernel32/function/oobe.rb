@@ -1,9 +1,8 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   module Kernel32
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/dn529160(v=vs.85).aspx
+    # https://docs.microsoft.com/en-us/previous-versions/windows/desktop/api/oobenotification/nf-oobenotification-oobecomplete
     # BOOL WINAPI OOBEComplete(_Out_ PBOOL OOBEComplete)
+    def self.OOBEComplete(oOBEComplete); end
     attach_function 'OOBEComplete', [:pointer], :bool
   end
 end

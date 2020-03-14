@@ -1,11 +1,11 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   if WINDOWS_VERSION >= :xp
     module Kernel32
-      # https://msdn.microsoft.com/en-us/library/windows/desktop/ms679287(v=vs.85).aspx
+      # https://docs.microsoft.com/en-us/windows/win32/api/minwinbase/ns-minwinbase-create_thread_debug_info
       class CREATE_THREAD_DEBUG_INFO < FFIAdditions::Struct
-        layout hThread:            :handle,
+        attr_accessor :hThread, :lpThreadLocalBase, :lpStartAddress
+
+        layout hThread:           :handle,
                lpThreadLocalBase: :pointer,
                lpStartAddress:    :pointer  # LPTHREAD_START_ROUTINE
       end

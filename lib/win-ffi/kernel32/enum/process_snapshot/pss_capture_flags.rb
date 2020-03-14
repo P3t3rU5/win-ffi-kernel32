@@ -1,5 +1,3 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   module Kernel32
     PSS_CAPTURE_FLAGS = enum :process_snapshot_capture, [

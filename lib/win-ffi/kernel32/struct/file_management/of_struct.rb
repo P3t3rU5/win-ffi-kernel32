@@ -1,10 +1,15 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   module Kernel32
     OFS_MAXPATHNAME = 128
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/aa365282(v=vs.85).aspx
+    # https://docs.microsoft.com/en-us/windows/win32/api/winbase/ns-winbase-ofstruct
     class OFSTRUCT < FFIAdditions::Struct
+      attr_accessor :cBytes,
+                    :fFixedDisk,
+                    :nErrCode,
+                    :Reserved1,
+                    :Reserved2,
+                    :szPathName
+
       layout cBytes:     :byte,
              fFixedDisk: :byte,
              nErrCode:   :word,

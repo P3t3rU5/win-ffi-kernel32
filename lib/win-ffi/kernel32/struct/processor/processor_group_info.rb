@@ -1,12 +1,15 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   module Kernel32
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/dd405504(v=vs.85).aspx
+    # https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-processor_group_info
     class PROCESSOR_GROUP_INFO < FFIAdditions::Struct
+      attr_accessor :MaximumProcessorCount,
+                    :ActiveProcessorCount,
+                    :Reserved,
+                    :ActiveProcessorMask
+
       layout MaximumProcessorCount: :byte,
              ActiveProcessorCount:  :byte,
-             Reserved:        [:byte, 38],
+             Reserved:              [:byte, 38],
              ActiveProcessorMask:   :long # KAFFINITY
     end
   end

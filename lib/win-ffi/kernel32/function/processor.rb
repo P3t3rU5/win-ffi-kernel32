@@ -1,10 +1,8 @@
-require 'win-ffi/kernel32'
-
-require 'win-ffi/kernel32/struct/processor/system_logical_processor_information'
-require 'win-ffi/kernel32/struct/processor/system_logical_processor_information_ex'
-require 'win-ffi/kernel32/struct/process/system_processor_cycle_time_information'
-require 'win-ffi/kernel32/struct/processor/system_cpu_set_information'
-require 'win-ffi/kernel32/struct/processor/processor_number'
+require_relative '../struct/processor/system_logical_processor_information'
+require_relative '../struct/processor/system_logical_processor_information_ex'
+require_relative '../struct/process/system_processor_cycle_time_information'
+require_relative '../struct/processor/system_cpu_set_information'
+require_relative '../struct/processor/processor_number'
 
 module WinFFI
   module Kernel32
@@ -34,56 +32,62 @@ module WinFFI
       attach_function 'QueryIdleProcessorCycleTime', [:pointer, :pointer], :bool
 
       if WINDOWS_VERSION >= 7
-        # https://msdn.microsoft.com/en-us/library/windows/desktop/dd405485(v=vs.85).aspx
+        # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-getactiveprocessorcount
         # DWORD GetActiveProcessorCount(_In_ WORD GroupNumber)
+        def self.GetActiveProcessorCount(groupNumber) end
         attach_function 'GetActiveProcessorCount', [:word], :dword
 
-        # https://msdn.microsoft.com/en-us/library/windows/desktop/dd405486(v=vs.85).aspx
+        # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-getactiveprocessorgroupcount
         # WORD GetActiveProcessorGroupCount(void)
+        def self.GetActiveProcessorGroupCount; end
         attach_function 'GetActiveProcessorGroupCount', [], :word
 
-        # https://msdn.microsoft.com/en-us/library/windows/desktop/dd405487(v=vs.85).aspx
+        # https://docs.microsoft.com/en-us/windows/desktop/api/processthreadsapi/nf-processthreadsapi-getcurrentprocessornumberex
         # VOID GetCurrentProcessorNumberEx(_Out_ PPROCESSOR_NUMBER ProcNumber)
+        def self.GetCurrentProcessorNumberEx(procNumber) end
         attach_function 'GetCurrentProcessorNumberEx', [PROCESSOR_NUMBER.ptr(:out)], :void
 
-        # https://msdn.microsoft.com/en-us/library/windows/desktop/dd405496(v=vs.85).aspx
-        # BOOL GetProcessGroupAffinity(
-        #   _In_    HANDLE  hProcess,
-        #   _Inout_ PUSHORT GroupCount,
-        #   _Out_   PUSHORT GroupArray)
+        # https://msdn.microsoft.com/en-us/library/windows/desktop/dd405496
+        # BOOL GetProcessGroupAffinity( _In_  HANDLE  hProcess, _Inout_ PUSHORT GroupCount, _Out_   PUSHORT GroupArray)
+        def self.GetProcessGroupAffinity(hProcess, groupCount, groupArray) end
         attach_function 'GetProcessGroupAffinity', [:handle, :pointer, :pointer], :bool
 
-        # https://msdn.microsoft.com/en-us/library/windows/desktop/dd405489(v=vs.85).aspx
+        # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-getmaximumprocessorcount
         # DWORD GetMaximumProcessorCount(_In_ WORD GroupNumber)
+        def self.GetMaximumProcessorCount(groupNumber) end
         attach_function 'GetMaximumProcessorCount', [:word], :dword
 
-        # https://msdn.microsoft.com/en-us/library/windows/desktop/dd405490(v=vs.85).aspx
+        # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-getmaximumprocessorgroupcount
         # WORD GetMaximumProcessorGroupCount(void)
+        def self.GetMaximumProcessorGroupCount; end
         attach_function 'GetMaximumProcessorGroupCount', [], :word
 
-        # https://msdn.microsoft.com/en-us/library/windows/desktop/dd405497(v=vs.85).aspx
+        # https://msdn.microsoft.com/en-us/library/windows/desktop/dd405497
         # BOOL GetProcessorSystemCycleTime(
         #   _In_    USHORT                                   Group,
         #   _Out_   PSYSTEM_PROCESSOR_CYCLE_TIME_INFORMATION Buffer,
         #   _Inout_ PDWORD                                   ReturnedLength)
+        def self.GetProcessorSystemCycleTime(group, buffer, returnedLength) end
         attach_function 'GetProcessorSystemCycleTime',
                         [:ushort, SYSTEM_PROCESSOR_CYCLE_TIME_INFORMATION.ptr(:out), :dword], :bool
 
-        # https://msdn.microsoft.com/en-us/library/windows/desktop/dd405507(v=vs.85).aspx
+        # https://docs.microsoft.com/en-us/windows/desktop/api/realtimeapiset/nf-realtimeapiset-queryidleprocessorcycletimeex
         # BOOL QueryIdleProcessorCycleTimeEx(
         #   _In_    USHORT   Group,
         #   _Inout_ PULONG   BufferLength,
         #   _Out_   PULONG64 ProcessorIdleCycleTime)
+        def self.QueryIdleProcessorCycleTimeEx(group, bufferLength, processorIdleCycleTime) end
         attach_function 'QueryIdleProcessorCycleTimeEx', [:ushort, :pointer, :pointer], :bool
 
         if WINDOWS_VERSION >= 10
-          # https://msdn.microsoft.com/en-us/library/windows/desktop/mt186425(v=vs.85).aspx
+          # https://docs.microsoft.com/en-us/windows/desktop/ProcThread/getsystemcpusetinformation
           # BOOL WINAPI GetSystemCpuSetInformation(
           #   _Out_opt_  PSYSTEM_CPU_SET_INFORMATION  Information,
           #   _In_       ULONG                        BufferLength,
           #   _Out_      PULONG                       ReturnedLength,
           #   _In_opt_   HANDLE                       Process,
           #   _Reserved_ ULONG                        Flags)
+          def self.GetSystemCpuSetInformation(information, bufferLength, returnedLength, process, flags) end
           attach_function 'GetSystemCpuSetInformation',
                           [SYSTEM_CPU_SET_INFORMATION.ptr, :ulong, :pointer, :handle, :ulong], :bool
 

@@ -1,16 +1,24 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   module Kernel32
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/dd317784(v=vs.85).aspx
+    # https://docs.microsoft.com/en-us/windows/win32/api/winnls/ns-winnls-currencyfmta
+    # https://docs.microsoft.com/en-us/windows/win32/api/winnls/ns-winnls-currencyfmtw
     class CURRENCYFMT < FFIAdditions::Struct
-      layout NumDigits:          :uint,
-             LeadingZero:        :uint,
-             Grouping:           :uint,
+      attr_accessor :NumDigits,
+                    :LeadingZero,
+                    :Grouping,
+                    :lpDecimalSep,
+                    :lpThousandSep,
+                    :NegativeOrder,
+                    :PositiveOrder,
+                    :lpCurrencySymbol
+
+      layout NumDigits:        :uint,
+             LeadingZero:      :uint,
+             Grouping:         :uint,
              lpDecimalSep:     :string,
              lpThousandSep:    :string,
-             NegativeOrder:      :uint,
-             PositiveOrder:      :uint,
+             NegativeOrder:    :uint,
+             PositiveOrder:    :uint,
              lpCurrencySymbol: :string
     end
   end

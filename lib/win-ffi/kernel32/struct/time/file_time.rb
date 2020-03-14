@@ -1,12 +1,12 @@
-require 'win-ffi/kernel32'
-
-require 'win-ffi/kernel32/struct/time/system_time'
+require_relative 'system_time'
 
 module WinFFI
   module Kernel32
     # File System time stamps are represented with the following structure:
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms724284(v=vs.85).aspx
+    # https://docs.microsoft.com/en-us/windows/win32/api/minwinbase/ns-minwinbase-filetime
     class FILETIME < FFIAdditions::Struct
+      attr_accessor :dwLowDateTime, :dwHighDateTime
+
       layout dwLowDateTime:  :dword,
              dwHighDateTime: :dword
 

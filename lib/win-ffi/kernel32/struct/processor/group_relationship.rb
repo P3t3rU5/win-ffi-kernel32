@@ -1,13 +1,15 @@
-require 'win-ffi/kernel32/struct/processor/processor_group_info'
+require_relative 'processor_group_info'
 
 module WinFFI
   module Kernel32
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/dd405501(v=vs.85).aspx
+    # https://docs.microsoft.com/en-us/windows/win32/api/winnt/ns-winnt-group_relationship
     class GROUP_RELATIONSHIP < FFIAdditions::Struct
-      layout MaximumGroupCount:             :word,
-             ActiveGroupCount:              :word,
-             Reserved:                [:byte, 20],
-             GroupInfo: [PROCESSOR_GROUP_INFO, 1]
+      attr_accessor :MaximumGroupCount, :ActiveGroupCount, :Reserved, :GroupInfo
+
+      layout MaximumGroupCount: :word,
+             ActiveGroupCount:  :word,
+             Reserved:          [:byte, 20],
+             GroupInfo:         [PROCESSOR_GROUP_INFO, 1]
     end
   end
 end

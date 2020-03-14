@@ -1,43 +1,50 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
   module Kernel32
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms647487(v=vs.85).aspx
+
+    # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-lstrcata
+    # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-lstrcatw
     # Warning  Do not use. Consider using StringCchCat instead.
-    # LPTSTR WINAPI lstrcat(
-    #   _Inout_  LPTSTR lpString1,
-    #   _In_     LPTSTR lpString2 )
+    # @param [String] lpString1
+    # @param [String] lpString2
+    # @return [FFI::Pointer]
+    def self.lstrcat(lpString1, lpString2) end
     encoded_function 'lstrcat', [:string, :string], :pointer
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms647488(v=vs.85).aspx
-    # int WINAPI lstrcmp(
-    #   _In_  LPCTSTR lpString1,
-    #   _In_  LPCTSTR lpString2 )
+    # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-lstrcmp
+    # @param [String] lpString1
+    # @param [String] lpString2
+    # @return [Integer]
+    def self.lstrcmp(lpString1, lpString2) end
     attach_function 'lstrcmp', [:string, :string], :int
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms647489(v=vs.85).aspx
-    # int WINAPI lstrcmpi(
-    #   _In_  LPCTSTR lpString1,
-    #   _In_  LPCTSTR lpString2 )
+    # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-lstrcmpi
+    # @param [String] lpString1
+    # @param [String] lpString2
+    # @return [Integer]
+    def self.lstrcmpi(lpString1, lpString2) end
     attach_function 'lstrcmpi', [:string, :string], :int
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms647490(v=vs.85).aspx
+    # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-lstrcpy
     # Warning  Do not use. Consider using StringCchCopy instead
-    # LPTSTR WINAPI lstrcpy(
-    #   _Out_  LPTSTR lpString1,
-    #   _In_   LPTSTR lpString2 )
+    # @param [String] lpString1
+    # @param [String] lpString2
+    # @return [FFI::Pointer]
+    def self.lstrcpy(lpString1, lpString2) end
     attach_function 'lstrcpy', [:string, :string], :pointer
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms647491(v=vs.85).aspx
+    # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-lstrcpyn
     # Warning  Do not use. Consider using StringCchCopy instead.
-    # LPTSTR WINAPI lstrcpyn(
-    #   _Out_  LPTSTR lpString1,
-    #   _In_   LPCTSTR lpString2,
-    #   _In_   int iMaxLength )
+    # @param [String] lpString1
+    # @param [String] lpString2
+    # @param [Integer] iMaxLength
+    # @return [FFI::Pointer]
+    def self.lstrcpyn(lpString1, lpString2, iMaxLength) end
     attach_function 'lstrcpyn', [:string, :string, :int], :pointer
 
-    # https://msdn.microsoft.com/en-us/library/windows/desktop/ms647492(v=vs.85).aspx
-    # int WINAPI lstrlen( _In_  LPCTSTR lpString )
+    # https://docs.microsoft.com/en-us/windows/desktop/api/winbase/nf-winbase-lstrlen
+    # @param [String] lpString
+    # @return [Integer]
+    def self.lstrlen(lpString) end
     attach_function 'lstrlen', [:string], :int
   end
 end

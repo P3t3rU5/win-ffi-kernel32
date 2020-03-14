@@ -1,8 +1,5 @@
-require 'win-ffi/kernel32'
-
 module WinFFI
-  extend LibBase
-
+  module Kernel32
   # Enum COMPUTER_NAME_FORMAT
   ComputerNameFormat = enum :computer_name_format,[
       :NetBIOS,                   0,
@@ -15,4 +12,5 @@ module WinFFI
       :PhysicalDnsFullyQualified, 7,
       :Max,                       8
   ]
+  end
 end
